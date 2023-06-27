@@ -5,7 +5,7 @@ import { EnvModule } from '../../libs/env/env.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { CustomExceptionFilter } from './common/filter/http-exception.filter';
 import { LogModule } from '../../libs/log/log.module';
-import { LogInterceptor } from './common/interceptors/logger.interceptor';
+import { LogInterceptor } from './common/interceptor/logger.interceptor';
 import { PasswordModule } from './password/password.module';
 
 const filter = {
