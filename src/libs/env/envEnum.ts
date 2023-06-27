@@ -1,3 +1,5 @@
 export enum EnvEnum {
-    PORT
+  PORT,
+  SWAGGER_USER,
+  SWAGGER_PASSWORD,
 }
