@@ -6,6 +6,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { CustomExceptionFilter } from './common/filter/http-exception.filter';
 import { LogModule } from '../../libs/log/log.module';
 import { LogInterceptor } from './common/interceptors/logger.interceptor';
+import { PasswordModule } from './password/password.module';
 
 const filter = {
   provide: APP_FILTER,
@@ -18,7 +19,7 @@ const interceptor = {
 };
 
 @Module({
-  imports: [EnvModule.forRoot(), LogModule.forRoot()],
+  imports: [EnvModule.forRoot(), LogModule.forRoot(), PasswordModule],
   controllers: [AppController],
   providers: [AppService, filter, interceptor],
 })
