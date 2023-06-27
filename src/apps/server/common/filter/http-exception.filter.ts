@@ -1,7 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { BaseException } from '../CustomExceptions/base.exception';
-import { UnknownException } from '../CustomExceptions/unknown.exception';
+import { BaseException } from '../customExceptions/base.exception';
+import { UnknownException } from '../customExceptions/unknown.exception';
 
 @Catch()
 export class CustomExceptionFilter implements ExceptionFilter {
