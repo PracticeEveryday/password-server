@@ -8,7 +8,7 @@ import * as process from 'process';
 
 const { exec } = require('child_process');
 
-let flag = false;
+let flag = true;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

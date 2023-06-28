@@ -9,4 +9,8 @@ export class EnvService {
   get<T>(key: EnvEnum, defaultValue?: T): T {
     return (this.configService.get(EnvEnum[key]) as T) || defaultValue;
   }
+
+  getOrThrow<T>(key: EnvEnum, defaultValue?: T): T {
+    return (this.configService.getOrThrow(EnvEnum[key]) as T) || defaultValue;
+  }
 }

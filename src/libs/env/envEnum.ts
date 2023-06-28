@@ -8,4 +8,10 @@ export enum EnvEnum {
 
   // hash password key
   PASSWORD_KEY,
+
+  //DB
+  DATABASE_HOST,
+  DATABASE_USER,
+  DATABASE_DB,
+  DATABASE_PASSWORD,
 }
