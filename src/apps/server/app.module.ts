@@ -7,6 +7,7 @@ import { CustomExceptionFilter } from './common/filter/http-exception.filter';
 import { LogModule } from '../../libs/log/log.module';
 import { LogInterceptor } from './common/interceptor/logger.interceptor';
 import { PasswordModule } from './password/password.module';
+import { ReadlineModule } from '../../libs/readline/readline.module';
 
 const filter = {
   provide: APP_FILTER,
@@ -19,7 +20,7 @@ const interceptor = {
 };
 
 @Module({
-  imports: [EnvModule.forRoot(), LogModule.forRoot(), PasswordModule],
+  imports: [EnvModule.forRoot(), LogModule.forRoot(), PasswordModule, ReadlineModule],
   controllers: [AppController],
   providers: [AppService, filter, interceptor],
 })
