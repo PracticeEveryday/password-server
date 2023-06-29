@@ -9,48 +9,58 @@ import { ConfigService } from '@nestjs/config';
 import { initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue } from '../../libs/mysql/sql/initTablePassword';
 import { UnknownException } from './common/customExceptions/unknown.exception';
 
-const mysql = new MysqlService(new EnvService(new ConfigService()));
-
-async function precondition() {
-  try {
-    await mysql.connection.promise().query(initTablePassword);
-    await mysql.connection.promise().query(initTableIsFirst);
-    await mysql.connection.promise().query(initTablePrequalification);
-    await mysql.connection.promise().query(initFirstValue);
-  } catch (error) {
-    console.log(error);
-    throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
+class Server {
+  private mysql: MysqlService;
+  constructor() {
+    this.mysql = new MysqlService(new EnvService(new ConfigService()));
   }
-}
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  setupSwagger(app);
-
-  const envService = app.get(EnvService);
-  const PORT = +envService.get(EnvEnum.PORT) || 3000;
-
-  await app.listen(PORT);
-}
-
-async function bootstrap2() {
-  const readlineService = new ReadlineService(new MysqlService(new EnvService(new ConfigService())));
-  readlineService.askQuestions();
-}
-
-async function realStart() {
-  try {
-    const rows = await mysql.connection.promise().query('SELECT is_first FROM password.is_firsts WHERE id = 1');
-    const flag = rows[0][0].is_first;
-
-    if (Boolean(flag)) {
-      bootstrap();
+  public async precondition(): Promise<void> {
+    try {
+      await this.mysql.connection.promise().query(initTablePassword);
+      await this.mysql.connection.promise().query(initTableIsFirst);
+      await this.mysql.connection.promise().query(initTablePrequalification);
+      await this.mysql.connection.promise().query(initFirstValue);
+    } catch (error) {
+      console.log(error);
+      throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
     }
-  } catch (error) {
-    // 최초에는 isFirst가 없기 때문입니다.
-    precondition();
-    bootstrap2();
+  }
+
+  public askQuestions(): void {
+    const readlineService = new ReadlineService(new MysqlService(new EnvService(new ConfigService())));
+    readlineService.askQuestions();
+  }
+
+  public async bootstrap(): Promise<void> {
+    const app = await NestFactory.create(AppModule);
+
+    setupSwagger(app);
+
+    const envService = app.get(EnvService);
+    const PORT = +envService.get(EnvEnum.PORT) || 3000;
+
+    await app.listen(PORT);
+  }
+
+  public async init(): Promise<void> {
+    try {
+      const rows = await this.mysql.connection.promise().query('SELECT is_first FROM password.is_firsts WHERE id = 1');
+      const flag = rows[0][0].is_first;
+
+      if (Boolean(flag)) {
+        this.bootstrap();
+      } else {
+        // flag가 true가 아니면 질문을 다시 합니다.
+        this.askQuestions();
+      }
+    } catch (error) {
+      // 최초에는 isFirst가 없기 때문입니다.
+      await this.precondition();
+      this.askQuestions();
+    }
   }
 }
-realStart();
+
+const server = new Server();
+server.init();
