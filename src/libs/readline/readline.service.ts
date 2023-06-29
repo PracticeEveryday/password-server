@@ -8,16 +8,55 @@ import { UnknownException } from '../../apps/server/common/customExceptions/unkn
 export class ReadlineService {
   constructor(private readonly mysqlService: MysqlService) {}
 
-  public askQuestions() {
+  private getReadline() {
+    return readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+  }
+
+  public askQuestions(): void {
     const questionAnswerPairs = [];
     this.askQuestion(questionAnswerPairs);
   }
 
-  private askQuestion = (questionAnswerPairs) => {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
+  async askAboutPrequalifications(prequalificationsArr: { id: number; question: string; answer: string }[]) {
+    for (let i = 0; i < prequalificationsArr.length; i++) {
+      let rl = this.getReadline();
+
+      const answer = await this.askPrequalification(rl, prequalificationsArr[i].question);
+
+      if (answer !== prequalificationsArr[i].answer) {
+        console.log('😠 답변이 틀립니다 다시 시작해주세요.');
+        rl.close();
+        return false;
+      } else {
+        if (i === prequalificationsArr.length - 1) {
+          console.log('🥳 정답을 모두 맞췄습니다! 5초 후 서버가 시작됩니다!');
+          this.sleep(5000);
+          rl.close();
+          return true;
+        }
+        console.log(`🤔 계속해서 문제를 풀어주세요 ${prequalificationsArr.length - (i + 1)}문제 남았습니다!!\n`);
+      }
+    }
+  }
+
+  private askPrequalification(rl: readline.Interface, question: string): Promise<string> {
+    return new Promise((resolve) => {
+      rl.question(
+        `💬 사전에 등록한 질문을 모두 정확하게 맞추어야 서버가 시작됩니다!!\n🤯 해당 질문에 대해 답변해주세요: ${question}\n`,
+        (answer) => {
+          resolve(answer);
+        },
+      );
     });
+  }
+
+  // private
+  private askQuestion = (questionAnswerPairs: { question: string; answer: string }[]): void => {
+    const rl = this.getReadline();
+
     rl.question('👨‍💻 질문을 입력해 주세요(❗exit을 입력하면 종료됩니다.): \n', (question) => {
       if (question.toLowerCase() === 'exit') {
         rl.close();
@@ -25,10 +64,10 @@ export class ReadlineService {
         this.processQuestionAnswerPairs(questionAnswerPairs);
 
         const key = `
-          🥰 You can ready!
-          ✅ Double-check the questions you've written
+          🥰 당신은 서버를 시작할 준비가 되었습니다!!!
+          ✅ 작성한 질문과 대답을 까먹지 않도록 한 번 더 확인해주세요!!
           
-          🛫 Let's go!
+          🛫 시작해 봅시다!!
           
       🔒       ,--------ι                                            🔓           
       🔒     / /| 0       ◝______________________                    🔓
@@ -39,7 +78,7 @@ export class ReadlineService {
           `;
 
         console.log(key);
-        console.log('\t\t\t🙏 Plz Restart Server');
+        console.log('\t\t\t🙏 서버를 재시작 해주세요 :)');
         return;
       }
 
@@ -50,15 +89,15 @@ export class ReadlineService {
     });
   };
 
-  private processQuestionAnswerPairs = (questionAnswerPairs) => {
+  private processQuestionAnswerPairs = (questionAnswerPairs: { question: string; answer: string }[]): void => {
     console.log('🚶 질문과 답변들: ');
     let i = 1;
+
     for (const pair of questionAnswerPairs) {
       console.log(`❓ Question ${i}: ${pair.question}`);
       console.log(`✅ Answer ${i}: ${pair.answer}`);
       console.log('-------------------------');
 
-      i++;
       try {
         this.mysqlService.connection.promise().query(`
           INSERT INTO password.prequalifications
@@ -73,9 +112,15 @@ export class ReadlineService {
           raw: error,
         });
       }
+      i++;
     }
     this.mysqlService.connection.promise().query(`
           UPDATE password.is_firsts SET is_first = 1 WHERE id = 1
         `);
   };
+
+  private sleep(ms: number): void {
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {}
+  }
 }

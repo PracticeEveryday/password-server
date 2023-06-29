@@ -11,8 +11,10 @@ import { UnknownException } from './common/customExceptions/unknown.exception';
 
 class Server {
   private mysql: MysqlService;
+  private readlineService: ReadlineService;
   constructor() {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
+    this.readlineService = new ReadlineService(new MysqlService(new EnvService(new ConfigService())));
   }
 
   public async precondition(): Promise<void> {
@@ -28,8 +30,15 @@ class Server {
   }
 
   public askQuestions(): void {
-    const readlineService = new ReadlineService(new MysqlService(new EnvService(new ConfigService())));
-    readlineService.askQuestions();
+    this.readlineService.askQuestions();
+  }
+
+  public async confirmAboutPrequalifications(): Promise<boolean> {
+    const totalPrequalifications = await this.mysql.connection
+      .promise()
+      .query('SELECT id, question, answer FROM password.prequalifications');
+    const prequalificationArr = totalPrequalifications[0] as unknown as { id: number; question: string; answer: string }[];
+    return await this.readlineService.askAboutPrequalifications(prequalificationArr);
   }
 
   public async bootstrap(): Promise<void> {
@@ -49,7 +58,10 @@ class Server {
       const flag = rows[0][0].is_first;
 
       if (Boolean(flag)) {
-        this.bootstrap();
+        const test = await this.confirmAboutPrequalifications();
+        if (test) {
+          this.bootstrap();
+        }
       } else {
         // flag가 true가 아니면 질문을 다시 합니다.
         this.askQuestions();
