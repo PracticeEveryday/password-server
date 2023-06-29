@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS passwords (
 `;
 
 export const initTableIsFirst = `
-CREATE TABLE IF NOT EXISTS is_first (
+CREATE TABLE IF NOT EXISTS is_firsts (
   id            INT   PRIMARY KEY     NOT NULL,
-  isFirst       BIT   DEFAULT FALSE   NOT NULL,
+  is_first      INT   DEFAULT FALSE   NOT NULL,
   createdAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP,
   updatedAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP   ON UPDATE CURRENT_TIMESTAMP,
   deletedAt     TIMESTAMP NULL
@@ -28,4 +28,9 @@ CREATE TABLE IF NOT EXISTS prequalifications (
   updatedAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP   ON UPDATE CURRENT_TIMESTAMP,
   deletedAt     TIMESTAMP NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
+`;
+
+export const initFirstValue = `
+INSERT INTO password.is_firsts (id, is_first, createdAt, updatedAt, deletedAt)
+VALUES(1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
 `;
