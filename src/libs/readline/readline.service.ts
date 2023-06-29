@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as readline from 'readline';
 import * as process from 'process';
+import { MysqlService } from '../mysql/mysql.service';
+import { initTablePassword } from '../mysql/sql/initTablePassword';
 
 @Injectable()
 export class ReadlineService {
+  constructor(private readonly mysqlService: MysqlService) {}
+
   public askQuestions() {
     const rl = readline.createInterface({
       input: process.stdin,
@@ -17,6 +21,16 @@ export class ReadlineService {
         if (question.toLowerCase() === 'exit') {
           rl.close();
           processQuestionAnswerPairs();
+          const key2 = `
+          
+      🔒       ,--------ι                                            🔓           
+      🔒     / /| 0       ◝______________________                    🔓
+      🔒    | | |  ▷      ====================    )                  🔓
+      🔒     \\ \\| 0       ◞\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/'                   🔓
+      🔒       '_______,'                                            🔓
+        
+          `;
+          console.log(key2);
           console.log('🙏 서버를 재시작 해주세요');
           return;
         }
@@ -36,6 +50,15 @@ export class ReadlineService {
         console.log(`✅ Answer ${i}: ${pair.answer}`);
         console.log('-------------------------');
         i++;
+        try {
+          this.mysqlService.connection.promise().query(`
+          INSERT INTO password.prequalifications
+            (id, question, answer, createdAt, updatedAt, deletedAt)
+          VALUES(${i}, '${pair.question}', '${pair.answer}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
+        `);
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 

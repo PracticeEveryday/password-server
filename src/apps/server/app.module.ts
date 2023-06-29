@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ClassProvider, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EnvModule } from '../../libs/env/env.module';
@@ -10,19 +10,23 @@ import { PasswordModule } from './password/password.module';
 import { ReadlineModule } from '../../libs/readline/readline.module';
 import { MysqlModule } from '../../libs/mysql/mysql.module';
 
-const filter = {
-  provide: APP_FILTER,
-  useClass: CustomExceptionFilter,
-};
+const filter: ClassProvider[] = [
+  {
+    provide: APP_FILTER,
+    useClass: CustomExceptionFilter,
+  },
+];
 
-const interceptor = {
-  provide: APP_INTERCEPTOR,
-  useClass: LogInterceptor,
-};
+const interceptor: ClassProvider[] = [
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: LogInterceptor,
+  },
+];
 
 @Module({
   imports: [EnvModule.forRoot(), LogModule.forRoot(), PasswordModule, ReadlineModule, MysqlModule],
   controllers: [AppController],
-  providers: [AppService, filter, interceptor],
+  providers: [AppService, ...filter, ...interceptor],
 })
 export class AppModule {}

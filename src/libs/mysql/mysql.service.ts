@@ -5,8 +5,8 @@ import { EnvEnum } from '../env/envEnum';
 
 @Injectable()
 export class MysqlService {
-  private connection: Connection;
-  private connectionOptions: ConnectionOptions;
+  public connection: Connection;
+  public connectionOptions: ConnectionOptions;
 
   constructor(private readonly envService: EnvService) {
     this.connectionOptions = {
