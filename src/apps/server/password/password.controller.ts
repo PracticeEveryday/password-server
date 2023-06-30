@@ -6,6 +6,7 @@ import { Body, HttpStatus, ValidationPipe } from '@nestjs/common';
 import { CreatePassworeReqDto } from './dto/create-password.req.dto';
 import { PasswordService } from './password.service';
 import { createPasswordDescriptionMd, createPasswordSuccMd, createPasswordSummaryMd } from './docs/password.docs';
+import { CreatePasswordResDto } from './dto/create-password.res.dto';
 
 @RouteTable({
   path: 'password',
@@ -24,13 +25,13 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.CREATED,
-      // type: CreateExperienceResDto,
+      type: CreatePasswordResDto,
       description: createPasswordSuccMd,
     },
     description: createPasswordDescriptionMd,
     summary: createPasswordSummaryMd,
   })
-  public async create(@Body(ValidationPipe) createPassworeReqDto: CreatePassworeReqDto) {
+  public async create(@Body(ValidationPipe) createPassworeReqDto: CreatePassworeReqDto): Promise<CreatePasswordResDto> {
     return await this.passwordService.create(createPassworeReqDto);
   }
 }
