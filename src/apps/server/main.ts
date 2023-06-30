@@ -54,17 +54,19 @@ class Server {
 
   public async init(): Promise<void> {
     try {
-      const rows = await this.mysql.connection.promise().query('SELECT is_first FROM password.is_firsts WHERE id = 1');
-      const flag = rows[0][0].is_first;
+      const rows = await this.mysql.connection.promise().query('SELECT server_status FROM password.server_infos WHERE id = 1');
+      const flag = rows[0][0].server_status;
 
-      if (Boolean(flag)) {
+      if (flag === 'pending') {
         const test = await this.confirmAboutPrequalifications();
         if (test) {
+          this.mysql.connection.promise().query(`UPDATE password.server_infos SET server_status = 'active' WHERE id = 1`);
           this.bootstrap();
         }
-      } else {
+      } else if (flag === 'active') {
         // flag가 true가 아니면 질문을 다시 합니다.
-        this.askQuestions();
+        this.bootstrap();
+        // this.askQuestions();
       }
     } catch (error) {
       // 최초에는 isFirst가 없기 때문입니다.

@@ -114,9 +114,7 @@ export class ReadlineService {
       }
       i++;
     }
-    this.mysqlService.connection.promise().query(`
-          UPDATE password.is_firsts SET is_first = 1 WHERE id = 1
-        `);
+    this.mysqlService.connection.promise().query(`UPDATE password.server_infos SET server_status = 'pending' WHERE id = 1`);
   };
 
   private sleep(ms: number): void {

@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS passwords (
 `;
 
 export const initTableIsFirst = `
-CREATE TABLE IF NOT EXISTS is_firsts (
+CREATE TABLE IF NOT EXISTS server_infos (
   id            INT   PRIMARY KEY     NOT NULL,
-  is_first      INT   DEFAULT FALSE   NOT NULL,
+  server_status      ENUM('active', 'inactive', 'pending')  DEFAULT 'inactive'   NOT NULL,
   createdAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP,
   updatedAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP   ON UPDATE CURRENT_TIMESTAMP,
   deletedAt     TIMESTAMP NULL
@@ -31,6 +31,6 @@ CREATE TABLE IF NOT EXISTS prequalifications (
 `;
 
 export const initFirstValue = `
-INSERT INTO password.is_firsts (id, is_first, createdAt, updatedAt, deletedAt)
-VALUES(1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
+INSERT INTO password.server_infos (id, server_status, createdAt, updatedAt, deletedAt)
+VALUES(1, 'inactive', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
 `;
