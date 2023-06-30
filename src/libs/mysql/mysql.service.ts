@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Connection, ConnectionOptions, createConnection, RowDataPacket } from 'mysql2';
+import { Connection, ConnectionOptions, createConnection, FieldPacket, RowDataPacket } from 'mysql2';
 import { EnvService } from '../env/env.service';
 import { EnvEnum } from '../env/envEnum';
 import { NotFoundException } from '../../apps/server/common/customExceptions/notFound.exception';
@@ -66,13 +66,16 @@ export class MysqlService {
     }
   }
 
+  public async executeSingleQuery(query: string) {
+    const connectionPool = await this.getConnectionPool();
+    return await connectionPool.execute(query);
+  }
+
   public async createPassword(body: CreatePassworeReqDto) {
     try {
-      return await this.connection
-        .promise()
-        .query(
-          `INSERT INTO password.passwords (domain, password, createdAt, updatedAt, deletedAt) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`,
-        );
+      return await this.executeSingleQuery(
+        `INSERT INTO password.passwords (domain, password, createdAt, updatedAt, deletedAt) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`,
+      );
     } catch (error) {
       console.log(error);
       throw new ConflictException({

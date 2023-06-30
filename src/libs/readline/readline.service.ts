@@ -9,6 +9,9 @@ import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enu
 export class ReadlineService {
   constructor(private readonly mysqlService: MysqlService) {}
 
+  /**
+   * 터미널에서 연결하는 readline 생성하기
+   */
   private getReadline() {
     return readline.createInterface({
       input: process.stdin,
@@ -16,12 +19,19 @@ export class ReadlineService {
     });
   }
 
-  public askQuestions(): void {
+  /**
+   * 질문지 만들기
+   */
+  public processingQuestions(): void {
     const questionAnswerPairs = [];
-    this.askQuestion(questionAnswerPairs);
+    this.processAboutResisterQuestions(questionAnswerPairs);
   }
 
-  async askAboutPrequalifications(prequalificationsArr: { id: number; question: string; answer: string }[]) {
+  /**
+   * 서버를 시작하기 위한 사전 질문 프로세스
+   * @param prequalificationsArr 사전 질문지 배열
+   */
+  async processingAboutPrequalifications(prequalificationsArr: { id: number; question: string; answer: string }[]) {
     for (let i = 0; i < prequalificationsArr.length; i++) {
       let rl = this.getReadline();
 
@@ -43,6 +53,13 @@ export class ReadlineService {
     }
   }
 
+  // private
+
+  /**
+   * 사전 질문에 대해 물어보기
+   * @param rl 터미널 readline
+   * @param question 질문
+   */
   private askPrequalification(rl: readline.Interface, question: string): Promise<string> {
     return new Promise((resolve) => {
       rl.question(
@@ -54,15 +71,18 @@ export class ReadlineService {
     });
   }
 
-  // private
-  private askQuestion = (questionAnswerPairs: { question: string; answer: string }[]): void => {
+  /**
+   * 등록할 문제에 대해 물어보기
+   * @param questionAnswerPairs 질문과 답변 배열
+   */
+  private processAboutResisterQuestions = (questionAnswerPairs: { question: string; answer: string }[]): void => {
     const rl = this.getReadline();
 
     rl.question('👨‍💻 질문을 입력해 주세요(❗exit을 입력하면 종료됩니다.): \n', (question) => {
       if (question.toLowerCase() === 'exit') {
         rl.close();
 
-        this.processQuestionAnswerPairs(questionAnswerPairs);
+        this.processSaveQuestionAnswerPairs(questionAnswerPairs);
 
         const key = `
           🥰 당신은 서버를 시작할 준비가 되었습니다!!!
@@ -85,12 +105,16 @@ export class ReadlineService {
 
       rl.question('🙂 답변을 입력해주세요: \n', (answer) => {
         questionAnswerPairs.push({ question, answer });
-        this.askQuestion(questionAnswerPairs);
+        this.processAboutResisterQuestions(questionAnswerPairs);
       });
     });
   };
 
-  private processQuestionAnswerPairs = (questionAnswerPairs: { question: string; answer: string }[]): void => {
+  /**
+   *
+   * @param questionAnswerPairs
+   */
+  private processSaveQuestionAnswerPairs = (questionAnswerPairs: { question: string; answer: string }[]): void => {
     console.log('🚶 질문과 답변들: ');
     let i = 1;
 
@@ -100,7 +124,7 @@ export class ReadlineService {
       console.log('-------------------------');
 
       try {
-        this.mysqlService.connection.promise().query(`
+        this.mysqlService.executeSingleQuery(`
           INSERT INTO password.prequalifications
             (id, question, answer, createdAt, updatedAt, deletedAt)
           VALUES(${i}, '${pair.question}', '${pair.answer}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
@@ -115,9 +139,9 @@ export class ReadlineService {
       }
       i++;
     }
-    this.mysqlService.connection
-      .promise()
-      .query(`UPDATE password.server_infos SET server_status = '${ServerStatusEnum.PENDING}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`);
+    this.mysqlService.executeSingleQuery(
+      `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.PENDING}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
+    );
   };
 
   private sleep(ms: number): void {

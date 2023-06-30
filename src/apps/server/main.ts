@@ -28,15 +28,13 @@ class Server {
   }
 
   public askQuestions(): void {
-    this.readlineService.askQuestions();
+    this.readlineService.processingQuestions();
   }
 
   public async confirmAboutPrequalifications(): Promise<boolean> {
-    const totalPrequalifications = await this.mysql.connection
-      .promise()
-      .query('SELECT id, question, answer FROM password.prequalifications');
+    const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.prequalifications');
     const prequalificationArr = totalPrequalifications[0] as unknown as { id: number; question: string; answer: string }[];
-    return await this.readlineService.askAboutPrequalifications(prequalificationArr);
+    return await this.readlineService.processingAboutPrequalifications(prequalificationArr);
   }
 
   public async bootstrap(): Promise<void> {
@@ -59,16 +57,14 @@ class Server {
         // pending이라면 질문합니다.
         const test = await this.confirmAboutPrequalifications();
         if (test) {
-          this.mysql.connection
-            .promise()
-            .query(
-              `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.ACTIVE}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
-            );
-          this.bootstrap();
+          await this.mysql.executeSingleQuery(
+            `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.ACTIVE}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
+          );
+          await this.bootstrap();
         }
       } else if (flag === 'active') {
         // 서버 상태가 active면 서버를 시작합니다.
-        this.bootstrap();
+        await this.bootstrap();
       }
     } catch (error) {
       // 데이터가 없으면 사전 작업을 진행합니다.
