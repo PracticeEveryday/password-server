@@ -6,6 +6,7 @@ import { conflictScript } from '../common/customExceptions/exceptionScript';
 import { PasswordUtilService } from '../../../libs/password-util/password-util.service';
 import { ResultSetHeader } from 'mysql2/typings/mysql/lib/protocol/packets';
 import { FieldPacket } from 'mysql2';
+import { PasswordInterface } from '../../../libs/mysql/types/password.type';
 
 @Injectable()
 export class PasswordService {
@@ -17,12 +18,13 @@ export class PasswordService {
     }
 
     body.password = this.passwordUtilService.hashPassword(body.password);
-    const result = await this.mysqlService.createPassword(body);
-    console.log(result);
-    // const rows:ResultSetHeader[] = result[0]
-    // if (rows.affectedRows === 1) {
-    //   return await this.mysqlService.executeSingleQuery(`SELECT domain, password FROM password.passwords WHERE id = ${rows[0].insertId}`);
-    // } else {
-    // }
+    const [row, fields] = await this.mysqlService.createPassword(body);
+
+    if (row.affectedRows === 1) {
+      const [rows, fields] = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(
+        `SELECT domain FROM password.passwords WHERE id=${row.insertId}`,
+      );
+      return { domain: rows[0].domain };
+    }
   }
 }
