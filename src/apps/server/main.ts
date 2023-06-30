@@ -20,10 +20,7 @@ class Server {
 
   public async precondition(): Promise<void> {
     try {
-      await this.mysql.connection.promise().query(initTablePassword);
-      await this.mysql.connection.promise().query(initTableIsFirst);
-      await this.mysql.connection.promise().query(initTablePrequalification);
-      await this.mysql.connection.promise().query(initFirstValue);
+      await this.mysql.parallelTransaction([initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue]);
     } catch (error) {
       console.log(error);
       throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });

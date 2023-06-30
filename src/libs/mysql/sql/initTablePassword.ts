@@ -2,7 +2,7 @@ import { ServerStatusEnum } from '../../../apps/server/common/enum/serverStatus.
 
 export const initTablePassword = `
 CREATE TABLE IF NOT EXISTS passwords (
-  id            INT PRIMARY KEY     NOT NULL,
+  id            INT                   AUTO_INCREMENT        PRIMARY KEY,
   domain        VARCHAR(100)        NOT NULL,
   password      VARCHAR(150)        NOT NULL,
   createdAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS passwords (
 
 export const initTableIsFirst = `
 CREATE TABLE IF NOT EXISTS server_infos (
-  id            INT   PRIMARY KEY     NOT NULL,
+  id            INT                   AUTO_INCREMENT        PRIMARY KEY,
   server_status      ENUM('active', 'inactive', 'pending')  DEFAULT 'inactive'   NOT NULL,
   createdAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP,
   updatedAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP   ON UPDATE CURRENT_TIMESTAMP,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS server_infos (
 
 export const initTablePrequalification = `
 CREATE TABLE IF NOT EXISTS prequalifications (
-  id            INT   PRIMARY KEY     NOT NULL,
+  id            INT                   AUTO_INCREMENT        PRIMARY KEY,
   question      VARCHAR(100)          NOT NULL,
   answer        VARCHAR(100)          NOT NULL,
   createdAt     TIMESTAMP DEFAULT               CURRENT_TIMESTAMP,
