@@ -53,12 +53,12 @@ export class MysqlService {
     }
   }
 
-  public async findPasswordByDomain(domain: string): Promise<RowDataPacket[][]> {
+  public async findPasswordByDomain(domain: string): Promise<PasswordInterface[]> {
     try {
-      const password = await this.connection
-        .promise()
-        .query<RowDataPacket[][]>(`SELECT domain, password FROM password.passwords WHERE domain='${domain}'`);
-      return password[0];
+      const result = await this.executeSingleQuery<PasswordInterface[]>(
+        `SELECT domain, password FROM password.passwords WHERE domain='${domain}'`,
+      );
+      return result[0];
     } catch (error) {
       throw new NotFoundException({
         title: 'not found domain info',
