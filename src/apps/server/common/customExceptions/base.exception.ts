@@ -8,14 +8,14 @@ export class BaseException extends HttpException {
   @Exclude() private readonly _statusCode: number;
   @Exclude() private readonly _success = false;
   @Exclude() private readonly _title: string;
-  @Exclude() raw: any;
+  @Exclude() raw?: any;
 
   constructor(properties: Pick<BaseException, BaseExceptionPropertyType>) {
     super(properties.message, properties.statusCode);
     this._title = properties.title;
     this._statusCode = properties.statusCode;
     this._success = false;
-    this.raw = properties.raw;
+    this.raw = properties?.raw;
   }
 
   public getResponse() {

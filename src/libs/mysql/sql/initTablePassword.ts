@@ -1,3 +1,5 @@
+import { ServerStatusEnum } from '../../../apps/server/common/enum/serverStatus.enum';
+
 export const initTablePassword = `
 CREATE TABLE IF NOT EXISTS passwords (
   id            INT PRIMARY KEY     NOT NULL,
@@ -32,5 +34,5 @@ CREATE TABLE IF NOT EXISTS prequalifications (
 
 export const initFirstValue = `
 INSERT INTO password.server_infos (id, server_status, createdAt, updatedAt, deletedAt)
-VALUES(1, 'inactive', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
+VALUES(1, '${ServerStatusEnum.INACTIVE}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
 `;

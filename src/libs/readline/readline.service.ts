@@ -3,6 +3,7 @@ import * as process from 'process';
 import { Injectable } from '@nestjs/common';
 import { MysqlService } from '../mysql/mysql.service';
 import { UnknownException } from '../../apps/server/common/customExceptions/unknown.exception';
+import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enum';
 
 @Injectable()
 export class ReadlineService {
@@ -114,7 +115,9 @@ export class ReadlineService {
       }
       i++;
     }
-    this.mysqlService.connection.promise().query(`UPDATE password.server_infos SET server_status = 'pending' WHERE id = 1`);
+    this.mysqlService.connection
+      .promise()
+      .query(`UPDATE password.server_infos SET server_status = '${ServerStatusEnum.PENDING}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`);
   };
 
   private sleep(ms: number): void {

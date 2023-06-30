@@ -2,7 +2,9 @@ import { RouteTable } from '../common/decorator/router-table.decorator';
 import { PasswordUtilService } from '../../../libs/password-util/password-util.service';
 import { Route } from '../common/decorator/router.decorator';
 import { Method } from '../common/enum/method.enum';
-import { HttpStatus } from '@nestjs/common';
+import { Body, HttpStatus, ValidationPipe } from '@nestjs/common';
+import { CreatePassworeReqDto } from './dto/create-password.req.dto';
+import { PasswordService } from './password.service';
 
 @RouteTable({
   path: 'password',
@@ -12,7 +14,7 @@ import { HttpStatus } from '@nestjs/common';
   },
 })
 export class PasswordController {
-  constructor(readonly passwordUtilService: PasswordUtilService) {}
+  constructor(readonly passwordService: PasswordService) {}
 
   @Route({
     request: {
@@ -27,10 +29,7 @@ export class PasswordController {
     // description: createExperienceDescriptionMd,
     // summary: createExperienceSummaryMd,
   })
-  public hassPassword() {
-    const hashed = this.passwordUtilService.hashPassword('password');
-    const decoded = this.passwordUtilService.decodedPassword(hashed);
-
-    return { hashed, decoded };
+  public async create(@Body(ValidationPipe) createPassworeReqDto: CreatePassworeReqDto) {
+    return await this.passwordService.create(createPassworeReqDto);
   }
 }

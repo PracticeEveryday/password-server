@@ -8,6 +8,7 @@ import { MysqlService } from '../../libs/mysql/mysql.service';
 import { ConfigService } from '@nestjs/config';
 import { initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue } from '../../libs/mysql/sql/initTablePassword';
 import { UnknownException } from './common/customExceptions/unknown.exception';
+import { ServerStatusEnum } from './common/enum/serverStatus.enum';
 
 class Server {
   private mysql: MysqlService;
@@ -58,18 +59,22 @@ class Server {
       const flag = rows[0][0].server_status;
 
       if (flag === 'pending') {
+        // pending이라면 질문합니다.
         const test = await this.confirmAboutPrequalifications();
         if (test) {
-          this.mysql.connection.promise().query(`UPDATE password.server_infos SET server_status = 'active' WHERE id = 1`);
+          this.mysql.connection
+            .promise()
+            .query(
+              `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.ACTIVE}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
+            );
           this.bootstrap();
         }
       } else if (flag === 'active') {
-        // flag가 true가 아니면 질문을 다시 합니다.
+        // 서버 상태가 active면 서버를 시작합니다.
         this.bootstrap();
-        // this.askQuestions();
       }
     } catch (error) {
-      // 최초에는 isFirst가 없기 때문입니다.
+      // 데이터가 없으면 사전 작업을 진행합니다.
       await this.precondition();
       this.askQuestions();
     }
