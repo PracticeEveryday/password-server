@@ -2,6 +2,18 @@
 도메인의 비밀번호를 항상 까먹어서 암호화 하여 저장하기 위해 만든 BackEnd 서버입니다.
 화면은 따로 없고 `readline` 내장 모듈을 사용하여 진행합니다.
 
+### 서버 세팅
+
+![password-server-setting](https://github.com/PracticeEveryday/password-server/assets/115522392/1487d886-8065-4c2c-9e5c-a22bfaaf032a)
+
+
+### 서버 재시작
+![password-server-start](https://github.com/PracticeEveryday/password-server/assets/115522392/7b585245-e98e-4974-9c02-12999e189770)
+
+### 서버 재시작 실패시
+![password-server-fail](https://github.com/PracticeEveryday/password-server/assets/115522392/4ec12942-f61c-49cf-990f-785c0e0e600c)
+
+
 ### 📰 필요한 것
 
 1. DB(mysql)
