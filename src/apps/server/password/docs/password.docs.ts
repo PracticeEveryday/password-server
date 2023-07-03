@@ -15,3 +15,16 @@ export const getPasswordByDomainDescriptionMd = `
 export const getPasswordByDomainSummaryMd = `✅ Domain의 Password를 조회하는 API입니다.`;
 
 //-- getPasswordByDomain
+
+export const recommendPasswordSuccMd = `🥳 비밀번호 추천에 성공하였습니다.`;
+export const recommendPasswordDescriptionMd = `
+### 💬 원하는 무작위 비밀번호를 추천받는 API입니다.
+구성되는 문자열은 아래와 같습니다.\n
+1. 소문자 알파벳
+2. 대문자 알파벳
+3. 특수 문자(!@#$%^&*()_-+=<>?) 
+4. 숫자(0~9)
+`;
+export const recommendPasswordSummaryMd = `✅ 원하는 길이의 무작위 비밀번호를 추천하는 API입니다.`;
+
+//-- recommendPassword
