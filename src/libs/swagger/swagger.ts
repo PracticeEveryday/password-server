@@ -22,6 +22,7 @@ export function setupSwagger(app: INestApplication): void {
     .setTitle('password-server')
     .setDescription(swaggerInfo)
     .setVersion('0.0.1')
+    .addServer(`http://localhost:3000/api`, '로컬서버')
     .addBearerAuth({
       description: '인증서버에서 받은 accessToken을 집어넣어주세요',
       name: 'Authorization',

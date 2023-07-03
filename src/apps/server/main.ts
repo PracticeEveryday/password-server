@@ -81,6 +81,8 @@ class Server {
 
     setupSwagger(app);
 
+    app.setGlobalPrefix('/api', { exclude: ['/'] });
+
     const envService = app.get(EnvService);
     const PORT = +envService.get(EnvEnum.PORT) || 3000;
 
