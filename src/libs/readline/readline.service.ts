@@ -32,9 +32,8 @@ export class ReadlineService {
    * @param prequalificationsArr 사전 질문지 배열
    */
   async processingAboutPrequalifications(prequalificationsArr: { id: number; question: string; answer: string }[]) {
+    const rl = this.getReadline();
     for (let i = 0; i < prequalificationsArr.length; i++) {
-      let rl = this.getReadline();
-
       const answer = await this.askPrequalification(rl, prequalificationsArr[i].question);
 
       if (answer !== prequalificationsArr[i].answer) {
@@ -77,8 +76,7 @@ export class ReadlineService {
    */
   private processAboutResisterQuestions = (questionAnswerPairs: { question: string; answer: string }[]): void => {
     const rl = this.getReadline();
-
-    rl.question('👨‍💻 질문을 입력해 주세요(❗exit을 입력하면 종료됩니다.): \n', (question) => {
+    rl.question('👨‍💻 질문을 입력해 주세요(❗exit을 입력하면 종료됩니다.): \n', async (question) => {
       if (question.toLowerCase() === 'exit') {
         rl.close();
 
@@ -101,12 +99,20 @@ export class ReadlineService {
         console.log(key);
         console.log('\t\t\t🙏 서버를 재시작 해주세요 :)');
         return;
+      } else {
+        rl.close();
       }
 
-      rl.question('🙂 답변을 입력해주세요: \n', (answer) => {
-        questionAnswerPairs.push({ question, answer });
-        this.processAboutResisterQuestions(questionAnswerPairs);
+      const answer: string = await new Promise((resolve) => {
+        const rl2 = this.getReadline();
+        rl2.question('🙂 답변을 입력해주세요: \n', (answer) => {
+          resolve(answer);
+          rl2.close();
+        });
       });
+
+      questionAnswerPairs.push({ question, answer });
+      this.processAboutResisterQuestions(questionAnswerPairs);
     });
   };
 

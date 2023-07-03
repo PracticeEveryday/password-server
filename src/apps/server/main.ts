@@ -70,6 +70,7 @@ class Server {
   public async confirmAboutPrequalifications(): Promise<boolean> {
     const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.prequalifications');
     const prequalificationArr = totalPrequalifications[0] as unknown as { id: number; question: string; answer: string }[];
+
     return await this.readlineService.processingAboutPrequalifications(prequalificationArr);
   }
 
