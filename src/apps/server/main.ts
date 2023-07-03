@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { EnvService } from '../../libs/env/env.service';
@@ -5,11 +6,9 @@ import { EnvEnum } from '../../libs/env/envEnum';
 import { setupSwagger } from '../../libs/swagger/swagger';
 import { ReadlineService } from '../../libs/readline/readline.service';
 import { MysqlService } from '../../libs/mysql/mysql.service';
-import { ConfigService } from '@nestjs/config';
 import { initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue } from '../../libs/mysql/sql/initTablePassword';
 import { UnknownException } from './common/customExceptions/unknown.exception';
 import { ServerStatusEnum } from './common/enum/serverStatus.enum';
-import { ResultSetHeader } from 'mysql2/typings/mysql/lib/protocol/packets';
 import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
 import { OkPacket } from 'mysql2';
 
@@ -17,13 +16,29 @@ class Server {
   private mysql: MysqlService;
   private readlineService: ReadlineService;
   private dateUtilService: DateUtilService;
+
   constructor() {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
     this.readlineService = new ReadlineService(new MysqlService(new EnvService(new ConfigService())));
     this.dateUtilService = new DateUtilService();
   }
 
-  public async checkTime() {
+  /**
+   * 사전에 필요한 데이터와 테이블을 생성하는 함수입니다.
+   */
+  public async precondition(): Promise<void> {
+    try {
+      await this.mysql.parallelTransaction([initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue]);
+    } catch (error) {
+      console.log(error);
+      throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
+    }
+  }
+
+  /**
+   * 처음 사전 질문을 입력한 뒤 하루가 지나면 다시 입력할 수 있도록 업데이트 하는 함수입니다.
+   */
+  public async timeValidation() {
     try {
       const [rows, field] = await this.mysql.connection
         .promise()
@@ -41,25 +56,25 @@ class Server {
     }
   }
 
-  public async precondition(): Promise<void> {
-    try {
-      await this.mysql.parallelTransaction([initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue]);
-    } catch (error) {
-      console.log(error);
-      throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
-    }
-  }
-
+  /**
+   * 서버를 시작하기 위해 질문할 내역과 답변을 입력하는 함수입니다.
+   */
   public askQuestions(): void {
     this.readlineService.processingQuestions();
   }
 
+  /**
+   * 서버를 시작하기 위해 질문에 답하는 함수입니다.
+   */
   public async confirmAboutPrequalifications(): Promise<boolean> {
     const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.prequalifications');
     const prequalificationArr = totalPrequalifications[0] as unknown as { id: number; question: string; answer: string }[];
     return await this.readlineService.processingAboutPrequalifications(prequalificationArr);
   }
 
+  /**
+   * 질문에 대해 올바르게 답변했으면 서버를 시작하는 함수입니다.
+   */
   public async bootstrap(): Promise<void> {
     const app = await NestFactory.create(AppModule);
 
@@ -71,6 +86,9 @@ class Server {
     await app.listen(PORT);
   }
 
+  /**
+   * 최초 서버를 시작하는 메서드입니다.
+   */
   public async init(): Promise<void> {
     try {
       const rows = await this.mysql.connection.promise().query('SELECT server_status FROM password.server_infos WHERE id = 1');
@@ -86,7 +104,7 @@ class Server {
           await this.bootstrap();
         }
       } else if (flag === 'active') {
-        await this.checkTime();
+        await this.timeValidation();
         // 서버 상태가 active면 서버를 시작합니다.
         await this.bootstrap();
       }
