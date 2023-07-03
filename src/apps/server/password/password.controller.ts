@@ -33,13 +33,16 @@ export class PasswordController {
     summary: createPasswordSummaryMd,
   })
   public async create(@Body(ValidationPipe) createPassworeReqDto: CreatePassworeReqDto): Promise<CreatePasswordResDto> {
-    return await this.passwordService.create(createPassworeReqDto);
+    const result = await this.passwordService.create(createPassworeReqDto);
+    console.log(result);
+
+    return result;
   }
 
   @Route({
     request: {
       method: Method.GET,
-      path: '/:domain',
+      path: '/',
     },
     response: {
       code: HttpStatus.OK,

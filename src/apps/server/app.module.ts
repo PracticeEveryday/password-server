@@ -1,4 +1,4 @@
-import { ClassProvider, ExecutionContext, Module } from '@nestjs/common';
+import { ClassProvider, ClassSerializerInterceptor, ExecutionContext, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EnvModule } from '../../libs/env/env.module';
@@ -23,6 +23,10 @@ const interceptors: ClassProvider[] = [
   {
     provide: APP_INTERCEPTOR,
     useClass: LogInterceptor,
+  },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: ClassSerializerInterceptor,
   },
 ];
 

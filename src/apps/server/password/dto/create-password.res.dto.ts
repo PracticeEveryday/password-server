@@ -9,10 +9,11 @@ export class CreatePasswordResDto {
     this._domain = domain;
   }
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ example: 'naver' })
-  get domain() {
+  @ApiProperty({ example: 'naver', description: '비밀번호를 저장할 도메인 정보입니다.' })
+  get domain(): string {
     return this._domain;
   }
 }
