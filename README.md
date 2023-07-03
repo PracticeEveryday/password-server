@@ -43,3 +43,9 @@ yarn start:prod
 ```
 
 ### 📭 서버 시작을 하기 위한 [#1 플로우차트 링크](https://github.com/PracticeEveryday/password-server/issues/1)
+
+### 기술 스택
+1. 프레임워크: Nestjs v9.0.0
+2. Nodejs: v18.14.2
+3. DB: mysql
+4. ETC: dayjs, mysql2...
