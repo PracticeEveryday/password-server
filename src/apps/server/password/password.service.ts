@@ -8,6 +8,7 @@ import { PasswordInterface } from '../../../libs/mysql/types/password.type';
 import { CreatePasswordResDto } from './dto/create-password.res.dto';
 import { GetDomainReqDto } from './dto/getDomain.req.dto';
 import { NotFoundException } from '../common/customExceptions/notFound.exception';
+import { GetDomainResDto } from './dto/getDomain.res.dto';
 
 @Injectable()
 export class PasswordService {
@@ -31,12 +32,12 @@ export class PasswordService {
     }
   }
 
-  public async getPasswordByDomain(param: GetDomainReqDto) {
+  public async getPasswordByDomain(param: GetDomainReqDto): Promise<GetDomainResDto> {
     const result = await this.mysqlService.findPasswordByDomain(param.domain);
     if (result.length === 0) {
       throw new NotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
     }
 
-    return this.passwordUtilService.decodedPassword(result[0].password);
+    return new GetDomainResDto(this.passwordUtilService.decodedPassword(result[0].password));
   }
 }

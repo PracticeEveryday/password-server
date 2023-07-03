@@ -5,9 +5,18 @@ import { Method } from '../common/enum/method.enum';
 import { Body, HttpStatus, Query, ValidationPipe } from '@nestjs/common';
 import { CreatePassworeReqDto } from './dto/create-password.req.dto';
 import { PasswordService } from './password.service';
-import { createPasswordDescriptionMd, createPasswordSuccMd, createPasswordSummaryMd } from './docs/password.docs';
+import {
+  createPasswordDescriptionMd,
+  createPasswordSuccMd,
+  createPasswordSummaryMd,
+  getPasswordByDomainDescriptionMd,
+  getPasswordByDomainSuccMd,
+  getPasswordByDomainSummaryMd,
+} from './docs/password.docs';
 import { CreatePasswordResDto } from './dto/create-password.res.dto';
 import { GetDomainReqDto } from './dto/getDomain.req.dto';
+import { GetDomainResDto, GetDomainResDtoNotFoundExceptionResDto } from './dto/getDomain.res.dto';
+import { ApiNotFoundResponse } from '@nestjs/swagger';
 
 @RouteTable({
   path: 'password',
@@ -39,6 +48,7 @@ export class PasswordController {
     return result;
   }
 
+  @ApiNotFoundResponse({ type: GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
   @Route({
     request: {
       method: Method.GET,
@@ -46,13 +56,13 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.OK,
-      // type: CreatePasswordResDto,
-      // description: createPasswordSuccMd,
+      type: GetDomainResDto,
+      description: getPasswordByDomainSuccMd,
     },
-    // description: createPasswordDescriptionMd,
-    // summary: createPasswordSummaryMd,
+    description: getPasswordByDomainDescriptionMd,
+    summary: getPasswordByDomainSummaryMd,
   })
-  public async getPasswordByDomain(@Query(ValidationPipe) getDomainReqDto: GetDomainReqDto) {
+  public async getPasswordByDomain(@Query(ValidationPipe) getDomainReqDto: GetDomainReqDto): Promise<GetDomainResDto> {
     return await this.passwordService.getPasswordByDomain(getDomainReqDto);
   }
 }
