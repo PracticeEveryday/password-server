@@ -1,5 +1,5 @@
 import { RouteTable } from '../common/decorator/router-table.decorator';
-import { PasswordUtilService } from '../../../libs/password-util/password-util.service';
+import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
 import { Route } from '../common/decorator/router.decorator';
 import { Method } from '../common/enum/method.enum';
 import { Body, HttpStatus, Query, ValidationPipe } from '@nestjs/common';

@@ -9,13 +9,36 @@ import { ConfigService } from '@nestjs/config';
 import { initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue } from '../../libs/mysql/sql/initTablePassword';
 import { UnknownException } from './common/customExceptions/unknown.exception';
 import { ServerStatusEnum } from './common/enum/serverStatus.enum';
+import { ResultSetHeader } from 'mysql2/typings/mysql/lib/protocol/packets';
+import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
+import { OkPacket } from 'mysql2';
 
 class Server {
   private mysql: MysqlService;
   private readlineService: ReadlineService;
+  private dateUtilService: DateUtilService;
   constructor() {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
     this.readlineService = new ReadlineService(new MysqlService(new EnvService(new ConfigService())));
+    this.dateUtilService = new DateUtilService();
+  }
+
+  public async checkTime() {
+    try {
+      const [rows, field] = await this.mysql.connection
+        .promise()
+        .query<OkPacket>('SELECT server_status, updatedAt FROM password.server_infos WHERE id = 1');
+
+      const dateDiff = this.dateUtilService.diffDays(rows[0].updatedAt, new Date());
+      if (dateDiff >= 1) {
+        await this.mysql.executeSingleQuery(
+          `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.PENDING}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
+    }
   }
 
   public async precondition(): Promise<void> {
@@ -63,6 +86,7 @@ class Server {
           await this.bootstrap();
         }
       } else if (flag === 'active') {
+        await this.checkTime();
         // 서버 상태가 active면 서버를 시작합니다.
         await this.bootstrap();
       }

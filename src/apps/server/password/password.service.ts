@@ -3,7 +3,7 @@ import { CreatePassworeReqDto } from './dto/create-password.req.dto';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
 import { ConflictException } from '../common/customExceptions/conflict.exception';
 import { conflictScript } from '../common/customExceptions/exceptionScript';
-import { PasswordUtilService } from '../../../libs/password-util/password-util.service';
+import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
 import { PasswordInterface } from '../../../libs/mysql/types/password.type';
 import { CreatePasswordResDto } from './dto/create-password.res.dto';
 import { GetDomainReqDto } from './dto/getDomain.req.dto';

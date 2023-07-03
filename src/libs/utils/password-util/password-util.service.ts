@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { EnvService } from '../env/env.service';
-import { EnvEnum } from '../env/envEnum';
+import { EnvService } from '../../env/env.service';
+import { EnvEnum } from '../../env/envEnum';
 import * as CryptoJS from 'crypto-js';
 
 @Injectable()
