@@ -1,13 +1,18 @@
 import * as readline from 'readline';
 import * as process from 'process';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { MysqlService } from '../mysql/mysql.service';
 import { UnknownException } from '../../apps/server/common/customExceptions/unknown.exception';
 import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enum';
+import { ServerInfoRepository } from '../mysql/repositories/serverInfo.repository.service';
+import { InjectionToken } from '../mysql/repositories/injectionToken';
 
 @Injectable()
 export class ReadlineService {
-  constructor(private readonly mysqlService: MysqlService) {}
+  constructor(
+    private readonly mysqlService: MysqlService,
+    @Inject(InjectionToken.SERVER_INFO_REPOSITORY) private readonly serverInfoRepository: ServerInfoRepository,
+  ) {}
 
   /**
    * 터미널에서 연결하는 readline 생성하기
@@ -77,7 +82,7 @@ export class ReadlineService {
    * 질문, 답변을 저장하는 프로세스
    * @param questionAnswerPairs 질문 답변 배열
    */
-  private processSaveQuestionAnswerPairs = (questionAnswerPairs: { question: string; answer: string }[]): void => {
+  private processSaveQuestionAnswerPairs = async (questionAnswerPairs: { question: string; answer: string }[]): Promise<void> => {
     console.log('🚶 질문과 답변들: ');
     let i = 1;
 
@@ -102,9 +107,7 @@ export class ReadlineService {
       }
       i++;
     }
-    this.mysqlService.executeSingleQuery(
-      `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.PENDING}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
-    );
+    await this.serverInfoRepository.update(ServerStatusEnum.PENDING, 1);
   };
 
   // ------------------------------------------------------------------------------------------------------------

@@ -12,6 +12,7 @@ import { ServerStatusEnum } from './common/enum/serverStatus.enum';
 import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
 import { OkPacket } from 'mysql2';
 import { ClassSerializerInterceptor } from '@nestjs/common';
+import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository.service';
 
 class Server {
   private mysql: MysqlService;
@@ -20,8 +21,11 @@ class Server {
 
   constructor() {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
-    this.readlineService = new ReadlineService(new MysqlService(new EnvService(new ConfigService())));
     this.dateUtilService = new DateUtilService();
+    this.readlineService = new ReadlineService(
+      new MysqlService(new EnvService(new ConfigService())),
+      new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
+    );
   }
 
   /**
