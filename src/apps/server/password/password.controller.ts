@@ -17,7 +17,7 @@ import {
   recommendPasswordSummaryMd,
 } from './docs/password.docs';
 import { CreatePasswordResDto } from './dto/create-password.res.dto';
-import { GetDomainReqDto } from './dto/getDomain.req.dto';
+import { GetDomainQueryReqDto } from './dto/getDomain.req.dto';
 import { GetDomainResDto, GetDomainResDtoNotFoundExceptionResDto } from './dto/getDomain.res.dto';
 import { ApiNotFoundResponse } from '@nestjs/swagger';
 import { GetRecommendPasswordReqQueryDto } from './dto/recommendPassword.req.dto';
@@ -64,7 +64,7 @@ export class PasswordController {
     description: getPasswordByDomainDescriptionMd,
     summary: getPasswordByDomainSummaryMd,
   })
-  public async getPasswordByDomain(@Query(ValidationPipe) getDomainReqDto: GetDomainReqDto): Promise<GetDomainResDto> {
+  public async getPasswordByDomain(@Query(ValidationPipe) getDomainReqDto: GetDomainQueryReqDto): Promise<GetDomainResDto> {
     return await this.passwordService.getPasswordByDomain(getDomainReqDto);
   }
 

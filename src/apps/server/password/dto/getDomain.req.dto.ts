@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GetDomainReqDto {
+export class GetDomainQueryReqDto {
   @IsNotEmpty()
   @IsString()
-  @ApiProperty({ example: 'naver' })
+  @ApiProperty({ example: 'naver', description: '조회할 도메인' })
   domain: string;
 }
