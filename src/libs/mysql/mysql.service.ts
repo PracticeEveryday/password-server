@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Connection, ConnectionOptions, createConnection, OkPacket, RowDataPacket } from 'mysql2';
 import { EnvService } from '../env/env.service';
 import { EnvEnum } from '../env/envEnum';
-import { CreatePassworeReqDto } from '../../apps/server/password/dto/create-password.req.dto';
-import { ConflictException } from '../../apps/server/common/customExceptions/conflict.exception';
 import { createPool, Pool, PoolConnection } from 'mysql2/promise';
 import { ResultSetHeader } from 'mysql2/typings/mysql/lib/protocol/packets';
 

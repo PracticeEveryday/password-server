@@ -1,16 +1,17 @@
 import * as readline from 'readline';
 import * as process from 'process';
 import { Inject, Injectable } from '@nestjs/common';
-import { MysqlService } from '../mysql/mysql.service';
 import { UnknownException } from '../../apps/server/common/customExceptions/unknown.exception';
 import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enum';
 import { ServerInfoRepository } from '../mysql/repositories/serverInfo.repository.service';
 import { InjectionToken } from '../mysql/repositories/injectionToken';
+import { FinishScriptAboutProcessAboutResisterQuestions } from './docs/readline.docs';
+import { PrequalificationRepository } from '../mysql/repositories/prequalification.repository';
 
 @Injectable()
 export class ReadlineService {
   constructor(
-    private readonly mysqlService: MysqlService,
+    @Inject(InjectionToken.PREQUALIFICATION_REPOSITORY) private readonly prequalificationRepository: PrequalificationRepository,
     @Inject(InjectionToken.SERVER_INFO_REPOSITORY) private readonly serverInfoRepository: ServerInfoRepository,
   ) {}
 
@@ -41,24 +42,9 @@ export class ReadlineService {
     rl.question('👨‍💻 질문을 입력해 주세요(❗exit을 입력하면 종료됩니다.): \n', async (question) => {
       if (question.toLowerCase() === 'exit') {
         rl.close();
-
         this.processSaveQuestionAnswerPairs(questionAnswerPairs);
 
-        const key = `
-          🥰 당신은 서버를 시작할 준비가 되었습니다!!!
-          ✅ 작성한 질문과 대답을 까먹지 않도록 한 번 더 확인해주세요!!
-          
-          🛫 시작해 봅시다!!
-          
-      🔒       ,--------ι                                            🔓           
-      🔒     / /| 0       ◝______________________                    🔓
-      🔒    | | |  ▷      ====================    )                  🔓
-      🔒     \\ \\| 0       ◞\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/'                   🔓
-      🔒       '_______,'                                            🔓
-        
-          `;
-
-        console.log(key);
+        console.log(FinishScriptAboutProcessAboutResisterQuestions);
         console.log('\t\t\t🙏 서버를 재시작 해주세요 :)');
         return;
       } else {
@@ -92,11 +78,7 @@ export class ReadlineService {
       console.log('-------------------------');
 
       try {
-        this.mysqlService.executeSingleQuery(`
-          INSERT INTO password.prequalifications
-            (id, question, answer, createdAt, updatedAt, deletedAt)
-          VALUES(${i}, '${pair.question}', '${pair.answer}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
-        `);
+        this.prequalificationRepository.create(pair.question, pair.answer);
       } catch (error) {
         console.log(error);
         throw new UnknownException({

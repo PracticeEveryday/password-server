@@ -13,6 +13,7 @@ import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
 import { OkPacket } from 'mysql2';
 import { ClassSerializerInterceptor } from '@nestjs/common';
 import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository.service';
+import { PrequalificationRepository } from '../../libs/mysql/repositories/prequalification.repository';
 
 class Server {
   private mysql: MysqlService;
@@ -23,7 +24,7 @@ class Server {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
     this.dateUtilService = new DateUtilService();
     this.readlineService = new ReadlineService(
-      new MysqlService(new EnvService(new ConfigService())),
+      new PrequalificationRepository(new MysqlService(new EnvService(new ConfigService()))),
       new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
     );
   }
