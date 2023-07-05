@@ -1,3 +1,7 @@
+/**
+ * 주입할 때 사용하는 토큰입니다.
+ */
 export enum InjectionToken {
-  PASSWORD_REPOSIROTY = 'passwordRepository',
+  PASSWORD_REPOSITORY = 'passwordRepository',
+  SERVER_INFO_REPOSITORY = 'serverInfoRepository',
 }
