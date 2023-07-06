@@ -17,6 +17,10 @@ export class LogService {
     this.logger.error({ message, ...data }, label);
   }
 
+  warn(label: string, error: BaseException): void {
+    this.logger.warn(error.name, [error.message, error.stack, error.raw].join('\n'), label);
+  }
+
   error(label: string, error: BaseException): void {
     this.logger.error(error.name, [error.message, error.stack, error.raw].join('\n'), label);
   }

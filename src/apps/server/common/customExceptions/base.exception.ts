@@ -1,13 +1,15 @@
 import { HttpException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
+import { ErrorTypeEnum } from '../enum/errorType.enum';
 
-type BaseExceptionPropertyType = 'statusCode' | 'title' | 'message' | 'raw';
+type BaseExceptionPropertyType = 'statusCode' | 'title' | 'message' | 'errorType' | 'raw';
 
 export class BaseException extends HttpException {
   @Exclude() private readonly _statusCode: number;
-  @Exclude() private readonly _success = false;
+  @Exclude() private readonly _success: false = false;
   @Exclude() private readonly _title: string;
+  @Expose() private readonly _errorType: ErrorTypeEnum;
   @Exclude() raw?: any;
 
   constructor(properties: Pick<BaseException, BaseExceptionPropertyType>) {
@@ -15,6 +17,7 @@ export class BaseException extends HttpException {
     this._title = properties.title;
     this._statusCode = properties.statusCode;
     this._success = false;
+    this._errorType = properties.errorType;
     this.raw = properties?.raw;
   }
 
@@ -33,6 +36,12 @@ export class BaseException extends HttpException {
   @Expose()
   get statusCode(): number {
     return this._statusCode;
+  }
+
+  @ApiProperty({ description: 'error or warn' })
+  @Expose()
+  get errorType(): ErrorTypeEnum {
+    return this._errorType;
   }
 
   @ApiProperty({ description: '에러 제목' })
