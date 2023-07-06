@@ -44,7 +44,13 @@ export class CustomExceptionFilter implements ExceptionFilter {
       this.logService.error(CustomExceptionFilter.name, exception);
     }
 
-    //httpAdapter는 Host로 래핑되어 있어 실제 httpAdapter를 쓰기위해선 httpAdapterHost.httpAdapter를 사용하시면 됩니다.
+    /**
+     * httpAdapter는 Host로 래핑되어 있어 실제 httpAdapter를 쓰기위해선 httpAdapterHost.httpAdapter를 사용하시면 됩니다.
+     * reply 함수 파라미터
+     * @param http Response
+     * @param error body type
+     * @param statusCode
+     */
     this.httpAdapterHost.httpAdapter.reply(ctx.getResponse(), exception.getResponse(), exception.getStatus());
   }
 }
