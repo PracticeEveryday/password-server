@@ -6,6 +6,7 @@ import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainQueryReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
+import { LogService } from '../../../libs/log/log.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
 import { PasswordRepository } from '../../../libs/mysql/repositories/password.repository';
 import { PasswordInterface } from '../../../libs/mysql/types/password.type';
@@ -14,7 +15,6 @@ import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-
 import { ConflictException } from '../common/customExceptions/conflict.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
 import { NotFoundException } from '../common/customExceptions/notFound.exception';
-import { UnknownException } from '../common/customExceptions/unknown.exception';
 
 @Injectable()
 export class PasswordService {
@@ -22,6 +22,7 @@ export class PasswordService {
     //service
     private readonly passwordUtilService: PasswordUtilService,
     private readonly validateUtilService: ValidateUtilService,
+    private readonly logService: LogService,
     //repository
     @Inject(InjectionToken.PASSWORD_REPOSITORY) private readonly passwordRepository: PasswordRepository,
   ) {}
@@ -31,15 +32,16 @@ export class PasswordService {
    * @param body CreatePassworeReqDto
    */
   public async create(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
-    const getDomainQueryReqDto = GetDomainQueryReqDto.toDTO(body.domain);
-    const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
-
-    if (password) {
-      throw new ConflictException(makeExceptionScript('conflict exist domain', '해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.'));
-    }
-
-    body.password = this.passwordUtilService.hashPassword(body.password);
     try {
+      const getDomainQueryReqDto = GetDomainQueryReqDto.toDTO(body.domain);
+      const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
+
+      if (password) {
+        throw new ConflictException(makeExceptionScript('conflict exist domain', '해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.'));
+      }
+
+      body.password = this.passwordUtilService.hashPassword(body.password);
+
       const createResult = await this.passwordRepository.create(body);
       if (createResult.affectedRows === 1) {
         const findOneByIdDto = FindOneByIdDto.toDTO(createResult.insertId);
@@ -57,7 +59,7 @@ export class PasswordService {
           raw: error,
         });
       }
-      throw new UnknownException({ title: 'sql error', message: 'password.service.ts line 47', raw: error });
+      throw error;
     }
   }
 
@@ -66,13 +68,17 @@ export class PasswordService {
    * @param param GetDomainReqDto
    */
   public async findOneByDomain(param: GetDomainQueryReqDto): Promise<GetDomainResDto> {
-    const password = await this.passwordRepository.findOneByDomain(param);
+    try {
+      const password = await this.passwordRepository.findOneByDomain(param);
 
-    if (!password) {
-      throw new NotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
+      if (!password) {
+        throw new NotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
+      }
+
+      return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
+    } catch (error) {
+      throw error;
     }
-
-    return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
   }
 
   /**
