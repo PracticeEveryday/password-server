@@ -12,7 +12,7 @@ import {
   recommendPasswordSuccMd,
   recommendPasswordSummaryMd,
 } from './docs/password.docs';
-import { CreatePassworeReqDto } from './dto/api-dto/create-password.req.dto';
+import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainQueryReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto, GetDomainResDtoNotFoundExceptionResDto } from './dto/api-dto/getDomain.res.dto';
@@ -47,7 +47,7 @@ export class PasswordController {
     description: createPasswordDescriptionMd,
     summary: createPasswordSummaryMd,
   })
-  public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePassworeReqDto): Promise<CreatePasswordResDto> {
+  public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
     return await this.passwordService.create(createPasswordReqDto);
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
-import { CreatePassworeReqDto } from '../../../apps/server/password/dto/api-dto/create-password.req.dto';
+import { CreatePasswordReqDto } from '../../../apps/server/password/dto/api-dto/create-password.req.dto';
 import { GetDomainQueryReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
 import { FindOneByIdDto } from '../../../apps/server/password/dto/basic-dto/findOneById.dto';
 import { ValidateUtilService } from '../../utils/validate-util/validate-util.service';
@@ -17,7 +17,7 @@ export class PasswordRepository {
    * 비밀번호 정보 생성
    * @param body CreatePassworeReqDto(domain, 해쉬된 password 정보가 들어 있습니다.)
    */
-  public async create(body: CreatePassworeReqDto): Promise<ResultSetHeader> {
+  public async create(body: CreatePasswordReqDto): Promise<ResultSetHeader> {
     const query = `INSERT INTO password.passwords (domain, password, createdAt, updatedAt, deletedAt) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 

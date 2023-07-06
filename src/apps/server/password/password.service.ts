@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
-import { CreatePassworeReqDto } from './dto/api-dto/create-password.req.dto';
+import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainQueryReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
@@ -30,10 +30,9 @@ export class PasswordService {
    * password를 생성하는 서비스
    * @param body CreatePassworeReqDto
    */
-  public async create(body: CreatePassworeReqDto): Promise<CreatePasswordResDto> {
-    const getDomainQueryReqDto = new GetDomainQueryReqDto(body.domain);
+  public async create(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
+    const getDomainQueryReqDto = GetDomainQueryReqDto.toDTO(body.domain);
     const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
-    await this.validatePasswordType(password);
 
     if (password) {
       throw new ConflictException(makeExceptionScript('conflict exist domain', '해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.'));
@@ -43,7 +42,7 @@ export class PasswordService {
     try {
       const createResult = await this.passwordRepository.create(body);
       if (createResult.affectedRows === 1) {
-        const findOneByIdDto = new FindOneByIdDto(createResult.insertId);
+        const findOneByIdDto = FindOneByIdDto.toDTO(createResult.insertId);
 
         const rowDataPacket = await this.passwordRepository.findOneById(findOneByIdDto);
         const password = await this.validatePasswordType(rowDataPacket);
