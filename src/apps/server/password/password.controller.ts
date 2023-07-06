@@ -47,8 +47,8 @@ export class PasswordController {
     description: createPasswordDescriptionMd,
     summary: createPasswordSummaryMd,
   })
-  public async create(@Body(ValidationPipe) createPassworeReqDto: CreatePassworeReqDto): Promise<CreatePasswordResDto> {
-    return await this.passwordService.create(createPassworeReqDto);
+  public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePassworeReqDto): Promise<CreatePasswordResDto> {
+    return await this.passwordService.create(createPasswordReqDto);
   }
 
   @ApiNotFoundResponse({ type: GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
@@ -66,7 +66,7 @@ export class PasswordController {
     summary: getPasswordByDomainSummaryMd,
   })
   public async getPasswordByDomain(@Query(ValidationPipe) getDomainReqDto: GetDomainQueryReqDto): Promise<GetDomainResDto> {
-    return await this.passwordService.getPasswordByDomain(getDomainReqDto);
+    return await this.passwordService.findOneByDomain(getDomainReqDto);
   }
 
   @Route({

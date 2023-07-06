@@ -66,7 +66,7 @@ export class PasswordService {
    * 도메인에 따른 비밀번호를 조회하는 메서드
    * @param param GetDomainReqDto
    */
-  public async getPasswordByDomain(param: GetDomainQueryReqDto): Promise<GetDomainResDto> {
+  public async findOneByDomain(param: GetDomainQueryReqDto): Promise<GetDomainResDto> {
     const password = await this.passwordRepository.findOneByDomain(param);
 
     if (!password) {
