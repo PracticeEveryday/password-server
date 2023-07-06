@@ -17,6 +17,7 @@ import { setupSwagger } from '../../libs/swagger/swagger';
 import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
 
 class Server {
+  private readonly ROW_IDX = 0 as const;
   private readonly mysql: MysqlService;
   private readonly readlineService: ReadlineService;
   private readonly dateUtilService: DateUtilService;
@@ -49,11 +50,11 @@ class Server {
    */
   public async timeValidation() {
     try {
-      const [rows, _field] = await this.mysql.connection
+      const selectResult = await this.mysql.connection
         .promise()
         .query<OkPacket>('SELECT server_status, updatedAt FROM password.server_infos WHERE id = 1');
 
-      const dateDiff = this.dateUtilService.diffDays(rows[0].updatedAt, new Date());
+      const dateDiff = this.dateUtilService.diffDays(selectResult[this.ROW_IDX][this.ROW_IDX].updatedAt, new Date());
       if (dateDiff >= 1) {
         await this.mysql.executeSingleQuery(
           `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.PENDING}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
@@ -77,7 +78,7 @@ class Server {
    */
   public async confirmAboutPrequalifications(): Promise<boolean> {
     const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.prequalifications');
-    const prequalificationArr = totalPrequalifications[0] as unknown as { id: number; question: string; answer: string }[];
+    const prequalificationArr = totalPrequalifications[this.ROW_IDX] as unknown as { id: number; question: string; answer: string }[];
 
     return await this.readlineService.processingAboutPrequalifications(prequalificationArr);
   }
@@ -104,7 +105,7 @@ class Server {
   public async init(): Promise<void> {
     try {
       const rows = await this.mysql.connection.promise().query('SELECT server_status FROM password.server_infos WHERE id = 1');
-      const flag = rows[0][0].server_status;
+      const flag = rows[this.ROW_IDX][this.ROW_IDX].server_status;
 
       if (flag === 'pending') {
         // pending이라면 질문합니다.
