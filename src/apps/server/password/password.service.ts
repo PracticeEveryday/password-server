@@ -9,10 +9,9 @@ import { NotFoundException } from '../common/customExceptions/notFound.exception
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { PasswordRepository } from '../../../libs/mysql/repositories/password.repository';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
-import { QueryError } from 'mysql2';
 import { UnknownException } from '../common/customExceptions/unknown.exception';
 import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-util.service';
-import { RowDataPacket } from 'mysql2/index';
+import { RowDataPacket } from 'mysql2';
 import { PasswordInterface } from '../../../libs/mysql/types/password.type';
 import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
 

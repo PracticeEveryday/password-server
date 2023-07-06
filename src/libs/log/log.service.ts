@@ -13,6 +13,10 @@ export class LogService {
     this.logger.log({ message, ...data }, label);
   }
 
+  errorLog(label: string, message: string, data: any = {}): void {
+    this.logger.error({ message, ...data }, label);
+  }
+
   error(label: string, error: BaseException): void {
     this.logger.error(error.name, [error.message, error.stack, error.raw].join('\n'), label);
   }

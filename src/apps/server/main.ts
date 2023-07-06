@@ -13,11 +13,13 @@ import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
 import { OkPacket } from 'mysql2';
 import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository.service';
 import { PrequalificationRepository } from '../../libs/mysql/repositories/prequalification.repository';
+import { LogService } from '../../libs/log/log.service';
 
 class Server {
-  private mysql: MysqlService;
-  private readlineService: ReadlineService;
-  private dateUtilService: DateUtilService;
+  private readonly mysql: MysqlService;
+  private readonly readlineService: ReadlineService;
+  private readonly dateUtilService: DateUtilService;
+  private readonly logService: LogService;
 
   constructor() {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
@@ -26,6 +28,7 @@ class Server {
       new PrequalificationRepository(new MysqlService(new EnvService(new ConfigService()))),
       new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
     );
+    this.logService = new LogService();
   }
 
   /**
@@ -35,7 +38,7 @@ class Server {
     try {
       await this.mysql.parallelTransaction([initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue]);
     } catch (error) {
-      console.log(error);
+      this.logService.errorLog('Server', 'precondition error', error);
       throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
     }
   }
@@ -56,7 +59,7 @@ class Server {
         );
       }
     } catch (error) {
-      console.log(error);
+      this.logService.errorLog('Server', 'timeValidation error', error);
       throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
     }
   }
