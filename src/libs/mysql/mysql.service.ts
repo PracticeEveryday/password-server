@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Connection, ConnectionOptions, createConnection, OkPacket, RowDataPacket, ResultSetHeader } from 'mysql2';
+import { Connection, ConnectionOptions, createConnection, OkPacket, RowDataPacket, ResultSetHeader, FieldPacket } from 'mysql2';
 import { createPool, Pool, PoolConnection } from 'mysql2/promise';
 
 import { EnvService } from '../env/env.service';
@@ -21,13 +21,13 @@ export class MysqlService {
     this.connection = createConnection(this.connectionOptions);
   }
 
-  private async getConnectionPool() {
+  private async getConnectionPool(): Promise<PoolConnection> {
     const pool: Pool = createPool(this.connectionOptions);
 
     return await pool.getConnection();
   }
 
-  private realeaseConnectionPool(connectionPool: PoolConnection) {
+  private releaseConnectionPool(connectionPool: PoolConnection): void {
     return connectionPool.release();
   }
 
@@ -44,7 +44,7 @@ export class MysqlService {
       }
     } finally {
       if (connectionPool) {
-        this.realeaseConnectionPool(connectionPool);
+        this.releaseConnectionPool(connectionPool);
       }
     }
   }
@@ -58,8 +58,10 @@ export class MysqlService {
    * 4.RowDatePacket[][]
    * 5.OkPacket[]
    */
-  public async executeSingleQuery<T extends OkPacket | ResultSetHeader | RowDataPacket[] | RowDataPacket[][] | OkPacket[]>(query: string) {
+  public async executeSingleQuery<T extends OkPacket | ResultSetHeader | RowDataPacket[] | RowDataPacket[][] | OkPacket[]>(
+    query: string,
+  ): Promise<[T, FieldPacket[]]> {
     const connectionPool = await this.getConnectionPool();
-    return await connectionPool.execute<T>(query);
+    return connectionPool.execute<T>(query);
   }
 }

@@ -15,6 +15,7 @@ import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-
 import { ConflictException } from '../common/customExceptions/conflict.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
 import { NotFoundException } from '../common/customExceptions/notFound.exception';
+import { UnknownException } from '../common/customExceptions/unknown.exception';
 
 @Injectable()
 export class PasswordService {
@@ -59,7 +60,7 @@ export class PasswordService {
           raw: error,
         });
       }
-      throw error;
+      throw new UnknownException({ title: 'UnkwonException', message: 'password create', raw: error });
     }
   }
 
@@ -77,7 +78,7 @@ export class PasswordService {
 
       return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
     } catch (error) {
-      throw error;
+      throw new UnknownException({ title: 'UnkwonException', message: 'password findOneByDomain', raw: error });
     }
   }
 
@@ -87,10 +88,14 @@ export class PasswordService {
    * @param rowDataPacket 비밀번호(RowDataPacket)
    */
   private async validatePasswordType(rowDataPacket: RowDataPacket): Promise<PasswordInterface> {
-    if (!this.validateUtilService.isPasswordInterfaceType(rowDataPacket)) {
-      throw new BadRequestException(makeExceptionScript('type error', 'password interface 타입이 아닙니다.'));
-    }
+    try {
+      if (!this.validateUtilService.isPasswordInterfaceType(rowDataPacket)) {
+        throw new BadRequestException(makeExceptionScript('type error', 'password interface 타입이 아닙니다.'));
+      }
 
-    return rowDataPacket as PasswordInterface;
+      return rowDataPacket as PasswordInterface;
+    } catch (error) {
+      throw new UnknownException({ title: 'UnkwonException', message: 'password validatePasswordType', raw: error });
+    }
   }
 }
