@@ -1,19 +1,20 @@
 import { ConfigService } from '@nestjs/config';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
+import { OkPacket } from 'mysql2';
+
 import { AppModule } from './app.module';
-import { EnvService } from '../../libs/env/env.service';
-import { EnvEnum } from '../../libs/env/envEnum';
-import { setupSwagger } from '../../libs/swagger/swagger';
-import { ReadlineService } from '../../libs/readline/readline.service';
-import { MysqlService } from '../../libs/mysql/mysql.service';
-import { initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue } from '../../libs/mysql/sql/initTablePassword';
 import { UnknownException } from './common/customExceptions/unknown.exception';
 import { ServerStatusEnum } from './common/enum/serverStatus.enum';
-import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
-import { OkPacket } from 'mysql2';
-import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository.service';
-import { PrequalificationRepository } from '../../libs/mysql/repositories/prequalification.repository';
+import { EnvService } from '../../libs/env/env.service';
+import { EnvEnum } from '../../libs/env/envEnum';
 import { LogService } from '../../libs/log/log.service';
+import { MysqlService } from '../../libs/mysql/mysql.service';
+import { PrequalificationRepository } from '../../libs/mysql/repositories/prequalification.repository';
+import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository.service';
+import { initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue } from '../../libs/mysql/sql/initTablePassword';
+import { ReadlineService } from '../../libs/readline/readline.service';
+import { setupSwagger } from '../../libs/swagger/swagger';
+import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
 
 class Server {
   private readonly mysql: MysqlService;
@@ -48,7 +49,7 @@ class Server {
    */
   public async timeValidation() {
     try {
-      const [rows, field] = await this.mysql.connection
+      const [rows, _field] = await this.mysql.connection
         .promise()
         .query<OkPacket>('SELECT server_status, updatedAt FROM password.server_infos WHERE id = 1');
 

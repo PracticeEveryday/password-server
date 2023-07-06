@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Connection, ConnectionOptions, createConnection, OkPacket, RowDataPacket } from 'mysql2';
+import { Connection, ConnectionOptions, createConnection, OkPacket, RowDataPacket, ResultSetHeader } from 'mysql2';
+import { createPool, Pool, PoolConnection } from 'mysql2/promise';
+
 import { EnvService } from '../env/env.service';
 import { EnvEnum } from '../env/envEnum';
-import { createPool, Pool, PoolConnection } from 'mysql2/promise';
-import { ResultSetHeader } from 'mysql2/typings/mysql/lib/protocol/packets';
 
 @Injectable()
 export class MysqlService {

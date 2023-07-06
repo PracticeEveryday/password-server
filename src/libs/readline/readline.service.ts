@@ -1,12 +1,14 @@
-import * as readline from 'readline';
 import * as process from 'process';
+import * as readline from 'readline';
+
 import { Inject, Injectable } from '@nestjs/common';
+
+import { FinishScriptAboutProcessAboutResisterQuestions } from './docs/readline.docs';
 import { UnknownException } from '../../apps/server/common/customExceptions/unknown.exception';
 import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enum';
-import { ServerInfoRepository } from '../mysql/repositories/serverInfo.repository.service';
 import { InjectionToken } from '../mysql/repositories/injectionToken';
-import { FinishScriptAboutProcessAboutResisterQuestions } from './docs/readline.docs';
 import { PrequalificationRepository } from '../mysql/repositories/prequalification.repository';
+import { ServerInfoRepository } from '../mysql/repositories/serverInfo.repository.service';
 
 @Injectable()
 export class ReadlineService {

@@ -1,4 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
+
 import { LogService } from './log.service';
 
 @Module({

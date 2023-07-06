@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { MysqlService } from '../mysql.service';
 import { RowDataPacket } from 'mysql2';
+
 import { ServerStatusEnum } from '../../../apps/server/common/enum/serverStatus.enum';
+import { MysqlService } from '../mysql.service';
 
 @Injectable()
 export class ServerInfoRepository {
-  private ROW_IDX: 0 = 0;
-  private FILED_IDX: 1 = 1;
+  private ROW_IDX = 0 as const;
+  private FILED_IDX = 1 as const;
 
   constructor(private readonly mysqlService: MysqlService) {}
 

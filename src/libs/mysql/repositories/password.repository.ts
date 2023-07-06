@@ -1,16 +1,16 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { MysqlService } from '../mysql.service';
-import { RowDataPacket, ResultSetHeader, FieldPacket } from 'mysql2';
-import { PasswordInterface } from '../types/password.type';
+import { Injectable } from '@nestjs/common';
+import { RowDataPacket, ResultSetHeader } from 'mysql2';
+
 import { CreatePassworeReqDto } from '../../../apps/server/password/dto/api-dto/create-password.req.dto';
-import { ValidateUtilService } from '../../utils/validate-util/validate-util.service';
 import { GetDomainQueryReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
 import { FindOneByIdDto } from '../../../apps/server/password/dto/basic-dto/findOneById.dto';
+import { ValidateUtilService } from '../../utils/validate-util/validate-util.service';
+import { MysqlService } from '../mysql.service';
 
 @Injectable()
 export class PasswordRepository {
-  private ROW_IDX: 0 = 0;
-  private FILED_IDX: 1 = 1;
+  private ROW_IDX = 0 as const;
+  private FILED_IDX = 1 as const;
   constructor(private readonly mysqlService: MysqlService, private readonly validateUtilService: ValidateUtilService) {}
 
   /**

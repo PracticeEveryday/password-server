@@ -1,19 +1,20 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { RowDataPacket } from 'mysql2';
+
 import { CreatePassworeReqDto } from './dto/api-dto/create-password.req.dto';
-import { ConflictException } from '../common/customExceptions/conflict.exception';
-import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
-import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainQueryReqDto } from './dto/api-dto/getDomain.req.dto';
-import { NotFoundException } from '../common/customExceptions/notFound.exception';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
-import { PasswordRepository } from '../../../libs/mysql/repositories/password.repository';
-import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
-import { UnknownException } from '../common/customExceptions/unknown.exception';
-import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-util.service';
-import { RowDataPacket } from 'mysql2';
-import { PasswordInterface } from '../../../libs/mysql/types/password.type';
 import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
+import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
+import { PasswordRepository } from '../../../libs/mysql/repositories/password.repository';
+import { PasswordInterface } from '../../../libs/mysql/types/password.type';
+import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
+import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-util.service';
+import { ConflictException } from '../common/customExceptions/conflict.exception';
+import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
+import { NotFoundException } from '../common/customExceptions/notFound.exception';
+import { UnknownException } from '../common/customExceptions/unknown.exception';
 
 @Injectable()
 export class PasswordService {

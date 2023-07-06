@@ -1,10 +1,6 @@
-import { RouteTable } from '../common/decorator/router-table.decorator';
-import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
-import { Route } from '../common/decorator/router.decorator';
-import { Method } from '../common/enum/method.enum';
 import { Body, HttpStatus, Query, ValidationPipe } from '@nestjs/common';
-import { CreatePassworeReqDto } from './dto/api-dto/create-password.req.dto';
-import { PasswordService } from './password.service';
+import { ApiNotFoundResponse } from '@nestjs/swagger';
+
 import {
   createPasswordDescriptionMd,
   createPasswordSuccMd,
@@ -16,12 +12,17 @@ import {
   recommendPasswordSuccMd,
   recommendPasswordSummaryMd,
 } from './docs/password.docs';
+import { CreatePassworeReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainQueryReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto, GetDomainResDtoNotFoundExceptionResDto } from './dto/api-dto/getDomain.res.dto';
-import { ApiNotFoundResponse } from '@nestjs/swagger';
 import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword.req.dto';
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
+import { PasswordService } from './password.service';
+import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
+import { RouteTable } from '../common/decorator/router-table.decorator';
+import { Route } from '../common/decorator/router.decorator';
+import { Method } from '../common/enum/method.enum';
 
 @RouteTable({
   path: 'password',

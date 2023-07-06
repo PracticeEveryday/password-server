@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+
+import { readlineProvider } from './provider/readline.provider';
 import { ReadlineService } from './readline.service';
 import { MysqlModule } from '../mysql/mysql.module';
-import { readlineProvider } from './provider/readline.provider';
 
 @Module({
   imports: [MysqlModule],

@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import * as CryptoJS from 'crypto-js';
+
+import { GetRecommendPasswordResDto } from '../../../apps/server/password/dto/api-dto/recommendPassword.res.dto';
 import { EnvService } from '../../env/env.service';
 import { EnvEnum } from '../../env/envEnum';
-import * as CryptoJS from 'crypto-js';
-import { GetRecommendPasswordResDto } from '../../../apps/server/password/dto/api-dto/recommendPassword.res.dto';
 
 @Injectable()
 export class PasswordUtilService {

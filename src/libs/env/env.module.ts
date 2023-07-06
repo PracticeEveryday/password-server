@@ -1,7 +1,8 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { NodeEnvEnum } from './nodeEnv.enum';
+
 import { EnvService } from './env.service';
+import { NodeEnvEnum } from './nodeEnv.enum';
 
 @Module({
   imports: [

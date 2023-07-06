@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+
 import { BaseException } from '../../apps/server/common/customExceptions/base.exception';
 
 @Injectable()
