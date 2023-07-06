@@ -1,12 +1,12 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { CreatePassworeReqDto } from './dto/create-password.req.dto';
+import { CreatePassworeReqDto } from './dto/api-dto/create-password.req.dto';
 import { ConflictException } from '../common/customExceptions/conflict.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
 import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
-import { CreatePasswordResDto } from './dto/create-password.res.dto';
-import { GetDomainQueryReqDto } from './dto/getDomain.req.dto';
+import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
+import { GetDomainQueryReqDto } from './dto/api-dto/getDomain.req.dto';
 import { NotFoundException } from '../common/customExceptions/notFound.exception';
-import { GetDomainResDto } from './dto/getDomain.res.dto';
+import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { PasswordRepository } from '../../../libs/mysql/repositories/password.repository';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
 import { QueryError } from 'mysql2';
@@ -14,6 +14,7 @@ import { UnknownException } from '../common/customExceptions/unknown.exception';
 import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-util.service';
 import { RowDataPacket } from 'mysql2/index';
 import { PasswordInterface } from '../../../libs/mysql/types/password.type';
+import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
 
 @Injectable()
 export class PasswordService {
@@ -30,7 +31,8 @@ export class PasswordService {
    * @param body CreatePassworeReqDto
    */
   public async create(body: CreatePassworeReqDto): Promise<CreatePasswordResDto> {
-    const password = await this.passwordRepository.findOneByDomain(body.domain);
+    const getDomainQueryReqDto = new GetDomainQueryReqDto(body.domain);
+    const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
     await this.validatePasswordType(password);
 
     if (password) {
@@ -41,7 +43,9 @@ export class PasswordService {
     try {
       const createResult = await this.passwordRepository.create(body);
       if (createResult.affectedRows === 1) {
-        const rowDataPacket = await this.passwordRepository.findOneById(createResult.insertId);
+        const findOneByIdDto = new FindOneByIdDto(createResult.insertId);
+
+        const rowDataPacket = await this.passwordRepository.findOneById(findOneByIdDto);
         const password = await this.validatePasswordType(rowDataPacket);
 
         return new CreatePasswordResDto(password.domain);
@@ -63,7 +67,7 @@ export class PasswordService {
    * @param param GetDomainReqDto
    */
   public async getPasswordByDomain(param: GetDomainQueryReqDto): Promise<GetDomainResDto> {
-    const password = await this.passwordRepository.findOneByDomain(param.domain);
+    const password = await this.passwordRepository.findOneByDomain(param);
 
     if (!password) {
       throw new NotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });

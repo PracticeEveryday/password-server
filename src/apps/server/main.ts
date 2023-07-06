@@ -11,7 +11,6 @@ import { UnknownException } from './common/customExceptions/unknown.exception';
 import { ServerStatusEnum } from './common/enum/serverStatus.enum';
 import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
 import { OkPacket } from 'mysql2';
-import { ClassSerializerInterceptor } from '@nestjs/common';
 import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository.service';
 import { PrequalificationRepository } from '../../libs/mysql/repositories/prequalification.repository';
 

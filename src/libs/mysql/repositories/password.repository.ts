@@ -2,8 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { MysqlService } from '../mysql.service';
 import { RowDataPacket, ResultSetHeader, FieldPacket } from 'mysql2';
 import { PasswordInterface } from '../types/password.type';
-import { CreatePassworeReqDto } from '../../../apps/server/password/dto/create-password.req.dto';
+import { CreatePassworeReqDto } from '../../../apps/server/password/dto/api-dto/create-password.req.dto';
 import { ValidateUtilService } from '../../utils/validate-util/validate-util.service';
+import { GetDomainQueryReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
+import { FindOneByIdDto } from '../../../apps/server/password/dto/basic-dto/findOneById.dto';
 
 @Injectable()
 export class PasswordRepository {
@@ -24,10 +26,10 @@ export class PasswordRepository {
 
   /**
    * 도메인이 일치하는 것을 반환합니다.
-   * @param domain 도메인 ex naver, google...
+   * @param getDomainQueryReqDto 도메인 ex naver, google...
    */
-  public async findOneByDomain(domain: string): Promise<RowDataPacket> {
-    const query = `SELECT * FROM password.passwords WHERE domain='${domain}'`;
+  public async findOneByDomain(getDomainQueryReqDto: GetDomainQueryReqDto): Promise<RowDataPacket> {
+    const query = `SELECT * FROM password.passwords WHERE domain='${getDomainQueryReqDto.domain}'`;
     const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return queryResult[this.ROW_IDX][this.ROW_IDX];
@@ -35,10 +37,10 @@ export class PasswordRepository {
 
   /**
    * id가 일치하는 것을 반환합니다.
-   * @param id id 숫자
+   * @param findOneByIdDto id 숫자
    */
-  public async findOneById(id: number): Promise<RowDataPacket> {
-    const query = `SELECT * FROM password.passwords WHERE id=${id}`;
+  public async findOneById(findOneByIdDto: FindOneByIdDto): Promise<RowDataPacket> {
+    const query = `SELECT * FROM password.passwords WHERE id=${findOneByIdDto.id}`;
     const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return queryResult[this.ROW_IDX][this.ROW_IDX];

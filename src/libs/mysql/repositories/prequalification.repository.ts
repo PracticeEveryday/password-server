@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MysqlService } from '../mysql.service';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import { ServerStatusEnum } from '../../../apps/server/common/enum/serverStatus.enum';
 
 @Injectable()
 export class PrequalificationRepository {
@@ -22,5 +23,12 @@ export class PrequalificationRepository {
       `;
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
     return createQueryResult[this.ROW_IDX];
+  }
+
+  public async update(id: number, serverStatus: ServerStatusEnum): Promise<RowDataPacket> {
+    const query = `UPDATE password.prequalifications SET server_status='${serverStatus}'`;
+    const selectQueryResult = await this.mysqlService.executeSingleQuery(query);
+
+    return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 }
