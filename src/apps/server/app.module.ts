@@ -1,8 +1,9 @@
-import { ClassProvider, ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { ClassProvider, ClassSerializerInterceptor, Module, ValidationPipe } from '@nestjs/common';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ValidationException } from './common/customExceptions/validation.exception';
 import { CustomExceptionFilter } from './common/filter/http-exception.filter';
 import { HttpResponseInterceptor } from './common/interceptor/http-interceptor.interceptor';
 import { LogInterceptor } from './common/interceptor/logger.interceptor';
@@ -31,9 +32,23 @@ const interceptors: ClassProvider[] = [
   },
 ];
 
+const pipes = [
+  {
+    provide: APP_PIPE,
+    useFactory: () =>
+      new ValidationPipe({
+        transform: true, // 요청에서 넘어온 자료들의 형변환
+        whitelist: true, // validation을 위한 decorator가 붙어있지 않은 속성들은 제거
+        forbidNonWhitelisted: true, // whitelist 설정을 켜서 걸러질 속성이 있다면 아예 요청 자체를 막도록 (400 에러)
+        exceptionFactory: (errors) => {
+          throw new ValidationException(errors);
+        },
+      }),
+  },
+];
 @Module({
   imports: [EnvModule.forRoot(), LogModule.forRoot(), PasswordModule, ReadlineModule, MysqlModule],
   controllers: [AppController],
-  providers: [AppService, ...filter, ...interceptors],
+  providers: [AppService, ...filter, ...interceptors, ...pipes],
 })
 export class AppModule {}

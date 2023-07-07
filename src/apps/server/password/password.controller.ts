@@ -1,4 +1,4 @@
-import { Body, HttpStatus, Query, ValidationPipe } from '@nestjs/common';
+import { Body, HttpStatus, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiNotFoundResponse } from '@nestjs/swagger';
 
 import {
@@ -14,8 +14,9 @@ import {
 } from './docs/password.docs';
 import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
-import { GetDomainQueryReqDto } from './dto/api-dto/getDomain.req.dto';
+import { GetDomainBodyReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto, GetDomainResDtoNotFoundExceptionResDto } from './dto/api-dto/getDomain.res.dto';
+import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword.req.dto';
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
 import { PasswordService } from './password.service';
@@ -25,7 +26,7 @@ import { Route } from '../common/decorator/router.decorator';
 import { Method } from '../common/enum/method.enum';
 
 @RouteTable({
-  path: 'password',
+  path: 'passwords',
   tag: {
     title: '🔭비밀 번호 API',
     category: 'public',
@@ -33,23 +34,6 @@ import { Method } from '../common/enum/method.enum';
 })
 export class PasswordController {
   constructor(readonly passwordService: PasswordService, readonly passwordUtilService: PasswordUtilService) {}
-
-  @Route({
-    request: {
-      method: Method.POST,
-      path: '/',
-    },
-    response: {
-      code: HttpStatus.CREATED,
-      type: CreatePasswordResDto,
-      description: createPasswordSuccMd,
-    },
-    description: createPasswordDescriptionMd,
-    summary: createPasswordSummaryMd,
-  })
-  public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
-    return await this.passwordService.create(createPasswordReqDto);
-  }
 
   @ApiNotFoundResponse({ type: GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
   @Route({
@@ -59,14 +43,33 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.OK,
+      // type: GetDomainResDto,
+      // description: getPasswordByDomainSuccMd,
+    },
+    // description: getPasswordByDomainDescriptionMd,
+    // summary: getPasswordByDomainSummaryMd,
+  })
+  public async getPasswordArrWithPagination(@Query() getPasswordsReqDto: GetPasswordsQueryReqDto) {
+    console.log(getPasswordsReqDto);
+    return await this.passwordService.findAllWithPagination(getPasswordsReqDto);
+  }
+
+  @ApiNotFoundResponse({ type: GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
+  @Route({
+    request: {
+      method: Method.GET,
+      path: '/:domain',
+    },
+    response: {
+      code: HttpStatus.OK,
       type: GetDomainResDto,
       description: getPasswordByDomainSuccMd,
     },
     description: getPasswordByDomainDescriptionMd,
     summary: getPasswordByDomainSummaryMd,
   })
-  public async getPasswordByDomain(@Query(ValidationPipe) getDomainReqDto: GetDomainQueryReqDto): Promise<GetDomainResDto> {
-    return await this.passwordService.findOneByDomain(getDomainReqDto);
+  public async getPasswordByDomain(@Param(ValidationPipe) getDomainBodyReqDto: GetDomainBodyReqDto): Promise<GetDomainResDto> {
+    return await this.passwordService.findOneByDomain(getDomainBodyReqDto);
   }
 
   @Route({
@@ -86,5 +89,22 @@ export class PasswordController {
     @Query(ValidationPipe) getRecommendPasswordReqQueryDto: GetRecommendPasswordReqQueryDto,
   ): GetRecommendPasswordResDto {
     return this.passwordUtilService.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
+  }
+
+  @Route({
+    request: {
+      method: Method.POST,
+      path: '/',
+    },
+    response: {
+      code: HttpStatus.CREATED,
+      type: CreatePasswordResDto,
+      description: createPasswordSuccMd,
+    },
+    description: createPasswordDescriptionMd,
+    summary: createPasswordSummaryMd,
+  })
+  public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
+    return await this.passwordService.create(createPasswordReqDto);
   }
 }

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
+import { UnknownException } from '../../../apps/server/common/customExceptions/unknown.exception';
 import { CreatePasswordReqDto } from '../../../apps/server/password/dto/api-dto/create-password.req.dto';
-import { GetDomainQueryReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
+import { GetDomainBodyReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
+import { GetPasswordsQueryReqDto } from '../../../apps/server/password/dto/api-dto/getPasswords.req.dto';
 import { FindOneByIdDto } from '../../../apps/server/password/dto/basic-dto/findOneById.dto';
 import { ValidateUtilService } from '../../utils/validate-util/validate-util.service';
 import { MysqlService } from '../mysql.service';
@@ -12,6 +14,17 @@ export class PasswordRepository {
   private ROW_IDX = 0 as const;
   private FILED_IDX = 1 as const;
   constructor(private readonly mysqlService: MysqlService, private readonly validateUtilService: ValidateUtilService) {}
+
+  public async findAllWithPagination(tt: GetPasswordsQueryReqDto) {
+    try {
+      const query = `SELECT * FROM password.passwords ORDERS LIMIT ${tt.size} OFFSET ${(tt.page - 1) * tt.size}`;
+      const selectQueryReslut = await this.mysqlService.executeSingleQuery(query);
+
+      return selectQueryReslut[this.ROW_IDX];
+    } catch (error) {
+      throw new UnknownException({ title: 'UnkwonException', message: 'getPasswordsReqDto', raw: error });
+    }
+  }
 
   /**
    * 비밀번호 정보 생성
@@ -28,7 +41,7 @@ export class PasswordRepository {
    * 도메인이 일치하는 것을 반환합니다.
    * @param getDomainQueryReqDto 도메인 ex naver, google...
    */
-  public async findOneByDomain(getDomainQueryReqDto: GetDomainQueryReqDto): Promise<RowDataPacket> {
+  public async findOneByDomain(getDomainQueryReqDto: GetDomainBodyReqDto): Promise<RowDataPacket> {
     const query = `SELECT * FROM password.passwords WHERE domain='${getDomainQueryReqDto.domain}'`;
     const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 

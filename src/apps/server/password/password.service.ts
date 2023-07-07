@@ -3,8 +3,9 @@ import { RowDataPacket } from 'mysql2';
 
 import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
-import { GetDomainQueryReqDto } from './dto/api-dto/getDomain.req.dto';
+import { GetDomainBodyReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
+import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
 import { LogService } from '../../../libs/log/log.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
@@ -28,13 +29,17 @@ export class PasswordService {
     @Inject(InjectionToken.PASSWORD_REPOSITORY) private readonly passwordRepository: PasswordRepository,
   ) {}
 
+  public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto) {
+    return await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
+  }
+
   /**
    * password를 생성하는 서비스
    * @param body CreatePassworeReqDto
    */
   public async create(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
     try {
-      const getDomainQueryReqDto = GetDomainQueryReqDto.toDTO(body.domain);
+      const getDomainQueryReqDto = GetDomainBodyReqDto.toDTO(body.domain);
       const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
 
       if (password) {
@@ -60,6 +65,11 @@ export class PasswordService {
           raw: error,
         });
       }
+
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+
       throw new UnknownException({ title: 'UnkwonException', message: 'password create', raw: error });
     }
   }
@@ -68,7 +78,7 @@ export class PasswordService {
    * 도메인에 따른 비밀번호를 조회하는 메서드
    * @param param GetDomainReqDto
    */
-  public async findOneByDomain(param: GetDomainQueryReqDto): Promise<GetDomainResDto> {
+  public async findOneByDomain(param: GetDomainBodyReqDto): Promise<GetDomainResDto> {
     try {
       const password = await this.passwordRepository.findOneByDomain(param);
 
@@ -78,6 +88,9 @@ export class PasswordService {
 
       return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new UnknownException({ title: 'UnkwonException', message: 'password findOneByDomain', raw: error });
     }
   }
@@ -95,6 +108,9 @@ export class PasswordService {
 
       return rowDataPacket as PasswordInterface;
     } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       throw new UnknownException({ title: 'UnkwonException', message: 'password validatePasswordType', raw: error });
     }
   }
