@@ -7,28 +7,28 @@ import { toPage, toSize } from '../helper/pagination.helper';
 export class PaginationQueryDto {
   @Transform(({ value }) => toPage(value, { default: 1 }))
   @ApiPropertyOptional({
-    name: 'page',
+    name: 'pageNo',
     description: '조회하고자 하는 페이지 (기본값: 1)',
     example: 1,
   })
   @IsOptionalNumber(0)
-  public page: number;
+  public pageNo: number;
 
   @Transform(({ value }) => toSize(value, { default: 10 }))
   @ApiPropertyOptional({
-    name: 'size',
+    name: 'pageSize',
     description: '불러올 아이템 갯수 (기본값: 10)',
     example: 10,
   })
   @IsOptionalNumber(0)
-  public size: number;
+  public pageSize: number;
 }
 
 export class PaginationResponseDto {
   @ApiProperty({ description: '조회하고자 하는 페이지' })
-  page = 1;
+  pageNo = 1;
   @ApiProperty({ description: '불러올 아이템 갯수' })
-  size = 10;
+  pageSize = 10;
   @ApiProperty({ description: '총 아이템 갯수' })
   totalCount = 0;
   @ApiProperty({ description: '총 페이지 수' })

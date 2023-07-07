@@ -17,8 +17,8 @@ export class PasswordRepository {
 
   public async findAllWithPagination(tt: GetPasswordsQueryReqDto) {
     try {
-      const query = `SELECT * FROM password.passwords ORDERS LIMIT ${tt.size} OFFSET ${(tt.page - 1) * tt.size}`;
-      const selectQueryReslut = await this.mysqlService.executeSingleQuery(query);
+      const query = `SELECT *FROM password.passwords ORDERS LIMIT ${tt.pageSize} OFFSET ${(tt.pageNo - 1) * tt.pageSize}`;
+      const selectQueryReslut = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
       return selectQueryReslut[this.ROW_IDX];
     } catch (error) {

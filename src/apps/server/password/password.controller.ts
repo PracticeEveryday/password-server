@@ -50,7 +50,6 @@ export class PasswordController {
     // summary: getPasswordByDomainSummaryMd,
   })
   public async getPasswordArrWithPagination(@Query() getPasswordsReqDto: GetPasswordsQueryReqDto) {
-    console.log(getPasswordsReqDto);
     return await this.passwordService.findAllWithPagination(getPasswordsReqDto);
   }
 

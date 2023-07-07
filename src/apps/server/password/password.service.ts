@@ -17,6 +17,7 @@ import { ConflictException } from '../common/customExceptions/conflict.exception
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
 import { NotFoundException } from '../common/customExceptions/notFound.exception';
 import { UnknownException } from '../common/customExceptions/unknown.exception';
+import { toPagination } from '../common/helper/pagination.helper';
 
 @Injectable()
 export class PasswordService {
@@ -30,7 +31,13 @@ export class PasswordService {
   ) {}
 
   public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto) {
-    return await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
+    try {
+      const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
+      const pagination = toPagination(result.length, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
+      return { result, pagination };
+    } catch (error) {
+      throw error;
+    }
   }
 
   /**

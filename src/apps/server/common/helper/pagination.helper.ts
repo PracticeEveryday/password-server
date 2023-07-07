@@ -5,8 +5,6 @@ interface PaginationOptions {
 }
 
 export function toPage(value: string, options: PaginationOptions): number {
-  console.log(value);
-  console.log(typeof value, 'vae');
   if (value) {
     const page = Number(value);
     return page > 0 ? page : options.default;
@@ -15,7 +13,6 @@ export function toPage(value: string, options: PaginationOptions): number {
 }
 
 export function toSize(value: string, options: PaginationOptions): number {
-  console.log(value, 2);
   if (value) {
     const size = Number(value);
     return size > 0 ? size : options.default;
@@ -24,5 +21,5 @@ export function toSize(value: string, options: PaginationOptions): number {
 }
 
 export function toPagination(totalCount: number, page: number, size: number): PaginationResponseDto {
-  return { totalCount, totalPage: Math.ceil(totalCount / size), page, size };
+  return { totalCount, totalPage: Math.ceil(totalCount / size), pageNo: page, pageSize: size };
 }
