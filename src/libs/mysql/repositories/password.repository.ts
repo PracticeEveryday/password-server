@@ -15,15 +15,22 @@ export class PasswordRepository {
   private FILED_IDX = 1 as const;
   constructor(private readonly mysqlService: MysqlService, private readonly validateUtilService: ValidateUtilService) {}
 
-  public async findAllWithPagination(tt: GetPasswordsQueryReqDto) {
+  public async findAllWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
     try {
-      const query = `SELECT *FROM password.passwords ORDERS LIMIT ${tt.pageSize} OFFSET ${(tt.pageNo - 1) * tt.pageSize}`;
-      const selectQueryReslut = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+      const query = `SELECT *FROM password.passwords ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
+      const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
-      return selectQueryReslut[this.ROW_IDX];
+      return selectQueryResult[this.ROW_IDX];
     } catch (error) {
       throw new UnknownException({ title: 'UnkwonException', message: 'getPasswordsReqDto', raw: error });
     }
+  }
+
+  public async count() {
+    const query = `SELECT COUNT(*) AS totalCount FROM password.passwords `;
+    const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+
+    return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
   /**

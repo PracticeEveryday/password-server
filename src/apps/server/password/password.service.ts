@@ -33,7 +33,9 @@ export class PasswordService {
   public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto) {
     try {
       const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
-      const pagination = toPagination(result.length, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
+      const { totalCount } = await this.passwordRepository.count();
+
+      const pagination = toPagination(totalCount, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
       return { result, pagination };
     } catch (error) {
       throw error;
