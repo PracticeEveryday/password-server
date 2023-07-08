@@ -3,7 +3,7 @@ import * as dayjs from 'dayjs';
 
 import { DateUtilService } from './date-util.service';
 
-describe('PasswordUtilService Test', () => {
+describe('DateUtilService Test', () => {
   let dateUtilService: DateUtilService;
 
   beforeEach(async () => {
