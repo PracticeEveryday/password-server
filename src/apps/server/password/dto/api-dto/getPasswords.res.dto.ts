@@ -5,7 +5,7 @@ import { PasswordInterface } from '../../../../../libs/mysql/types/password.type
 import { IsNotEmptyDate, IsOptionalDate } from '../../../common/decorator/validation/isCustomDate.decorator';
 import { IsNotEmptyNumber } from '../../../common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString } from '../../../common/decorator/validation/isCustomString.decorator';
-import { PaginationResponseDto } from '../../../common/dto/pagination';
+import { PaginationResDto } from '../../../common/dto/pagination';
 
 export class PasswordResDto {
   @Exclude() _id: number;
@@ -56,16 +56,12 @@ export class PasswordResDto {
   }
 }
 
-export class GetPasswordsResDto extends PaginationResponseDto {
+export class GetPasswordsResDto extends PaginationResDto {
   @Exclude() _passwords: PasswordResDto[];
 
-  constructor(passwords: PasswordResDto[], paginationInfo: PaginationResponseDto) {
-    super();
+  constructor(passwords: PasswordResDto[], paginationInfo: PaginationResDto) {
+    super(paginationInfo);
     this._passwords = passwords;
-    this.pageNo = paginationInfo.pageNo;
-    this.pageNo = paginationInfo.pageNo;
-    this.pageSize = paginationInfo.pageSize;
-    this.totalCount = paginationInfo.totalCount;
   }
 
   @Expose()

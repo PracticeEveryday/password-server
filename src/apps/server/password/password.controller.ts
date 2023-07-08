@@ -52,7 +52,7 @@ export class PasswordController {
     description: getPasswordArrWithPaginationDescriptionMd,
     summary: getPasswordArrWithPaginationSummaryMd,
   })
-  public async getPasswordArrWithPagination(@Query() getPasswordsReqDto: GetPasswordsQueryReqDto) {
+  public async getPasswordArrWithPagination(@Query() getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
     return await this.passwordService.findAllWithPagination(getPasswordsReqDto);
   }
 

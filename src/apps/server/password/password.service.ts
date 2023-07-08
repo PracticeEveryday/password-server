@@ -39,11 +39,10 @@ export class PasswordService {
     try {
       const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
       const passwords = result.map((password: RowDataPacket) => {
-        if (this.validateUtilService.isPasswordInterfaceType(password)) {
-          return new PasswordResDto(password);
-        } else {
+        if (!this.validateUtilService.isPasswordInterfaceType(password)) {
           throw new BadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
         }
+        return new PasswordResDto(password);
       });
       const { totalCount } = await this.passwordRepository.count();
 

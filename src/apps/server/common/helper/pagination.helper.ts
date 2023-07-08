@@ -1,4 +1,4 @@
-import { PaginationResponseDto } from '../dto/pagination';
+import { PaginationResDto } from '../dto/pagination';
 
 interface PaginationOptions {
   default: number;
@@ -20,6 +20,6 @@ export function toSize(value: string, options: PaginationOptions): number {
   return options.default;
 }
 
-export function toPagination(totalCount: number, page: number, size: number): PaginationResponseDto {
-  return { totalCount, totalPage: Math.ceil(totalCount / size), pageNo: page, pageSize: size };
+export function toPagination(totalCount: number, page: number, size: number): PaginationResDto {
+  return new PaginationResDto({ totalCount, totalPage: Math.ceil(totalCount / size), pageNo: page, pageSize: size });
 }
