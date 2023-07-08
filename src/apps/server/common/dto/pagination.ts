@@ -25,13 +25,13 @@ export class PaginationQueryDto {
 }
 
 export class PaginationResponseDto {
-  @ApiProperty({ description: '조회하고자 하는 페이지' })
+  @ApiProperty({ description: '조회하고자 하는 페이지', example: 1 })
   pageNo = 1;
-  @ApiProperty({ description: '불러올 아이템 갯수' })
+  @ApiProperty({ description: '불러올 아이템 갯수', example: 10 })
   pageSize = 10;
-  @ApiProperty({ description: '총 아이템 갯수' })
+  @ApiProperty({ description: '총 아이템 갯수', example: 1 })
   totalCount = 0;
-  @ApiProperty({ description: '총 페이지 수' })
+  @ApiProperty({ description: '총 페이지 수', example: 1 })
   totalPage = 1;
 }
 

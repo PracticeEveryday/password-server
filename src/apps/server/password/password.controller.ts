@@ -5,6 +5,9 @@ import {
   createPasswordDescriptionMd,
   createPasswordSuccMd,
   createPasswordSummaryMd,
+  getPasswordArrWithPaginationDescriptionMd,
+  getPasswordArrWithPaginationSuccMd,
+  getPasswordArrWithPaginationSummaryMd,
   getPasswordByDomainDescriptionMd,
   getPasswordByDomainSuccMd,
   getPasswordByDomainSummaryMd,
@@ -17,6 +20,7 @@ import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainBodyReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto, GetDomainResDtoNotFoundExceptionResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
+import { GetPasswordsResDto } from './dto/api-dto/getPasswords.res.dto';
 import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword.req.dto';
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
 import { PasswordService } from './password.service';
@@ -35,7 +39,6 @@ import { Method } from '../common/enum/method.enum';
 export class PasswordController {
   constructor(readonly passwordService: PasswordService, readonly passwordUtilService: PasswordUtilService) {}
 
-  @ApiNotFoundResponse({ type: GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
   @Route({
     request: {
       method: Method.GET,
@@ -43,11 +46,11 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.OK,
-      // type: GetDomainResDto,
-      // description: getPasswordByDomainSuccMd,
+      type: GetPasswordsResDto,
+      description: getPasswordArrWithPaginationSuccMd,
     },
-    // description: getPasswordByDomainDescriptionMd,
-    // summary: getPasswordByDomainSummaryMd,
+    description: getPasswordArrWithPaginationDescriptionMd,
+    summary: getPasswordArrWithPaginationSummaryMd,
   })
   public async getPasswordArrWithPagination(@Query() getPasswordsReqDto: GetPasswordsQueryReqDto) {
     return await this.passwordService.findAllWithPagination(getPasswordsReqDto);

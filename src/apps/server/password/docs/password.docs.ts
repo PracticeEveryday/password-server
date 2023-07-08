@@ -28,3 +28,12 @@ export const recommendPasswordDescriptionMd = `
 export const recommendPasswordSummaryMd = `✅ 원하는 길이의 무작위 비밀번호를 추천하는 API입니다.`;
 
 //-- recommendPassword
+
+export const getPasswordArrWithPaginationSuccMd = `🥳 비밀번호 pagination 조회에 성공했습니다 :).`;
+export const getPasswordArrWithPaginationDescriptionMd = `
+### 💬 비밀번호 개수를 원하는 페이지의 개수만큼 가져오는 API입니다..
+반환되는 타입은 pagination 상태(정보)와 페이지네이션 된 정보입니다.
+`;
+export const getPasswordArrWithPaginationSummaryMd = `✅ 비밀번호를 페이지네이션하여 가져오는 API입니다.`;
+
+//-- getPasswordArrWithPagination

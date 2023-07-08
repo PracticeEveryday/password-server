@@ -6,6 +6,7 @@ import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainBodyReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
+import { GetPasswordsResDto, PasswordResDto } from './dto/api-dto/getPasswords.res.dto';
 import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
 import { LogService } from '../../../libs/log/log.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
@@ -30,13 +31,24 @@ export class PasswordService {
     @Inject(InjectionToken.PASSWORD_REPOSITORY) private readonly passwordRepository: PasswordRepository,
   ) {}
 
-  public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto) {
+  /**
+   * 페이지네이션을 통해 password를 가져온다.
+   * @param getPasswordsReqDto pagination을 상속 받은 dto
+   */
+  public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
     try {
       const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
+      const passwords = result.map((password: RowDataPacket) => {
+        if (this.validateUtilService.isPasswordInterfaceType(password)) {
+          return new PasswordResDto(password);
+        } else {
+          throw new BadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
+        }
+      });
       const { totalCount } = await this.passwordRepository.count();
 
       const pagination = toPagination(totalCount, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
-      return { result, pagination };
+      return new GetPasswordsResDto(passwords, pagination);
     } catch (error) {
       throw error;
     }
