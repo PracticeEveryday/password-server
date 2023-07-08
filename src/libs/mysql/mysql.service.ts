@@ -4,6 +4,7 @@ import { createPool, Pool, PoolConnection } from 'mysql2/promise';
 
 import { EnvService } from '../env/env.service';
 import { EnvEnum } from '../env/envEnum';
+import { NodeEnvEnum } from '../env/nodeEnv.enum';
 
 @Injectable()
 export class MysqlService {
@@ -18,7 +19,10 @@ export class MysqlService {
       password: this.envService.get(EnvEnum.DATABASE_PASSWORD),
     };
 
-    this.connection = createConnection(this.connectionOptions);
+    // test 환경일 때만 db연결
+    if (process.env.NODE_ENV !== NodeEnvEnum.Test) {
+      this.connection = createConnection(this.connectionOptions);
+    }
   }
 
   private async getConnectionPool(): Promise<PoolConnection> {

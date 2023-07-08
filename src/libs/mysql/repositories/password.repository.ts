@@ -6,14 +6,13 @@ import { CreatePasswordReqDto } from '../../../apps/server/password/dto/api-dto/
 import { GetDomainBodyReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '../../../apps/server/password/dto/api-dto/getPasswords.req.dto';
 import { FindOneByIdDto } from '../../../apps/server/password/dto/basic-dto/findOneById.dto';
-import { ValidateUtilService } from '../../utils/validate-util/validate-util.service';
 import { MysqlService } from '../mysql.service';
 
 @Injectable()
 export class PasswordRepository {
   private ROW_IDX = 0 as const;
   private FILED_IDX = 1 as const;
-  constructor(private readonly mysqlService: MysqlService, private readonly validateUtilService: ValidateUtilService) {}
+  constructor(private readonly mysqlService: MysqlService) {}
 
   public async findAllWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
     try {
