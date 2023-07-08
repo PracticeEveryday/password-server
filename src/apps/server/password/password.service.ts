@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
 import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
@@ -14,10 +14,12 @@ import { PasswordRepository } from '../../../libs/mysql/repositories/password.re
 import { PasswordInterface } from '../../../libs/mysql/types/password.type';
 import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
 import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-util.service';
-import { ConflictException } from '../common/customExceptions/conflict.exception';
+import { CustomBadRequestException } from '../common/customExceptions/exception/badRequest.exception';
+import { BaseException } from '../common/customExceptions/exception/base.exception';
+import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
+import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
+import { CustomUnknownException } from '../common/customExceptions/exception/unknown.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
-import { NotFoundException } from '../common/customExceptions/notFound.exception';
-import { UnknownException } from '../common/customExceptions/unknown.exception';
 import { toPagination } from '../common/helper/pagination.helper';
 
 @Injectable()
@@ -40,7 +42,7 @@ export class PasswordService {
       const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
       const passwords = result.map((password: RowDataPacket) => {
         if (!this.validateUtilService.isPasswordInterfaceType(password)) {
-          throw new BadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
+          throw new CustomBadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
         }
         return new PasswordResDto(password);
       });
@@ -49,7 +51,10 @@ export class PasswordService {
       const pagination = toPagination(totalCount, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
       return new GetPasswordsResDto(passwords, pagination);
     } catch (error) {
-      throw error;
+      if (error instanceof BaseException) {
+        throw error;
+      }
+      throw new CustomUnknownException({ title: 'UnkwonException', message: 'password findAllWithPagination', raw: error });
     }
   }
 
@@ -63,7 +68,9 @@ export class PasswordService {
       const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
 
       if (password) {
-        throw new ConflictException(makeExceptionScript('conflict exist domain', '해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.'));
+        throw new CustomConflictException(
+          makeExceptionScript('conflict exist domain', '해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.'),
+        );
       }
 
       body.password = this.passwordUtilService.hashPassword(body.password);
@@ -79,18 +86,18 @@ export class PasswordService {
       }
     } catch (error) {
       if (this.validateUtilService.isQeuryErrorInterface(error)) {
-        throw new ConflictException({
+        throw new CustomConflictException({
           title: 'type error',
           message: error.sqlState,
           raw: error,
         });
       }
 
-      if (error instanceof ConflictException) {
+      if (error instanceof CustomConflictException) {
         throw error;
       }
 
-      throw new UnknownException({ title: 'UnkwonException', message: 'password create', raw: error });
+      throw new CustomUnknownException({ title: 'UnkwonException', message: 'password create', raw: error });
     }
   }
 
@@ -103,15 +110,15 @@ export class PasswordService {
       const password = await this.passwordRepository.findOneByDomain(param);
 
       if (!password) {
-        throw new NotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
+        throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
       }
 
       return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
     } catch (error) {
-      if (error instanceof NotFoundException) {
+      if (error instanceof CustomNotFoundException) {
         throw error;
       }
-      throw new UnknownException({ title: 'UnkwonException', message: 'password findOneByDomain', raw: error });
+      throw new CustomUnknownException({ title: 'UnkwonException', message: 'password findOneByDomain', raw: error });
     }
   }
 
@@ -123,15 +130,15 @@ export class PasswordService {
   private async validatePasswordType(rowDataPacket: RowDataPacket): Promise<PasswordInterface> {
     try {
       if (!this.validateUtilService.isPasswordInterfaceType(rowDataPacket)) {
-        throw new BadRequestException(makeExceptionScript('type error', 'password interface 타입이 아닙니다.'));
+        throw new CustomBadRequestException(makeExceptionScript('type error', 'password interface 타입이 아닙니다.'));
       }
 
       return rowDataPacket as PasswordInterface;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (error instanceof CustomBadRequestException) {
         throw error;
       }
-      throw new UnknownException({ title: 'UnkwonException', message: 'password validatePasswordType', raw: error });
+      throw new CustomUnknownException({ title: 'UnkwonException', message: 'password validatePasswordType', raw: error });
     }
   }
 }

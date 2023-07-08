@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { OkPacket } from 'mysql2';
 
 import { AppModule } from './app.module';
-import { UnknownException } from './common/customExceptions/unknown.exception';
+import { CustomUnknownException } from './common/customExceptions/exception/unknown.exception';
 import { ServerStatusEnum } from './common/enum/serverStatus.enum';
 import { EnvService } from '../../libs/env/env.service';
 import { EnvEnum } from '../../libs/env/envEnum';
@@ -41,7 +41,7 @@ class Server {
       await this.mysql.parallelTransaction([initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue]);
     } catch (error) {
       this.logService.errorLog('Server', 'precondition error', error);
-      throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
+      throw new CustomUnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
     }
   }
 
@@ -62,7 +62,7 @@ class Server {
       }
     } catch (error) {
       this.logService.errorLog('Server', 'timeValidation error', error);
-      throw new UnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
+      throw new CustomUnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
     }
   }
 

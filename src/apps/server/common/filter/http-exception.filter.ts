@@ -2,8 +2,8 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/co
 import { HttpAdapterHost } from '@nestjs/core';
 
 import { LogService } from '../../../../libs/log/log.service';
-import { BaseException } from '../customExceptions/base.exception';
-import { UnknownException } from '../customExceptions/unknown.exception';
+import { BaseException } from '../customExceptions/exception/base.exception';
+import { CustomUnknownException } from '../customExceptions/exception/unknown.exception';
 import { ErrorTypeEnum } from '../enum/errorType.enum';
 
 @Catch()
@@ -32,7 +32,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
         });
       }
 
-      return new UnknownException({
+      return new CustomUnknownException({
         title: error.name,
         message: error.message,
         raw: error,

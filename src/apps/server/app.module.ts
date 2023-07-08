@@ -3,7 +3,7 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ValidationException } from './common/customExceptions/validation.exception';
+import { ValidationException } from './common/customExceptions/exception/validation.exception';
 import { CustomExceptionFilter } from './common/filter/http-exception.filter';
 import { HttpResponseInterceptor } from './common/interceptor/http-interceptor.interceptor';
 import { LogInterceptor } from './common/interceptor/logger.interceptor';

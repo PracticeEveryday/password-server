@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
-import { UnknownException } from '../../../apps/server/common/customExceptions/unknown.exception';
+import { CustomUnknownException } from '../../../apps/server/common/customExceptions/exception/unknown.exception';
 import { CreatePasswordReqDto } from '../../../apps/server/password/dto/api-dto/create-password.req.dto';
 import { GetDomainBodyReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '../../../apps/server/password/dto/api-dto/getPasswords.req.dto';
@@ -24,7 +24,7 @@ export class PasswordRepository {
 
       return selectQueryResult[this.ROW_IDX];
     } catch (error) {
-      throw new UnknownException({ title: 'UnkwonException', message: 'getPasswordsReqDto', raw: error });
+      throw new CustomUnknownException({ title: 'UnkwonException', message: 'getPasswordsReqDto', raw: error });
     }
   }
 

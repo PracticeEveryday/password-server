@@ -1,10 +1,10 @@
 import { HttpStatus } from '@nestjs/common';
 
 import { BaseException } from './base.exception';
-import { ErrorTypeEnum } from '../enum/errorType.enum';
+import { ErrorTypeEnum } from '../../enum/errorType.enum';
 
 export type ExceptionPropertyType = 'title' | 'message' | 'raw';
-export class ConflictException extends BaseException {
+export class CustomConflictException extends BaseException {
   constructor(properties: Pick<BaseException, ExceptionPropertyType>) {
     super({
       statusCode: HttpStatus.CONFLICT,

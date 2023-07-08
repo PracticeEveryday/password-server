@@ -2,7 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 
 import { BaseException } from './base.exception';
-import { ErrorTypeEnum } from '../enum/errorType.enum';
+import { ErrorTypeEnum } from '../../enum/errorType.enum';
 
 export class ValidationException extends BaseException {
   constructor(errors: ValidationError[]) {

@@ -4,7 +4,7 @@ import * as readline from 'readline';
 import { Inject, Injectable } from '@nestjs/common';
 
 import { FinishScriptAboutProcessAboutResisterQuestions } from './docs/readline.docs';
-import { UnknownException } from '../../apps/server/common/customExceptions/unknown.exception';
+import { CustomUnknownException } from '../../apps/server/common/customExceptions/exception/unknown.exception';
 import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enum';
 import { InjectionToken } from '../mysql/repositories/injectionToken';
 import { PrequalificationRepository } from '../mysql/repositories/prequalification.repository';
@@ -83,7 +83,7 @@ export class ReadlineService {
         this.prequalificationRepository.create(pair.question, pair.answer);
       } catch (error) {
         console.log(error);
-        throw new UnknownException({
+        throw new CustomUnknownException({
           title: 'sql error',
           message: 'DB에 데이터를 넣을 때 나는 에러입니다. 타입을 확인해주세요',
           raw: error,

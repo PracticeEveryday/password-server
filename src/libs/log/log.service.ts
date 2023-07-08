@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { BaseException } from '../../apps/server/common/customExceptions/base.exception';
+import { BaseException } from '../../apps/server/common/customExceptions/exception/base.exception';
 
 @Injectable()
 export class LogService {
