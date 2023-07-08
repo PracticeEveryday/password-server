@@ -93,7 +93,7 @@ export class PasswordService {
         });
       }
 
-      if (error instanceof CustomConflictException) {
+      if (error instanceof BaseException) {
         throw error;
       }
 
@@ -115,7 +115,7 @@ export class PasswordService {
 
       return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
     } catch (error) {
-      if (error instanceof CustomNotFoundException) {
+      if (error instanceof BaseException) {
         throw error;
       }
       throw new CustomUnknownException({ title: 'UnkwonException', message: 'password findOneByDomain', raw: error });
@@ -135,7 +135,7 @@ export class PasswordService {
 
       return rowDataPacket as PasswordInterface;
     } catch (error) {
-      if (error instanceof CustomBadRequestException) {
+      if (error instanceof BaseException) {
         throw error;
       }
       throw new CustomUnknownException({ title: 'UnkwonException', message: 'password validatePasswordType', raw: error });
