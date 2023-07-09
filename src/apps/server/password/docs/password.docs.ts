@@ -37,3 +37,12 @@ export const getPasswordArrWithPaginationDescriptionMd = `
 export const getPasswordArrWithPaginationSummaryMd = `✅ 비밀번호를 페이지네이션하여 가져오는 API입니다.`;
 
 //-- getPasswordArrWithPagination
+
+export const deleteOneSuccMd = `🥳 비밀번호 단일 삭제에 성공했습니다. :).`;
+export const deleteOneDescriptionMd = `
+### 💬 비밀번호 하나를 삭제하는 API입니다.
+삭제할 도메인의 비밀번호가 존재하지 않으면 \`404\` Error를 반환합니다.
+`;
+export const deleteOneSummaryMd = `✅ 비밀번호 단일 삭제 API입니다.`;
+
+//-- deleteOne

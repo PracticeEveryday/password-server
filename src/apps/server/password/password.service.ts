@@ -3,7 +3,7 @@ import { RowDataPacket } from 'mysql2';
 
 import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
-import { GetDomainBodyReqDto } from './dto/api-dto/getDomain.req.dto';
+import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto, PasswordResDto } from './dto/api-dto/getPasswords.res.dto';
@@ -34,6 +34,29 @@ export class PasswordService {
   ) {}
 
   /**
+   * password의 해당 id를 삭제하는 메서드입니다. 없을 경우 404, 삭제가 제대로 되지 않은 경우 400 에러를 뱉어냅니다.
+   * @param param FindOneByIdDto
+   */
+  public async deleteOne(param: GetDomainParamReqDto) {
+    try {
+      const password = await this.passwordRepository.findOneByDomain(param);
+      if (!password) {
+        throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
+      }
+
+      const deleteResult = await this.passwordRepository.deleteOne(param);
+      if (deleteResult.affectedRows === 1) {
+        return '정상적으로 삭제되었습니다.';
+      }
+      throw new CustomBadRequestException(makeExceptionScript('BadRequestException', '삭제하는 데 문제가 있습니다.'));
+    } catch (error) {
+      if (error instanceof BaseException) throw error;
+
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'password deleteOne', raw: error });
+    }
+  }
+
+  /**
    * 페이지네이션을 통해 password를 가져온다.
    * @param getPasswordsReqDto pagination을 상속 받은 dto
    */
@@ -54,7 +77,7 @@ export class PasswordService {
       if (error instanceof BaseException) {
         throw error;
       }
-      throw new CustomUnknownException({ title: 'UnkwonException', message: 'password findAllWithPagination', raw: error });
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'password findAllWithPagination', raw: error });
     }
   }
 
@@ -64,7 +87,7 @@ export class PasswordService {
    */
   public async create(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
     try {
-      const getDomainQueryReqDto = GetDomainBodyReqDto.toDTO(body.domain);
+      const getDomainQueryReqDto = GetDomainParamReqDto.toDTO(body.domain);
       const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
 
       if (password) {
@@ -97,7 +120,7 @@ export class PasswordService {
         throw error;
       }
 
-      throw new CustomUnknownException({ title: 'UnkwonException', message: 'password create', raw: error });
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'password create', raw: error });
     }
   }
 
@@ -105,7 +128,7 @@ export class PasswordService {
    * 도메인에 따른 비밀번호를 조회하는 메서드
    * @param param GetDomainReqDto
    */
-  public async findOneByDomain(param: GetDomainBodyReqDto): Promise<GetDomainResDto> {
+  public async findOneByDomain(param: GetDomainParamReqDto): Promise<GetDomainResDto> {
     try {
       const password = await this.passwordRepository.findOneByDomain(param);
 
@@ -118,7 +141,7 @@ export class PasswordService {
       if (error instanceof BaseException) {
         throw error;
       }
-      throw new CustomUnknownException({ title: 'UnkwonException', message: 'password findOneByDomain', raw: error });
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'password findOneByDomain', raw: error });
     }
   }
 
@@ -138,7 +161,7 @@ export class PasswordService {
       if (error instanceof BaseException) {
         throw error;
       }
-      throw new CustomUnknownException({ title: 'UnkwonException', message: 'password validatePasswordType', raw: error });
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'password validatePasswordType', raw: error });
     }
   }
 }

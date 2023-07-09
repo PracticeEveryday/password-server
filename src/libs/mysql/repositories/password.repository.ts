@@ -3,7 +3,7 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
 import { CustomUnknownException } from '../../../apps/server/common/customExceptions/exception/unknown.exception';
 import { CreatePasswordReqDto } from '../../../apps/server/password/dto/api-dto/create-password.req.dto';
-import { GetDomainBodyReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
+import { GetDomainParamReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '../../../apps/server/password/dto/api-dto/getPasswords.req.dto';
 import { FindOneByIdDto } from '../../../apps/server/password/dto/basic-dto/findOneById.dto';
 import { MysqlService } from '../mysql.service';
@@ -14,6 +14,16 @@ export class PasswordRepository {
   private FILED_IDX = 1 as const;
   constructor(private readonly mysqlService: MysqlService) {}
 
+  public async deleteOne(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
+    try {
+      const query = `DELETE FROM password.passwords WHERE domain = '${param.domain}'`;
+      const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
+
+      return deleteQueryResult[this.ROW_IDX];
+    } catch (error) {
+      throw new CustomUnknownException({ title: 'UnkwonException', message: 'deleteOne', raw: error });
+    }
+  }
   public async findAllWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
     try {
       const query = `SELECT * FROM password.passwords ORDERS LIMIT ${queryDto.pageSize} OFFSET ${
@@ -49,7 +59,7 @@ export class PasswordRepository {
    * 도메인이 일치하는 것을 반환합니다.
    * @param getDomainQueryReqDto 도메인 ex naver, google...
    */
-  public async findOneByDomain(getDomainQueryReqDto: GetDomainBodyReqDto): Promise<RowDataPacket> {
+  public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<RowDataPacket> {
     const query = `SELECT * FROM password.passwords WHERE domain='${getDomainQueryReqDto.domain}'`;
     const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 

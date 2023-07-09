@@ -5,6 +5,9 @@ import {
   createPasswordDescriptionMd,
   createPasswordSuccMd,
   createPasswordSummaryMd,
+  deleteOneDescriptionMd,
+  deleteOneSuccMd,
+  deleteOneSummaryMd,
   getPasswordArrWithPaginationDescriptionMd,
   getPasswordArrWithPaginationSuccMd,
   getPasswordArrWithPaginationSummaryMd,
@@ -17,12 +20,13 @@ import {
 } from './docs/password.docs';
 import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
-import { GetDomainBodyReqDto } from './dto/api-dto/getDomain.req.dto';
+import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto, GetDomainResDtoNotFoundExceptionResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto } from './dto/api-dto/getPasswords.res.dto';
 import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword.req.dto';
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
+import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
 import { PasswordService } from './password.service';
 import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
 import { RouteTable } from '../common/decorator/router-table.decorator';
@@ -70,8 +74,8 @@ export class PasswordController {
     description: getPasswordByDomainDescriptionMd,
     summary: getPasswordByDomainSummaryMd,
   })
-  public async getPasswordByDomain(@Param(ValidationPipe) getDomainBodyReqDto: GetDomainBodyReqDto): Promise<GetDomainResDto> {
-    return await this.passwordService.findOneByDomain(getDomainBodyReqDto);
+  public async getPasswordByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto): Promise<GetDomainResDto> {
+    return await this.passwordService.findOneByDomain(getDomainParamReqDto);
   }
 
   @Route({
@@ -108,5 +112,22 @@ export class PasswordController {
   })
   public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
     return await this.passwordService.create(createPasswordReqDto);
+  }
+
+  @Route({
+    request: {
+      method: Method.DELETE,
+      path: '/:domain',
+    },
+    response: {
+      code: HttpStatus.CREATED,
+      type: CreatePasswordResDto,
+      description: deleteOneSuccMd,
+    },
+    description: deleteOneDescriptionMd,
+    summary: deleteOneSummaryMd,
+  })
+  public async delete(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto) {
+    return await this.passwordService.deleteOne(getDomainParamReqDto);
   }
 }
