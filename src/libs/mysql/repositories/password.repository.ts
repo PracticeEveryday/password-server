@@ -14,7 +14,7 @@ export class PasswordRepository {
   private FILED_IDX = 1 as const;
   constructor(private readonly mysqlService: MysqlService) {}
 
-  public async deleteOne(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
+  public async deleteOneByDomain(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
     try {
       const query = `DELETE FROM password.passwords WHERE domain = '${param.domain}'`;
       const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);

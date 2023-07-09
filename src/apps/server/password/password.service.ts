@@ -37,14 +37,14 @@ export class PasswordService {
    * password의 해당 id를 삭제하는 메서드입니다. 없을 경우 404, 삭제가 제대로 되지 않은 경우 400 에러를 뱉어냅니다.
    * @param param FindOneByIdDto
    */
-  public async deleteOne(param: GetDomainParamReqDto) {
+  public async deleteOneByDomain(param: GetDomainParamReqDto) {
     try {
       const password = await this.passwordRepository.findOneByDomain(param);
       if (!password) {
         throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
       }
 
-      const deleteResult = await this.passwordRepository.deleteOne(param);
+      const deleteResult = await this.passwordRepository.deleteOneByDomain(param);
       if (deleteResult.affectedRows === 1) {
         return '정상적으로 삭제되었습니다.';
       }

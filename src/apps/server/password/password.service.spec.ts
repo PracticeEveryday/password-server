@@ -24,7 +24,7 @@ describe.only('PasswordService Test', () => {
       create: jest.fn().mockImplementation(async (body: CreatePasswordReqDto): Promise<CreatePasswordResDto> => {
         return new CreatePasswordResDto('test');
       }),
-      deleteOne: jest.fn().mockReturnValue('정상적으로 삭제되었습니다.'),
+      deleteOneByDomain: jest.fn().mockReturnValue('정상적으로 삭제되었습니다.'),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -64,8 +64,8 @@ describe.only('PasswordService Test', () => {
 
   it('Domain의 비밀번호 삭제하기', async () => {
     const getDomainBodyReqDto = GetDomainParamReqDto.toDTO('test');
-    const deleteResult = await passwordService.deleteOne(getDomainBodyReqDto);
-    const mockResult = await mockPasswordService.deleteOne(getDomainBodyReqDto);
+    const deleteResult = await passwordService.deleteOneByDomain(getDomainBodyReqDto);
+    const mockResult = await mockPasswordService.deleteOneByDomain(getDomainBodyReqDto);
     // 있는 거는 같음.
     expect(mockResult).toStrictEqual(deleteResult);
   });
@@ -80,7 +80,7 @@ describe.only('PasswordService Test', () => {
     it('Domain의 비밀번호가 존재하지 않을 때', async () => {
       // 없으면 에러 던짐
       const notFoundDto = GetDomainParamReqDto.toDTO('없는거');
-      await expect(async () => await passwordService.deleteOne(notFoundDto)).rejects.toThrow();
+      await expect(async () => await passwordService.deleteOneByDomain(notFoundDto)).rejects.toThrow();
     });
   });
 });
