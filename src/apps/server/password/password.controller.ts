@@ -26,7 +26,6 @@ import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto } from './dto/api-dto/getPasswords.res.dto';
 import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword.req.dto';
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
-import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
 import { PasswordService } from './password.service';
 import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
 import { RouteTable } from '../common/decorator/router-table.decorator';
