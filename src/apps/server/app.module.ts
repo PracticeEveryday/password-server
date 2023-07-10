@@ -12,6 +12,7 @@ import { EnvModule } from '../../libs/env/env.module';
 import { LogModule } from '../../libs/log/log.module';
 import { MysqlModule } from '../../libs/mysql/mysql.module';
 import { ReadlineModule } from '../../libs/readline/readline.module';
+import { BookModule } from './book/book.module';
 
 const filter: ClassProvider[] = [
   {
@@ -47,7 +48,7 @@ const pipes = [
   },
 ];
 @Module({
-  imports: [EnvModule.forRoot(), LogModule.forRoot(), PasswordModule, ReadlineModule, MysqlModule],
+  imports: [EnvModule.forRoot(), LogModule.forRoot(), PasswordModule, ReadlineModule, MysqlModule, BookModule],
   controllers: [AppController],
   providers: [AppService, ...filter, ...interceptors, ...pipes],
 })
