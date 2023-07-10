@@ -3,6 +3,7 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BookModule } from './book/book.module';
 import { ValidationException } from './common/customExceptions/exception/validation.exception';
 import { CustomExceptionFilter } from './common/filter/http-exception.filter';
 import { HttpResponseInterceptor } from './common/interceptor/http-interceptor.interceptor';
@@ -12,7 +13,6 @@ import { EnvModule } from '../../libs/env/env.module';
 import { LogModule } from '../../libs/log/log.module';
 import { MysqlModule } from '../../libs/mysql/mysql.module';
 import { ReadlineModule } from '../../libs/readline/readline.module';
-import { BookModule } from './book/book.module';
 
 const filter: ClassProvider[] = [
   {
