@@ -1,4 +1,5 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
+import { PoolConnection } from 'mysql2/promise';
 
 import { IsNotEmptyNumber } from '../../../common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString } from '../../../common/decorator/validation/isCustomString.decorator';
@@ -9,11 +10,30 @@ export class CreateBookReqDto extends PickType(BookDto, ['title', 'price']) {
   @ApiProperty({ example: '조영호', description: '책 저자 정보입니다.' })
   author: string;
 
-  @IsNotEmptyNumber(0, 50)
+  @IsNotEmptyString(0, 50)
   @ApiProperty({ example: '위키북스', description: '책 출판 정보입니다.' })
   publisher: string;
 
   @IsNotEmptyNumber(0)
   @ApiProperty({ example: 255, description: '전체 페이지 정보입니다.' })
   pageCount: number;
+
+  private _bookId: number;
+  private _connectionPool?: PoolConnection;
+
+  set setBookId(id: number) {
+    this._bookId = id;
+  }
+
+  set setConnectionPool(connectionPool: PoolConnection) {
+    this._connectionPool = connectionPool;
+  }
+
+  get connectionPool(): PoolConnection {
+    return this._connectionPool;
+  }
+
+  get bookId(): number {
+    return this._bookId;
+  }
 }

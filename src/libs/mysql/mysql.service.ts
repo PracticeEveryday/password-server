@@ -25,13 +25,13 @@ export class MysqlService {
     }
   }
 
-  private async getConnectionPool(): Promise<PoolConnection> {
+  public async getConnectionPool(): Promise<PoolConnection> {
     const pool: Pool = createPool(this.connectionOptions);
 
     return await pool.getConnection();
   }
 
-  private releaseConnectionPool(connectionPool: PoolConnection): void {
+  public releaseConnectionPool(connectionPool: PoolConnection): void {
     return connectionPool.release();
   }
 
