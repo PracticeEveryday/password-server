@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
+import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
 import { BookRepository } from './repository/book.repository';
 import { BookMetaRepository } from './repository/bookMeta.repository';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
@@ -16,7 +17,11 @@ export class BookService {
     @Inject(InjectionToken.BOOKMETA_REPOSITORY) private readonly bookMetaRepository: BookMetaRepository,
   ) {}
 
-  public async create(createBookReqDto: CreateBookReqDto) {
+  /**
+   * 책 정보를 생성하는 메서드입니다.
+   * @param createBookReqDto CreateBookReqDto
+   */
+  public async create(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
     try {
       const connectionPool = await this.mysqlService.getConnectionPool();
       createBookReqDto.setConnectionPool = connectionPool;
@@ -26,8 +31,9 @@ export class BookService {
         const createdBookResult = await this.bookRepository.create(createBookReqDto);
         createBookReqDto.setBookId = createdBookResult.insertId;
 
-        await this.bookMetaRepository.create(createBookReqDto);
+        const createdBookMetaResult = await this.bookMetaRepository.create(createBookReqDto);
         await connectionPool.commit();
+        return new CreateBookResDto(createdBookMetaResult.insertId, createdBookMetaResult.insertId);
       } catch (error) {
         await connectionPool.rollback();
         throw new CustomBadRequestException({ title: 'BadRequestException', message: '타입을 확인해주세요', raw: error });

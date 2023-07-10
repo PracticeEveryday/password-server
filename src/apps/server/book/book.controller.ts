@@ -3,6 +3,7 @@ import { Body, HttpStatus } from '@nestjs/common';
 import { BookService } from './book.service';
 import { createBookDescriptionMd, createBookSuccMd, createBookSummaryMd } from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
+import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
 import { Method } from '../common/enum/method.enum';
@@ -24,13 +25,13 @@ export class BookController {
     },
     response: {
       code: HttpStatus.CREATED,
-      // type: GetPasswordsResDto,
+      type: CreateBookResDto,
       description: createBookSuccMd,
     },
     description: createBookDescriptionMd,
     summary: createBookSummaryMd,
   })
-  public async create(@Body() createBookReqDto: CreateBookReqDto) {
+  public async create(@Body() createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
     return await this.bookService.create(createBookReqDto);
   }
 }

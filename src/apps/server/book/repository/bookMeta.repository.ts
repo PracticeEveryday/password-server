@@ -10,7 +10,7 @@ export class BookMetaRepository {
 
   constructor(private readonly mysqlService: MysqlService) {}
 
-  public async create(createBookReqDto: CreateBookReqDto) {
+  public async create(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
     try {
       const query = `INSERT INTO password.book_metas (book_id, author, publisher, page_count, createdAt, updatedAt, deletedAt) VALUES (${createBookReqDto.bookId}, '${createBookReqDto.author}', '${createBookReqDto.publisher}', ${createBookReqDto.pageCount},  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
       const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
