@@ -45,4 +45,4 @@ export const deleteOneDescriptionMd = `
 `;
 export const deleteOneSummaryMd = `✅ 비밀번호 단일 삭제 API입니다.`;
 
-//-- deleteOne
+//-- deleteOneByDomain

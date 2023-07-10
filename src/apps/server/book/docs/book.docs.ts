@@ -5,4 +5,4 @@ export const createBookDescriptionMd = `
 `;
 export const createBookSummaryMd = `✅ 책의 정보를 저장하는 API입니다.`;
 
-//-- createPassword
+//-- createBook

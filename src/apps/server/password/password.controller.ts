@@ -126,7 +126,7 @@ export class PasswordController {
     description: deleteOneDescriptionMd,
     summary: deleteOneSummaryMd,
   })
-  public async delete(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto) {
+  public async deleteOneByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto) {
     return await this.passwordService.deleteOneByDomain(getDomainParamReqDto);
   }
 }
