@@ -18,6 +18,7 @@ export class CreateBookReqDto extends PickType(BookDto, ['title', 'price']) {
   @ApiProperty({ example: 255, description: '전체 페이지 정보입니다.' })
   pageCount: number;
 
+  // 로직을 진행하다가 추가되는 프로퍼티들
   private _bookId: number;
   private _connectionPool?: PoolConnection;
 
