@@ -8,7 +8,7 @@ import { CustomUnknownException } from '../../apps/server/common/customException
 import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enum';
 import { InjectionToken } from '../mysql/repositories/injectionToken';
 import { PrequalificationRepository } from '../mysql/repositories/prequalification.repository';
-import { ServerInfoRepository } from '../mysql/repositories/serverInfo.repository.service';
+import { ServerInfoRepository } from '../mysql/repositories/serverInfo.repository';
 
 @Injectable()
 export class ReadlineService {

@@ -43,9 +43,7 @@ export class MysqlService {
         await connectionPool.execute(querys[i]);
       }
     } catch (error) {
-      if (connectionPool) {
-        await connectionPool.rollback();
-      }
+      await connectionPool.rollback();
     } finally {
       if (connectionPool) {
         this.releaseConnectionPool(connectionPool);

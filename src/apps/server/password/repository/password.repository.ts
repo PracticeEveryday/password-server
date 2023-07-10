@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
-import { CustomUnknownException } from '../../../apps/server/common/customExceptions/exception/unknown.exception';
-import { CreatePasswordReqDto } from '../../../apps/server/password/dto/api-dto/create-password.req.dto';
-import { GetDomainParamReqDto } from '../../../apps/server/password/dto/api-dto/getDomain.req.dto';
-import { GetPasswordsQueryReqDto } from '../../../apps/server/password/dto/api-dto/getPasswords.req.dto';
-import { FindOneByIdDto } from '../../../apps/server/password/dto/basic-dto/findOneById.dto';
-import { MysqlService } from '../mysql.service';
+import { MysqlService } from '../../../../libs/mysql/mysql.service';
+import { CustomUnknownException } from '../../common/customExceptions/exception/unknown.exception';
+import { CreatePasswordReqDto } from '../dto/api-dto/create-password.req.dto';
+import { GetDomainParamReqDto } from '../dto/api-dto/getDomain.req.dto';
+import { GetPasswordsQueryReqDto } from '../dto/api-dto/getPasswords.req.dto';
+import { FindOneByIdDto } from '../dto/basic-dto/findOneById.dto';
 
 @Injectable()
 export class PasswordRepository {

@@ -5,4 +5,6 @@ export enum InjectionToken {
   PASSWORD_REPOSITORY = 'passwordRepository',
   SERVER_INFO_REPOSITORY = 'serverInfoRepository',
   PREQUALIFICATION_REPOSITORY = 'prequalificationRepository',
+  BOOK_REPOSITORY = 'bookRepository',
+  BOOKMETA_REPOSITORY = 'bookMetaRepository',
 }

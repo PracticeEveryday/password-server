@@ -10,8 +10,15 @@ import { EnvEnum } from '../../libs/env/envEnum';
 import { LogService } from '../../libs/log/log.service';
 import { MysqlService } from '../../libs/mysql/mysql.service';
 import { PrequalificationRepository } from '../../libs/mysql/repositories/prequalification.repository';
-import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository.service';
-import { initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue } from '../../libs/mysql/sql/initTablePassword';
+import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository';
+import {
+  initTablePassword,
+  initTableIsFirst,
+  initTablePrequalification,
+  initFirstValue,
+  initTableBooks,
+  initTableBookMetas,
+} from '../../libs/mysql/sql/initTablePassword';
 import { ReadlineService } from '../../libs/readline/readline.service';
 import { setupSwagger } from '../../libs/swagger/swagger';
 import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
@@ -38,7 +45,8 @@ class Server {
    */
   public async precondition(): Promise<void> {
     try {
-      await this.mysql.parallelTransaction([initTablePassword, initTableIsFirst, initTablePrequalification, initFirstValue]);
+      const initial = [initTablePassword, initTableIsFirst, initTablePrequalification, initTableBooks, initTableBookMetas, initFirstValue];
+      await this.mysql.parallelTransaction(initial);
     } catch (error) {
       this.logService.errorLog('Server', 'precondition error', error);
       throw new CustomUnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
