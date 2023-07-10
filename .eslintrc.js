@@ -22,13 +22,6 @@ module.exports = {
       'error',
       {
         groups: ['builtin', 'external', ['parent', 'sibling'], 'index'],
-        pathGroups: [
-          {
-            pattern: 'angular',
-            group: 'external',
-            position: 'before',
-          },
-        ],
         alphabetize: {
           order: 'asc',
           caseInsensitive: true,

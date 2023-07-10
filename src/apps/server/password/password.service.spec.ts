@@ -14,7 +14,7 @@ import { ValidateUtilModule } from '../../../libs/utils/validate-util/validate-u
 
 const getDomainResDto = new GetDomainResDto('test1');
 
-describe.only('PasswordService Test', () => {
+describe('PasswordService Test', () => {
   let passwordService: PasswordService;
   let mockPasswordService: Partial<PasswordService>;
 
