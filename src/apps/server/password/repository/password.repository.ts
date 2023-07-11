@@ -6,7 +6,7 @@ import { CustomUnknownException } from '../../common/customExceptions/exception/
 import { CreatePasswordReqDto } from '../dto/api-dto/create-password.req.dto';
 import { GetDomainParamReqDto } from '../dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '../dto/api-dto/getPasswords.req.dto';
-import { FindOneByIdDto } from '../dto/basic-dto/findOneById.dto';
+import { FindPasswordByIdDto } from '../dto/basic-dto/findOneByIdDto';
 
 @Injectable()
 export class PasswordRepository {
@@ -70,7 +70,7 @@ export class PasswordRepository {
    * id가 일치하는 것을 반환합니다.
    * @param findOneByIdDto id 숫자
    */
-  public async findOneById(findOneByIdDto: FindOneByIdDto): Promise<RowDataPacket> {
+  public async findOneById(findOneByIdDto: FindPasswordByIdDto): Promise<RowDataPacket> {
     const query = `SELECT * FROM password.passwords WHERE id=${findOneByIdDto.id}`;
     const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 

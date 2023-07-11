@@ -7,7 +7,7 @@ import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto, PasswordResDto } from './dto/api-dto/getPasswords.res.dto';
-import { FindOneByIdDto } from './dto/basic-dto/findOneById.dto';
+import { FindPasswordByIdDto } from './dto/basic-dto/findOneByIdDto';
 import { PasswordRepository } from './repository/password.repository';
 import { LogService } from '../../../libs/log/log.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
@@ -100,7 +100,7 @@ export class PasswordService {
 
       const createResult = await this.passwordRepository.create(body);
       if (createResult.affectedRows === 1) {
-        const findOneByIdDto = FindOneByIdDto.toDTO(createResult.insertId);
+        const findOneByIdDto = FindPasswordByIdDto.toDTO(createResult.insertId);
 
         const rowDataPacket = await this.passwordRepository.findOneById(findOneByIdDto);
         const password = await this.validatePasswordType(rowDataPacket);

@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
+import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { BookRepository } from './repository/book.repository';
 import { BookMetaRepository } from './repository/bookMeta.repository';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
@@ -30,6 +31,15 @@ export class BookService {
       return new CreateBookResDto(createdBookResult.insertId, createdBookMetaResult.insertId);
     } catch (error) {
       throw new CustomUnknownException({ title: 'UnknownException', message: 'book create', raw: error });
+    }
+  }
+
+  public async findOneById(findBookByIdDto: FindBookByIdDto) {
+    try {
+      console.log(findBookByIdDto);
+      return await this.bookRepository.findOneById(findBookByIdDto);
+    } catch (error) {
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'book findOneById', raw: error });
     }
   }
 }

@@ -1,3 +1,4 @@
+import { Inject } from '@nestjs/common';
 import { ResultSetHeader } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
@@ -8,7 +9,7 @@ export class BookMetaRepository {
   private ROW_IDX = 0 as const;
   private FILED_IDX = 1 as const;
 
-  constructor(private readonly mysqlService: MysqlService) {}
+  constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
 
   public async create(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
     try {

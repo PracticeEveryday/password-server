@@ -1,10 +1,18 @@
-import { Body, HttpStatus, UseInterceptors } from '@nestjs/common';
+import { Body, HttpStatus, Param, UseInterceptors } from '@nestjs/common';
 import { PoolConnection } from 'mysql2/promise';
 
 import { BookService } from './book.service';
-import { createBookDescriptionMd, createBookSuccMd, createBookSummaryMd } from './docs/book.docs';
+import {
+  createBookDescriptionMd,
+  createBookSuccMd,
+  createBookSummaryMd,
+  findBookByIdDescriptionMd,
+  findBookByIdSuccMd,
+  findBookByIdSummaryMd,
+} from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
+import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
@@ -41,5 +49,22 @@ export class BookController {
   ): Promise<CreateBookResDto> {
     createBookReqDto.setConnectionPool = connectionPool;
     return await this.bookService.create(createBookReqDto);
+  }
+
+  @Route({
+    request: {
+      method: Method.GET,
+      path: '/:id',
+    },
+    response: {
+      code: HttpStatus.OK,
+      // type: CreateBookResDto,
+      description: findBookByIdSuccMd,
+    },
+    description: findBookByIdDescriptionMd,
+    summary: findBookByIdSummaryMd,
+  })
+  public async findOneById(@Param() findBookByIdDto: FindBookByIdDto) {
+    return await this.bookService.findOneById(findBookByIdDto);
   }
 }
