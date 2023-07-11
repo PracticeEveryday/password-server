@@ -1,12 +1,15 @@
-import { Body, HttpStatus } from '@nestjs/common';
+import { Body, HttpStatus, UseInterceptors } from '@nestjs/common';
+import { PoolConnection } from 'mysql2/promise';
 
 import { BookService } from './book.service';
 import { createBookDescriptionMd, createBookSuccMd, createBookSummaryMd } from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
+import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
 import { Method } from '../common/enum/method.enum';
+import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
 
 @RouteTable({
   path: 'books',
@@ -31,7 +34,12 @@ export class BookController {
     description: createBookDescriptionMd,
     summary: createBookSummaryMd,
   })
-  public async create(@Body() createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
+  @UseInterceptors(TransactionInterceptor)
+  public async create(
+    @Body() createBookReqDto: CreateBookReqDto,
+    @TransactionManager() connectionPool: PoolConnection,
+  ): Promise<CreateBookResDto> {
+    createBookReqDto.setConnectionPool = connectionPool;
     return await this.bookService.create(createBookReqDto);
   }
 }

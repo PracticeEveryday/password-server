@@ -6,7 +6,6 @@ import { BookRepository } from './repository/book.repository';
 import { BookMetaRepository } from './repository/bookMeta.repository';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
-import { CustomBadRequestException } from '../common/customExceptions/exception/badRequest.exception';
 import { CustomUnknownException } from '../common/customExceptions/exception/unknown.exception';
 
 @Injectable()
@@ -23,25 +22,12 @@ export class BookService {
    */
   public async create(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
     try {
-      const connectionPool = await this.mysqlService.getConnectionPool();
-      createBookReqDto.setConnectionPool = connectionPool;
+      const createdBookResult = await this.bookRepository.create(createBookReqDto);
+      createBookReqDto.setBookId = createdBookResult.insertId;
 
-      try {
-        await connectionPool.beginTransaction();
-        const createdBookResult = await this.bookRepository.create(createBookReqDto);
-        createBookReqDto.setBookId = createdBookResult.insertId;
+      const createdBookMetaResult = await this.bookMetaRepository.create(createBookReqDto);
 
-        const createdBookMetaResult = await this.bookMetaRepository.create(createBookReqDto);
-        await connectionPool.commit();
-        return new CreateBookResDto(createdBookMetaResult.insertId, createdBookMetaResult.insertId);
-      } catch (error) {
-        await connectionPool.rollback();
-        throw new CustomBadRequestException({ title: 'BadRequestException', message: '타입을 확인해주세요', raw: error });
-      } finally {
-        if (connectionPool) {
-          this.mysqlService.releaseConnectionPool(connectionPool);
-        }
-      }
+      return new CreateBookResDto(createdBookResult.insertId, createdBookMetaResult.insertId);
     } catch (error) {
       throw new CustomUnknownException({ title: 'UnknownException', message: 'book create', raw: error });
     }
