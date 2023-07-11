@@ -1,4 +1,4 @@
-import { CallHandler, ExecutionContext, HttpException, Injectable, InternalServerErrorException, NestInterceptor } from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable, tap } from 'rxjs';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
