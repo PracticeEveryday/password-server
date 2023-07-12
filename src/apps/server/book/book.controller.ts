@@ -1,4 +1,4 @@
-import { Body, HttpStatus, Param, UseInterceptors } from '@nestjs/common';
+import { Body, HttpStatus, Param, Query, UseInterceptors } from '@nestjs/common';
 import { PoolConnection } from 'mysql2/promise';
 
 import { BookService } from './book.service';
@@ -9,9 +9,13 @@ import {
   findBookByIdDescriptionMd,
   findBookByIdSuccMd,
   findBookByIdSummaryMd,
+  searchBookByTitleDescriptionMd,
+  searchBookByTitleSuccMd,
+  searchBookByTitleSummaryMd,
 } from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
+import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
@@ -66,5 +70,22 @@ export class BookController {
   })
   public async findOneById(@Param() findBookByIdDto: FindBookByIdDto) {
     return await this.bookService.findOneById(findBookByIdDto);
+  }
+
+  @Route({
+    request: {
+      method: Method.GET,
+      path: '/',
+    },
+    response: {
+      code: HttpStatus.OK,
+      // type: CreateBookResDto,
+      description: searchBookByTitleSuccMd,
+    },
+    description: searchBookByTitleDescriptionMd,
+    summary: searchBookByTitleSummaryMd,
+  })
+  public async searchBook(@Query() searchBookReqDto: SearchBookReqDto) {
+    return await this.bookService.searchBook(searchBookReqDto);
   }
 }

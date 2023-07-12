@@ -1,16 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ResultSetHeader } from 'mysql2';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
+import { SqlUtilService } from '../../../../libs/utils/sql-util/sql-util.service';
 import { CustomUnknownException } from '../../common/customExceptions/exception/unknown.exception';
 import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
+import { SearchBookReqDto } from '../dto/api-dto/searchBook.req.dto';
 import { FindBookByIdDto } from '../dto/book-dto/findOneById.req.dto';
+import * as Book from '../interface/book.interface';
 
 @Injectable()
 export class BookRepository {
   private ROW_IDX = 0 as const;
   private FILED_IDX = 1 as const;
-  constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
+  constructor(
+    @Inject(MysqlService) private readonly mysqlService: MysqlService,
+    @Inject(SqlUtilService) private readonly sqlUtilService: SqlUtilService,
+  ) {}
 
   public async create(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
     try {
@@ -31,12 +37,34 @@ export class BookRepository {
        ON book_id=${findBookByIdDto.id} 
        WHERE book.id=${findBookByIdDto.id}`;
 
-      const selectQueryResult = await this.mysqlService.executeSingleQuery(query);
+      const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
       return selectQueryResult[this.ROW_IDX];
     } catch (error) {
-      console.log(error);
       throw new CustomUnknownException({ title: 'UnknownException', message: 'book repo findOneById', raw: error });
+    }
+  }
+
+  public async searchBook(searchBookReqDto: SearchBookReqDto) {
+    try {
+      const query = `SELECT * FROM password.books WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}`;
+
+      const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+
+      return selectQueryResult[this.ROW_IDX];
+    } catch (error) {
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'book repo searchBook', raw: error });
+    }
+  }
+
+  public async findOneByWhere(where: Book.BookWhereInterface) {
+    try {
+      const query = `SELECT * FROM password.books WHERE ${this.sqlUtilService.makeWhereEqualQuery<Book.BookWhereInterface>(where)}`;
+      const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+
+      return selectQueryResult[this.ROW_IDX];
+    } catch (error) {
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'book repo findOneByWhere', raw: error });
     }
   }
 }

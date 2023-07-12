@@ -19,4 +19,8 @@ export class StringUtilService {
     });
     return camelCase;
   }
+
+  public makeWhere<T extends NonNullable<unknown>>(where: T) {
+    //
+  }
 }

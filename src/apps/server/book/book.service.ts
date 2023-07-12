@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
+import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { BookRepository } from './repository/book.repository';
 import { BookMetaRepository } from './repository/bookMeta.repository';
@@ -34,12 +35,23 @@ export class BookService {
     }
   }
 
+  /**
+   * ID에 따른 book을 찾는 메서드입니다.
+   * @param findBookByIdDto FindBookByIdDto
+   */
   public async findOneById(findBookByIdDto: FindBookByIdDto) {
     try {
-      console.log(findBookByIdDto);
       return await this.bookRepository.findOneById(findBookByIdDto);
     } catch (error) {
       throw new CustomUnknownException({ title: 'UnknownException', message: 'book findOneById', raw: error });
+    }
+  }
+
+  public async searchBook(searchBookReqDto: SearchBookReqDto) {
+    try {
+      return await this.bookRepository.searchBook(searchBookReqDto);
+    } catch (error) {
+      throw new CustomUnknownException({ title: 'UnknownException', message: 'book searchBook', raw: error });
     }
   }
 }
