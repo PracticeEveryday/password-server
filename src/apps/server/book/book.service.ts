@@ -47,6 +47,10 @@ export class BookService {
     }
   }
 
+  /**
+   * 책을 조회하는 메서드
+   * @param searchBookReqDto SearchBookReqDto
+   */
   public async searchBook(searchBookReqDto: SearchBookReqDto) {
     try {
       return await this.bookRepository.searchBook(searchBookReqDto);
