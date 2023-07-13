@@ -28,4 +28,16 @@ describe('StringUtilService', () => {
     expect(stringUtilService.parseSnakeCaseToCamelCase(notSnake)).toBe('bookId');
     expect(stringUtilService.parseSnakeCaseToCamelCase(notSnake2)).toBe('bookid');
   });
+
+  it('카멜 케이스를 스네이크 케이스로 변경하는 함수', () => {
+    const snake = 'bookId';
+    const snake2 = 'bookMetaId';
+    const notSnake = 'bookId';
+    const notSnake2 = 'bookid';
+
+    expect(stringUtilService.parseSnakeCaseToCamelCase(snake)).toBe('bookId');
+    expect(stringUtilService.parseSnakeCaseToCamelCase(snake2)).toBe('bookMetaId');
+    expect(stringUtilService.parseSnakeCaseToCamelCase(notSnake)).toBe('bookId');
+    expect(stringUtilService.parseSnakeCaseToCamelCase(notSnake2)).toBe('bookid');
+  });
 });

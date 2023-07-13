@@ -31,7 +31,8 @@ export class BookRepository {
 
   public async findOneById(findBookByIdDto: FindBookByIdDto) {
     try {
-      const query = `SELECT book.id as bookId, title as title, price as price, book_report as bookReport, start_date as startDate, end_date as endDate, bookMetas.id as bookMetaId, bookMetas.author as author, bookMetas.publisher as publisher, bookMetas.page_count as pageCount
+      const query = `
+       SELECT book.id as bookId, title as title, price as price, book_report as bookReport, start_date as startDate, end_date as endDate, bookMetas.id as bookMetaId, bookMetas.author as author, bookMetas.publisher as publisher, bookMetas.page_count as pageCount
        FROM password.books as book 
        LEFT JOIN password.book_metas as bookMetas 
        ON book_id=${findBookByIdDto.id} 
