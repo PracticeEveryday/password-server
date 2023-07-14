@@ -6,7 +6,7 @@ import { CustomUnknownException } from '../customExceptions/exception/unknown.ex
 
 @Injectable()
 export class TryCatchInterceptor implements NestInterceptor {
-  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
+  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<unknown>> {
     return next.handle().pipe(
       catchError(async (error) => {
         if (error instanceof BaseException) {
