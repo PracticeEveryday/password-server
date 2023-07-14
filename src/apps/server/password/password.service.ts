@@ -61,24 +61,17 @@ export class PasswordService {
    * @param getPasswordsReqDto pagination을 상속 받은 dto
    */
   public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
-    try {
-      const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
-      const passwords = result.map((password: RowDataPacket) => {
-        if (!this.validateUtilService.isPasswordInterfaceType(password)) {
-          throw new CustomBadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
-        }
-        return new PasswordResDto(password);
-      });
-      const { totalCount } = await this.passwordRepository.count();
-
-      const pagination = toPagination(totalCount, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
-      return new GetPasswordsResDto(passwords, pagination);
-    } catch (error) {
-      if (error instanceof BaseException) {
-        throw error;
+    const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
+    const passwords = result.map((password: RowDataPacket) => {
+      if (!this.validateUtilService.isPasswordInterfaceType(password)) {
+        throw new CustomBadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
       }
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'password findAllWithPagination', raw: error });
-    }
+      return new PasswordResDto(password);
+    });
+    const { totalCount } = await this.passwordRepository.count();
+
+    const pagination = toPagination(totalCount, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
+    return new GetPasswordsResDto(passwords, pagination);
   }
 
   /**
@@ -86,41 +79,25 @@ export class PasswordService {
    * @param body CreatePassworeReqDto
    */
   public async create(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
-    try {
-      const getDomainQueryReqDto = GetDomainParamReqDto.toDTO(body.domain);
-      const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
+    const getDomainQueryReqDto = GetDomainParamReqDto.toDTO(body.domain);
+    const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
 
-      if (password) {
-        throw new CustomConflictException(
-          makeExceptionScript('conflict exist domain', '해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.'),
-        );
-      }
+    if (password) {
+      throw new CustomConflictException(
+        makeExceptionScript('conflict exist domain', '해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.'),
+      );
+    }
 
-      body.password = this.passwordUtilService.hashPassword(body.password);
+    body.password = this.passwordUtilService.hashPassword(body.password);
 
-      const createResult = await this.passwordRepository.create(body);
-      if (createResult.affectedRows === 1) {
-        const findOneByIdDto = FindPasswordByIdDto.toDTO(createResult.insertId);
+    const createResult = await this.passwordRepository.create(body);
+    if (createResult.affectedRows === 1) {
+      const findOneByIdDto = FindPasswordByIdDto.toDTO(createResult.insertId);
 
-        const rowDataPacket = await this.passwordRepository.findOneById(findOneByIdDto);
-        const password = await this.validatePasswordType(rowDataPacket);
+      const rowDataPacket = await this.passwordRepository.findOneById(findOneByIdDto);
+      const password = await this.validatePasswordType(rowDataPacket);
 
-        return new CreatePasswordResDto(password.domain);
-      }
-    } catch (error) {
-      if (this.validateUtilService.isQeuryErrorInterface(error)) {
-        throw new CustomConflictException({
-          title: 'type error',
-          message: error.sqlState,
-          raw: error,
-        });
-      }
-
-      if (error instanceof BaseException) {
-        throw error;
-      }
-
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'password create', raw: error });
+      return new CreatePasswordResDto(password.domain);
     }
   }
 
@@ -129,20 +106,13 @@ export class PasswordService {
    * @param param GetDomainReqDto
    */
   public async findOneByDomain(param: GetDomainParamReqDto): Promise<GetDomainResDto> {
-    try {
-      const password = await this.passwordRepository.findOneByDomain(param);
+    const password = await this.passwordRepository.findOneByDomain(param);
 
-      if (!password) {
-        throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
-      }
-
-      return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
-    } catch (error) {
-      if (error instanceof BaseException) {
-        throw error;
-      }
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'password findOneByDomain', raw: error });
+    if (!password) {
+      throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
     }
+
+    return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
   }
 
   /**
@@ -151,17 +121,10 @@ export class PasswordService {
    * @param rowDataPacket 비밀번호(RowDataPacket)
    */
   private async validatePasswordType(rowDataPacket: RowDataPacket): Promise<PasswordInterface> {
-    try {
-      if (!this.validateUtilService.isPasswordInterfaceType(rowDataPacket)) {
-        throw new CustomBadRequestException(makeExceptionScript('type error', 'password interface 타입이 아닙니다.'));
-      }
-
-      return rowDataPacket as PasswordInterface;
-    } catch (error) {
-      if (error instanceof BaseException) {
-        throw error;
-      }
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'password validatePasswordType', raw: error });
+    if (!this.validateUtilService.isPasswordInterfaceType(rowDataPacket)) {
+      throw new CustomBadRequestException(makeExceptionScript('type error', 'password interface 타입이 아닙니다.'));
     }
+
+    return rowDataPacket as PasswordInterface;
   }
 }

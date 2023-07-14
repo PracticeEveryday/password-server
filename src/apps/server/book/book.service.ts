@@ -12,9 +12,8 @@ import { BookMetaRepository } from './repository/bookMeta.repository';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
 import { SqlUtilService } from '../../../libs/utils/sql-util/sql-util.service';
-import { BaseException } from '../common/customExceptions/exception/base.exception';
+import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
 import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
-import { CustomUnknownException } from '../common/customExceptions/exception/unknown.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
 
 @Injectable()
@@ -31,16 +30,15 @@ export class BookService {
    * @param createBookReqDto CreateBookReqDto
    */
   public async create(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
-    try {
-      const createdBookResult = await this.bookRepository.create(createBookReqDto);
-      createBookReqDto.setBookId = createdBookResult.insertId;
+    const selectResult = await this.bookRepository.findOneByWhere({ title: createBookReqDto.title });
+    if (selectResult) throw new CustomConflictException(makeExceptionScript('already exist', '해당 타이틀의 책이 존재합니다.'));
 
-      const createdBookMetaResult = await this.bookMetaRepository.create(createBookReqDto);
+    const createdBookResult = await this.bookRepository.create(createBookReqDto);
+    createBookReqDto.setBookId = createdBookResult.insertId;
 
-      return new CreateBookResDto(createdBookResult.insertId, createdBookMetaResult.insertId);
-    } catch (error) {
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'book create', raw: error });
-    }
+    const createdBookMetaResult = await this.bookMetaRepository.create(createBookReqDto);
+
+    return new CreateBookResDto(createdBookResult.insertId, createdBookMetaResult.insertId);
   }
 
   /**
@@ -48,14 +46,10 @@ export class BookService {
    * @param findBookByIdDto FindBookByIdDto
    */
   public async findOneById(findBookByIdDto: FindBookByIdDto): Promise<FindOneByIdResDto> {
-    try {
-      const selectResult: RowDataPacket = await this.bookRepository.findOneById(findBookByIdDto);
-      if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
-      const book = this.sqlUtilService.checkBookType(selectResult);
-      return new FindOneByIdResDto(book);
-    } catch (error) {
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'book findOneById', raw: error });
-    }
+    const selectResult: RowDataPacket = await this.bookRepository.findOneById(findBookByIdDto);
+    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+    const book = this.sqlUtilService.checkBookType(selectResult);
+    return new FindOneByIdResDto(book);
   }
 
   /**
@@ -63,21 +57,16 @@ export class BookService {
    * @param searchBookReqDto SearchBookReqDto
    */
   public async searchBook(searchBookReqDto: SearchBookReqDto): Promise<SearchBookResDto> {
-    try {
-      const selectResultArr: RowDataPacket[] = await this.bookRepository.searchBook(searchBookReqDto);
-      if (selectResultArr.length === 0)
-        throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 검색 조건의 책이 없습니다.'));
+    const selectResultArr: RowDataPacket[] = await this.bookRepository.searchBook(searchBookReqDto);
+    if (selectResultArr.length === 0)
+      throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 검색 조건의 책이 없습니다.'));
 
-      return new SearchBookResDto(
-        selectResultArr.map((selectResult) => {
-          if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
-          const book = this.sqlUtilService.checkBookType(selectResult);
-          return new FindOneByIdResDto(book);
-        }),
-      );
-    } catch (error) {
-      if (error instanceof BaseException) throw error;
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'book searchBook', raw: error });
-    }
+    return new SearchBookResDto(
+      selectResultArr.map((selectResult) => {
+        if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+        const book = this.sqlUtilService.checkBookType(selectResult);
+        return new FindOneByIdResDto(book);
+      }),
+    );
   }
 }

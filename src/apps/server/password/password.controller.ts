@@ -1,4 +1,4 @@
-import { Body, HttpStatus, Param, Query, ValidationPipe } from '@nestjs/common';
+import { Body, HttpStatus, Param, Query, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ApiNotFoundResponse } from '@nestjs/swagger';
 
 import {
@@ -31,6 +31,7 @@ import { PasswordUtilService } from '../../../libs/utils/password-util/password-
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
 import { Method } from '../common/enum/method.enum';
+import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
 
 @RouteTable({
   path: 'passwords',
@@ -39,6 +40,7 @@ import { Method } from '../common/enum/method.enum';
     category: 'public',
   },
 })
+@UseInterceptors(TryCatchInterceptor)
 export class PasswordController {
   constructor(readonly passwordService: PasswordService, readonly passwordUtilService: PasswordUtilService) {}
 

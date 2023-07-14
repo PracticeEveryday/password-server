@@ -24,6 +24,7 @@ import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
 import { Method } from '../common/enum/method.enum';
 import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
+import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
 
 @RouteTable({
   path: 'books',
@@ -32,6 +33,7 @@ import { TransactionInterceptor } from '../common/interceptor/transaction.interc
     category: 'public',
   },
 })
+@UseInterceptors(TryCatchInterceptor)
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 

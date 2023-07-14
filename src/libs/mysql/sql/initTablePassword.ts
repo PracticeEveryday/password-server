@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS prequalifications (
 export const initTableBooks = `
 CREATE TABLE IF NOT EXISTS books (
   id            INT                   AUTO_INCREMENT        PRIMARY KEY,
-  title         VARCHAR(100)          NOT NULL,
-  price         INT                   NOT NULL,
+  title         VARCHAR(100)   UNIQUE   NOT NULL,
+  price         INT                     NOT NULL,
   book_report   VARCHAR(1000)              NULL,
   start_date    TIMESTAMP                  NOT NULL  DEFAULT CURRENT_TIMESTAMP,
   end_date      TIMESTAMP                  NULL,

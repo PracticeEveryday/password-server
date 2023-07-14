@@ -15,26 +15,16 @@ export class PasswordRepository {
   constructor(private readonly mysqlService: MysqlService) {}
 
   public async deleteOneByDomain(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
-    try {
-      const query = `DELETE FROM password.passwords WHERE domain = '${param.domain}'`;
-      const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
+    const query = `DELETE FROM password.passwords WHERE domain = '${param.domain}'`;
+    const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
-      return deleteQueryResult[this.ROW_IDX];
-    } catch (error) {
-      throw new CustomUnknownException({ title: 'UnkwonException', message: 'deleteOne', raw: error });
-    }
+    return deleteQueryResult[this.ROW_IDX];
   }
   public async findAllWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
-    try {
-      const query = `SELECT * FROM password.passwords ORDERS LIMIT ${queryDto.pageSize} OFFSET ${
-        (queryDto.pageNo - 1) * queryDto.pageSize
-      }`;
-      const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+    const query = `SELECT * FROM password.passwords ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
+    const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
-      return selectQueryResult[this.ROW_IDX];
-    } catch (error) {
-      throw new CustomUnknownException({ title: 'UnkwonException', message: 'getPasswordsReqDto', raw: error });
-    }
+    return selectQueryResult[this.ROW_IDX];
   }
 
   public async count() {
