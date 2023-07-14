@@ -40,7 +40,7 @@ export class BookRepository {
 
       const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
-      return selectQueryResult[this.ROW_IDX];
+      return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
     } catch (error) {
       throw new CustomUnknownException({ title: 'UnknownException', message: 'book repo findOneById', raw: error });
     }
@@ -48,12 +48,17 @@ export class BookRepository {
 
   public async searchBook(searchBookReqDto: SearchBookReqDto) {
     try {
-      const query = `SELECT * FROM password.books WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}`;
+      const query = ` 
+        SELECT book.id as bookId, title as title, price as price, book_report as bookReport, start_date as startDate, end_date as endDate, bookMetas.id as bookMetaId, bookMetas.author as author, bookMetas.publisher as publisher, bookMetas.page_count as pageCount
+        FROM password.books as book
+        LEFT JOIN password.book_metas as bookMetas ON book.id = bookMetas.book_id
+        WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}`;
 
       const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
       return selectQueryResult[this.ROW_IDX];
     } catch (error) {
+      console.log(error);
       throw new CustomUnknownException({ title: 'UnknownException', message: 'book repo searchBook', raw: error });
     }
   }

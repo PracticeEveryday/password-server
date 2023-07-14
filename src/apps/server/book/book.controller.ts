@@ -15,7 +15,9 @@ import {
 } from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
+import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
+import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
 import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
@@ -62,13 +64,13 @@ export class BookController {
     },
     response: {
       code: HttpStatus.OK,
-      // type: CreateBookResDto,
+      type: FindOneByIdResDto,
       description: findBookByIdSuccMd,
     },
     description: findBookByIdDescriptionMd,
     summary: findBookByIdSummaryMd,
   })
-  public async findOneById(@Param() findBookByIdDto: FindBookByIdDto) {
+  public async findOneById(@Param() findBookByIdDto: FindBookByIdDto): Promise<FindOneByIdResDto> {
     return await this.bookService.findOneById(findBookByIdDto);
   }
 
@@ -79,13 +81,13 @@ export class BookController {
     },
     response: {
       code: HttpStatus.OK,
-      // type: CreateBookResDto,
+      type: SearchBookResDto,
       description: searchBookByTitleSuccMd,
     },
     description: searchBookByTitleDescriptionMd,
     summary: searchBookByTitleSummaryMd,
   })
-  public async searchBook(@Query() searchBookReqDto: SearchBookReqDto) {
+  public async searchBook(@Query() searchBookReqDto: SearchBookReqDto): Promise<SearchBookResDto> {
     return await this.bookService.searchBook(searchBookReqDto);
   }
 }
