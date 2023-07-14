@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { QueryError, RowDataPacket } from 'mysql2';
+import { QueryError } from 'mysql2';
 
-import { BookSqlInterface } from '../../mysql/types/book.type';
 import { PasswordInterface } from '../../mysql/types/password.type';
 
 @Injectable()

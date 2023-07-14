@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
-import { CustomUnknownException } from '../../common/customExceptions/exception/unknown.exception';
 import { CreatePasswordReqDto } from '../dto/api-dto/create-password.req.dto';
 import { GetDomainParamReqDto } from '../dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '../dto/api-dto/getPasswords.req.dto';
