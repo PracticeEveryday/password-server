@@ -3,7 +3,6 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { SqlUtilService } from '../../../../libs/utils/sql-util/sql-util.service';
-import { CustomUnknownException } from '../../common/customExceptions/exception/unknown.exception';
 import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
 import { SearchBookReqDto } from '../dto/api-dto/searchBook.req.dto';
 import { FindBookByIdDto } from '../dto/book-dto/findOneById.req.dto';
