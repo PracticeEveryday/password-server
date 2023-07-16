@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS book_metas (
     createdAt     TIMESTAMP      DEFAULT     CURRENT_TIMESTAMP COMMENT '생성된 시간',
     updatedAt     TIMESTAMP      DEFAULT     CURRENT_TIMESTAMP     ON UPDATE    CURRENT_TIMESTAMP   COMMENT '마지막으로 업데이트 된 시간',
     deletedAt     TIMESTAMP      NULL        COMMENT '삭제된 시간',
-    FOREIGN KEY (book_id) REFERENCES books(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='책의 메타 정보를 저장하기 위한 TABLE';
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE 
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='책의 메타 정보를 저장하기 위한 TABLE';
 `;
 
 export const initFirstValue = `
