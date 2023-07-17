@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
+import { PasswordInterface } from '../../../../libs/mysql/types/password.type';
 import { CreatePasswordReqDto } from '../dto/api-dto/create-password.req.dto';
 import { GetDomainParamReqDto } from '../dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '../dto/api-dto/getPasswords.req.dto';
@@ -31,6 +32,13 @@ export class PasswordRepository {
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
+  }
+
+  public async update(password: PasswordInterface) {
+    const query = `UPDATE password.passwords SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
+    const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
+
+    return selectQueryResult[this.ROW_IDX];
   }
 
   /**

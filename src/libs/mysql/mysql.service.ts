@@ -55,7 +55,7 @@ export class MysqlService {
    * 하나의 쿼리를 싫행하는 메서드 입니다.
    * @param query 실행할 SQL 쿼리문입니다.
    * 1.OkPacket:
-   * 2.ResultSetHeader: Create Query
+   * 2.ResultSetHeader: Create Query, Update Query
    * 3.RowDataPacket[]: Select Query
    * 4.RowDatePacket[][]
    * 5.OkPacket[]

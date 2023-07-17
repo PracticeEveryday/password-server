@@ -7,6 +7,8 @@ import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto, PasswordResDto } from './dto/api-dto/getPasswords.res.dto';
+import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
+import { UpdatePasswordResDto } from './dto/api-dto/updatePassword.res.dto';
 import { FindPasswordByIdDto } from './dto/basic-dto/findOneByIdDto';
 import { PasswordRepository } from './repository/password.repository';
 import { LogService } from '../../../libs/log/log.service';
@@ -99,6 +101,22 @@ export class PasswordService {
 
       return new CreatePasswordResDto(password.domain);
     }
+  }
+
+  public async update(body: UpdatePasswordReqDto): Promise<UpdatePasswordResDto> {
+    const findOnByDomain = GetDomainParamReqDto.toDTO(body.domain);
+    const selectResult = await this.passwordRepository.findOneByDomain(findOnByDomain);
+
+    if (!selectResult) {
+      throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
+    }
+    let password = await this.validatePasswordType(selectResult);
+    password = body.compareValue(password);
+    password.password = this.passwordUtilService.hashPassword(password.password);
+
+    const updatedResult = await this.passwordRepository.update(password);
+
+    return updatedResult.affectedRows === 1 ? new UpdatePasswordResDto(true) : new UpdatePasswordResDto(false);
   }
 
   /**

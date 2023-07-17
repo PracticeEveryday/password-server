@@ -1,12 +1,3 @@
-export const createPasswordSuccMd = `🥳 비밀번호 저장을 성공하였습니다.`;
-export const createPasswordDescriptionMd = `
-### 💬 도메인의 비밀번호를 저장하는 API입니다.\n 
-비밀번호는 [AES 암호화](https://namu.wiki/w/AES)로 해싱되어 저장됩니다.
-`;
-export const createPasswordSummaryMd = `✅ Domain의 Password를 저장하는 API입니다.`;
-
-//-- createPassword
-
 export const getPasswordByDomainSuccMd = `🥳 비밀번호 조회를 성공하였습니다.`;
 export const getPasswordByDomainDescriptionMd = `
 ### 💬 도메인의 비밀번호를 조회하는 API입니다.\n 
@@ -37,6 +28,24 @@ export const getPasswordArrWithPaginationDescriptionMd = `
 export const getPasswordArrWithPaginationSummaryMd = `✅ 비밀번호를 페이지네이션하여 가져오는 API입니다.`;
 
 //-- getPasswordArrWithPagination
+
+export const createPasswordSuccMd = `🥳 비밀번호 저장을 성공하였습니다.`;
+export const createPasswordDescriptionMd = `
+### 💬 도메인의 비밀번호를 저장하는 API입니다.\n 
+비밀번호는 [AES 암호화](https://namu.wiki/w/AES)로 해싱되어 저장됩니다.
+`;
+export const createPasswordSummaryMd = `✅ Domain의 Password를 저장하는 API입니다.`;
+
+//-- createPassword
+
+export const updatePasswordSuccMd = `🥳 비밀번호 업데이트에 성공하였습니다.`;
+export const updatePasswordDescriptionMd = `
+### 💬 도메인의 비밀번호를 업데이트하는 API입니다.\n 
+
+`;
+export const updatePasswordSummaryMd = `✅ Domain의 Password를 업데이트하는 API입니다.`;
+
+//-- updatePassword
 
 export const deleteOneSuccMd = `🥳 비밀번호 단일 삭제에 성공했습니다. :).`;
 export const deleteOneDescriptionMd = `

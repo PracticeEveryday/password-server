@@ -19,7 +19,6 @@ export class FindOneByIdResDto {
   @Exclude() private readonly _pageCount: number;
 
   constructor(data: Partial<BookSqlInterface>) {
-    console.log(data);
     this._bookId = data.bookId;
     this._title = data.title;
     this._price = data.price;

@@ -37,28 +37,7 @@ import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor'
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
-  @Route({
-    request: {
-      method: Method.POST,
-      path: '/',
-    },
-    response: {
-      code: HttpStatus.CREATED,
-      type: CreateBookResDto,
-      description: createBookSuccMd,
-    },
-    description: createBookDescriptionMd,
-    summary: createBookSummaryMd,
-  })
-  @UseInterceptors(TransactionInterceptor)
-  public async create(
-    @Body() createBookReqDto: CreateBookReqDto,
-    @TransactionManager() connectionPool: PoolConnection,
-  ): Promise<CreateBookResDto> {
-    createBookReqDto.setConnectionPool = connectionPool;
-    return await this.bookService.create(createBookReqDto);
-  }
-
+  // --GET
   @Route({
     request: {
       method: Method.GET,
@@ -92,4 +71,29 @@ export class BookController {
   public async searchBook(@Query() searchBookReqDto: SearchBookReqDto): Promise<SearchBookResDto> {
     return await this.bookService.searchBook(searchBookReqDto);
   }
+
+  // -- POST
+  @Route({
+    request: {
+      method: Method.POST,
+      path: '/',
+    },
+    response: {
+      code: HttpStatus.CREATED,
+      type: CreateBookResDto,
+      description: createBookSuccMd,
+    },
+    description: createBookDescriptionMd,
+    summary: createBookSummaryMd,
+  })
+  @UseInterceptors(TransactionInterceptor)
+  public async create(
+    @Body() createBookReqDto: CreateBookReqDto,
+    @TransactionManager() connectionPool: PoolConnection,
+  ): Promise<CreateBookResDto> {
+    createBookReqDto.setConnectionPool = connectionPool;
+    return await this.bookService.create(createBookReqDto);
+  }
+
+  // -- DELETE
 }

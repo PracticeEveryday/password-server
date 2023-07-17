@@ -17,6 +17,9 @@ import {
   recommendPasswordDescriptionMd,
   recommendPasswordSuccMd,
   recommendPasswordSummaryMd,
+  updatePasswordDescriptionMd,
+  updatePasswordSuccMd,
+  updatePasswordSummaryMd,
 } from './docs/password.docs';
 import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
@@ -26,6 +29,8 @@ import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto } from './dto/api-dto/getPasswords.res.dto';
 import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword.req.dto';
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
+import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
+import { UpdatePasswordResDto } from './dto/api-dto/updatePassword.res.dto';
 import { PasswordService } from './password.service';
 import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
 import { RouteTable } from '../common/decorator/router-table.decorator';
@@ -44,6 +49,7 @@ import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor'
 export class PasswordController {
   constructor(readonly passwordService: PasswordService, readonly passwordUtilService: PasswordUtilService) {}
 
+  // -- GET
   @Route({
     request: {
       method: Method.GET,
@@ -98,6 +104,7 @@ export class PasswordController {
     return this.passwordUtilService.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
   }
 
+  // --POST
   @Route({
     request: {
       method: Method.POST,
@@ -105,7 +112,7 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.CREATED,
-      type: CreatePasswordResDto,
+      // type: CreatePasswordResDto,
       description: createPasswordSuccMd,
     },
     description: createPasswordDescriptionMd,
@@ -115,6 +122,26 @@ export class PasswordController {
     return await this.passwordService.create(createPasswordReqDto);
   }
 
+  // -- PUT
+  @Route({
+    request: {
+      method: Method.PUT,
+      path: '/',
+    },
+    response: {
+      code: HttpStatus.CREATED,
+      type: UpdatePasswordResDto,
+      description: updatePasswordSuccMd,
+    },
+    description: updatePasswordDescriptionMd,
+    summary: updatePasswordSummaryMd,
+  })
+  public async update(@Body(ValidationPipe) updatePasswordReqDto: UpdatePasswordReqDto): Promise<UpdatePasswordResDto> {
+    console.log(updatePasswordReqDto, 'asdasd');
+    return await this.passwordService.update(updatePasswordReqDto);
+  }
+
+  // -- DELETE
   @Route({
     request: {
       method: Method.DELETE,
