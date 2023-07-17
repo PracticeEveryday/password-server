@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { validate } from 'class-validator';
 import { QueryError } from 'mysql2';
 
-import { CustomConflictException } from '../../../apps/server/common/customExceptions/exception/conflict.exception';
-import { ValidationException } from '../../../apps/server/common/customExceptions/exception/validation.exception';
-import { makeExceptionScript } from '../../../apps/server/common/customExceptions/makeExceptionScript';
 import { PasswordInterface } from '../../mysql/types/password.type';
 
 @Injectable()

@@ -9,7 +9,7 @@ export class HttpResponseInterceptor implements NestInterceptor {
         if (result) {
           if (result.hasOwnProperty('data')) {
             return {
-              message: result.massage ? result.message : null,
+              message: result.message ? result.message : null,
               result: result.data,
             };
           } else {

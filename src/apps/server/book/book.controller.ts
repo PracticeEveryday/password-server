@@ -22,9 +22,11 @@ import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
+import { ResponseDto } from '../common/dto/response.dto';
 import { Method } from '../common/enum/method.enum';
 import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
 import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
+import { UpdatePasswordResDto } from '../password/dto/api-dto/updatePassword.res.dto';
 
 @RouteTable({
   path: 'books',
@@ -51,8 +53,10 @@ export class BookController {
     description: findBookByIdDescriptionMd,
     summary: findBookByIdSummaryMd,
   })
-  public async findOneById(@Param() findBookByIdDto: FindBookByIdDto): Promise<FindOneByIdResDto> {
-    return await this.bookService.findOneById(findBookByIdDto);
+  public async findOneById(@Param() findBookByIdDto: FindBookByIdDto): Promise<ResponseDto<FindOneByIdResDto>> {
+    const book = await this.bookService.findOneById(findBookByIdDto);
+
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<FindOneByIdResDto>(book);
   }
 
   @Route({
@@ -68,8 +72,10 @@ export class BookController {
     description: searchBookByTitleDescriptionMd,
     summary: searchBookByTitleSummaryMd,
   })
-  public async searchBook(@Query() searchBookReqDto: SearchBookReqDto): Promise<SearchBookResDto> {
-    return await this.bookService.searchBook(searchBookReqDto);
+  public async searchBook(@Query() searchBookReqDto: SearchBookReqDto): Promise<ResponseDto<SearchBookResDto>> {
+    const book = await this.bookService.searchBook(searchBookReqDto);
+
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<SearchBookResDto>(book);
   }
 
   // -- POST
@@ -90,9 +96,11 @@ export class BookController {
   public async create(
     @Body() createBookReqDto: CreateBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
-  ): Promise<CreateBookResDto> {
+  ): Promise<ResponseDto<CreateBookResDto>> {
     createBookReqDto.setConnectionPool = connectionPool;
-    return await this.bookService.create(createBookReqDto);
+    const created = await this.bookService.create(createBookReqDto);
+
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<CreateBookResDto>(created);
   }
 
   // -- DELETE

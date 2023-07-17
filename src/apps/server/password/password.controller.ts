@@ -68,7 +68,7 @@ export class PasswordController {
     @Query() getPasswordsReqDto: GetPasswordsQueryReqDto,
   ): Promise<ResponseDto<GetPasswordsResDto>> {
     const passwordArr = await this.passwordService.findAllWithPagination(getPasswordsReqDto);
-    return await ResponseDto.OK_WITH_DATA<GetPasswordsResDto>(passwordArr);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<GetPasswordsResDto>(passwordArr);
   }
 
   @ApiNotFoundResponse({ type: GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
@@ -89,7 +89,7 @@ export class PasswordController {
     @Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto,
   ): Promise<ResponseDto<GetDomainResDto>> {
     const password = await this.passwordService.findOneByDomain(getDomainParamReqDto);
-    return await ResponseDto.OK_WITH_DATA<GetDomainResDto>(password);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<GetDomainResDto>(password);
   }
 
   @Route({
@@ -109,7 +109,7 @@ export class PasswordController {
     @Query(ValidationPipe) getRecommendPasswordReqQueryDto: GetRecommendPasswordReqQueryDto,
   ): Promise<ResponseDto<GetRecommendPasswordResDto>> {
     const recommended = this.passwordUtilService.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
-    return await ResponseDto.OK_WITH_DATA<GetRecommendPasswordResDto>(recommended);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<GetRecommendPasswordResDto>(recommended);
   }
 
   // --POST
@@ -128,7 +128,7 @@ export class PasswordController {
   })
   public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePasswordReqDto): Promise<ResponseDto<CreatePasswordResDto>> {
     const created = await this.passwordService.create(createPasswordReqDto);
-    return await ResponseDto.OK_WITH_DATA<CreatePasswordResDto>(created);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<CreatePasswordResDto>(created);
   }
 
   // -- PUT
@@ -148,7 +148,7 @@ export class PasswordController {
   public async update(@Body(ValidationPipe) updatePasswordReqDto: UpdatePasswordReqDto): Promise<ResponseDto<UpdatePasswordResDto>> {
     const updated = await this.passwordService.update(updatePasswordReqDto);
 
-    return await ResponseDto.OK_WITH_DATA<UpdatePasswordResDto>(updated);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<UpdatePasswordResDto>(updated, 'success update');
   }
 
   // -- DELETE
@@ -167,6 +167,6 @@ export class PasswordController {
   public async deleteOneByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto): Promise<ResponseDto<string>> {
     const deleted = await this.passwordService.deleteOneByDomain(getDomainParamReqDto);
 
-    return await ResponseDto.OK_WITH_DATA(deleted);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE(deleted, 'success delete');
   }
 }
