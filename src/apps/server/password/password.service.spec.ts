@@ -4,6 +4,8 @@ import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
 import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
+import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
+import { UpdatePasswordResDto } from './dto/api-dto/updatePassword.res.dto';
 import { PasswordService } from './password.service';
 import { passwordProviders } from './providers/password.provider';
 import { EnvModule } from '../../../libs/env/env.module';
@@ -23,6 +25,9 @@ describe('PasswordService Test', () => {
       findOneByDomain: jest.fn().mockReturnValue(getDomainResDto),
       create: jest.fn().mockImplementation(async (body: CreatePasswordReqDto): Promise<CreatePasswordResDto> => {
         return new CreatePasswordResDto('test');
+      }),
+      update: jest.fn().mockImplementation(async (body: UpdatePasswordResDto): Promise<UpdatePasswordResDto> => {
+        return new UpdatePasswordResDto(true);
       }),
       deleteOneByDomain: jest.fn().mockReturnValue('정상적으로 삭제되었습니다.'),
     };
@@ -62,6 +67,18 @@ describe('PasswordService Test', () => {
     expect(mockResult).toStrictEqual(password);
   });
 
+  //TODO:
+  it('password update', async () => {
+    const updatePasswordReqDto = new UpdatePasswordReqDto();
+    updatePasswordReqDto.domain = 'test';
+    updatePasswordReqDto.password = '12345678a';
+    const updated = await passwordService.update(updatePasswordReqDto);
+
+    const mockResult = await mockPasswordService.update(updatePasswordReqDto);
+    // 있는 거는 같음.
+    expect(mockResult).toStrictEqual(updated);
+  });
+
   it('Domain의 비밀번호 삭제하기', async () => {
     const getDomainBodyReqDto = GetDomainParamReqDto.toDTO('test');
     const deleteResult = await passwordService.deleteOneByDomain(getDomainBodyReqDto);
@@ -81,6 +98,14 @@ describe('PasswordService Test', () => {
       // 없으면 에러 던짐
       const notFoundDto = GetDomainParamReqDto.toDTO('없는거');
       await expect(async () => await passwordService.deleteOneByDomain(notFoundDto)).rejects.toThrow();
+    });
+
+    it('password update 시 도메인 정보가 없을떄', async () => {
+      const updatePasswordReqDto = new UpdatePasswordReqDto();
+      updatePasswordReqDto.domain = 'test1';
+      updatePasswordReqDto.password = '12345678a';
+
+      await expect(async () => await passwordService.update(updatePasswordReqDto)).rejects.toThrow();
     });
   });
 });
