@@ -101,6 +101,10 @@ export class PasswordService {
     }
   }
 
+  /**
+   * 비밀번호 업데이트 메서드
+   * @param body UpdatePasswordReqDto
+   */
   public async update(body: UpdatePasswordReqDto): Promise<UpdatedResDto> {
     const findOnByDomain = GetDomainParamReqDto.toDTO(body.domain);
     const selectResult = await this.passwordRepository.findOneByDomain(findOnByDomain);

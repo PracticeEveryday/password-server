@@ -14,12 +14,21 @@ export class PasswordRepository {
   private FILED_IDX = 1 as const;
   constructor(private readonly mysqlService: MysqlService) {}
 
+  /**
+   * 도메인과 일치하는 것을 삭제합니다.
+   * @param param GetDomainParamReqDto
+   */
   public async deleteOneByDomain(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
     const query = `DELETE FROM password.passwords WHERE domain = '${param.domain}'`;
     const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
     return deleteQueryResult[this.ROW_IDX];
   }
+
+  /**
+   * 페이지네이션 옵션만큼 가져옵니다.
+   * @param queryDto GetPasswordsQueryReqDto
+   */
   public async findAllWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
     const query = `SELECT * FROM password.passwords ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
@@ -27,6 +36,9 @@ export class PasswordRepository {
     return selectQueryResult[this.ROW_IDX];
   }
 
+  /**
+   * 전체 개수를 반환합니다.
+   */
   public async count() {
     const query = `SELECT COUNT(*) AS totalCount FROM password.passwords `;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
@@ -34,6 +46,10 @@ export class PasswordRepository {
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
+  /**
+   * 비밀번호 정보를 업데이트합니다.
+   * @param password PasswordInterface
+   */
   public async update(password: PasswordInterface) {
     const query = `UPDATE password.passwords SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
