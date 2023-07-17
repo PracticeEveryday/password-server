@@ -1,4 +1,5 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
+import { IsBoolean } from 'class-validator';
 
 import { IsNotEmptyBoolean } from '../../../common/decorator/validation/isCustomBoolean.decorator';
 
@@ -9,7 +10,9 @@ export class UpdatePasswordResDto {
     this._isUpdated = isUpdated;
   }
 
+  @Expose()
   @IsNotEmptyBoolean()
+  @IsBoolean()
   get isUpdated(): boolean {
     return this._isUpdated;
   }

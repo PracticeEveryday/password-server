@@ -33,6 +33,7 @@ import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
 import { UpdatePasswordResDto } from './dto/api-dto/updatePassword.res.dto';
 import { PasswordService } from './password.service';
 import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
+import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-util.service';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
 import { Method } from '../common/enum/method.enum';
@@ -47,7 +48,11 @@ import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor'
 })
 @UseInterceptors(TryCatchInterceptor)
 export class PasswordController {
-  constructor(readonly passwordService: PasswordService, readonly passwordUtilService: PasswordUtilService) {}
+  constructor(
+    readonly passwordService: PasswordService,
+    readonly passwordUtilService: PasswordUtilService,
+    private readonly validateUtilService: ValidateUtilService,
+  ) {}
 
   // -- GET
   @Route({
@@ -136,9 +141,8 @@ export class PasswordController {
     description: updatePasswordDescriptionMd,
     summary: updatePasswordSummaryMd,
   })
-  public async update(@Body(ValidationPipe) updatePasswordReqDto: UpdatePasswordReqDto): Promise<UpdatePasswordResDto> {
-    console.log(updatePasswordReqDto, 'asdasd');
-    return await this.passwordService.update(updatePasswordReqDto);
+  public async update(@Body(ValidationPipe) updatePasswordReqDto: UpdatePasswordReqDto) {
+    return await this.validateUtilService.validateResponse<UpdatePasswordResDto>(await this.passwordService.update(updatePasswordReqDto));
   }
 
   // -- DELETE
@@ -156,6 +160,8 @@ export class PasswordController {
     summary: deleteOneSummaryMd,
   })
   public async deleteOneByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto) {
-    return await this.passwordService.deleteOneByDomain(getDomainParamReqDto);
+    return await this.validateUtilService.validateResponse<CreatePasswordResDto>(
+      await this.passwordService.deleteOneByDomain(getDomainParamReqDto),
+    );
   }
 }
