@@ -33,9 +33,9 @@ import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
 import { UpdatePasswordResDto } from './dto/api-dto/updatePassword.res.dto';
 import { PasswordService } from './password.service';
 import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
-import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-util.service';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
+import { ResponseDto } from '../common/dto/response.dto';
 import { Method } from '../common/enum/method.enum';
 import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
 
@@ -48,11 +48,7 @@ import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor'
 })
 @UseInterceptors(TryCatchInterceptor)
 export class PasswordController {
-  constructor(
-    readonly passwordService: PasswordService,
-    readonly passwordUtilService: PasswordUtilService,
-    private readonly validateUtilService: ValidateUtilService,
-  ) {}
+  constructor(readonly passwordService: PasswordService, readonly passwordUtilService: PasswordUtilService) {}
 
   // -- GET
   @Route({
@@ -68,8 +64,11 @@ export class PasswordController {
     description: getPasswordArrWithPaginationDescriptionMd,
     summary: getPasswordArrWithPaginationSummaryMd,
   })
-  public async getPasswordArrWithPagination(@Query() getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
-    return await this.passwordService.findAllWithPagination(getPasswordsReqDto);
+  public async getPasswordArrWithPagination(
+    @Query() getPasswordsReqDto: GetPasswordsQueryReqDto,
+  ): Promise<ResponseDto<GetPasswordsResDto>> {
+    const passwordArr = await this.passwordService.findAllWithPagination(getPasswordsReqDto);
+    return await ResponseDto.OK_WITH_DATA<GetPasswordsResDto>(passwordArr);
   }
 
   @ApiNotFoundResponse({ type: GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
@@ -86,8 +85,11 @@ export class PasswordController {
     description: getPasswordByDomainDescriptionMd,
     summary: getPasswordByDomainSummaryMd,
   })
-  public async getPasswordByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto): Promise<GetDomainResDto> {
-    return await this.passwordService.findOneByDomain(getDomainParamReqDto);
+  public async getPasswordByDomain(
+    @Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto,
+  ): Promise<ResponseDto<GetDomainResDto>> {
+    const password = await this.passwordService.findOneByDomain(getDomainParamReqDto);
+    return await ResponseDto.OK_WITH_DATA<GetDomainResDto>(password);
   }
 
   @Route({
@@ -103,10 +105,11 @@ export class PasswordController {
     description: recommendPasswordDescriptionMd,
     summary: recommendPasswordSummaryMd,
   })
-  public recommendPassword(
+  public async recommendPassword(
     @Query(ValidationPipe) getRecommendPasswordReqQueryDto: GetRecommendPasswordReqQueryDto,
-  ): GetRecommendPasswordResDto {
-    return this.passwordUtilService.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
+  ): Promise<ResponseDto<GetRecommendPasswordResDto>> {
+    const recommended = this.passwordUtilService.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
+    return await ResponseDto.OK_WITH_DATA<GetRecommendPasswordResDto>(recommended);
   }
 
   // --POST
@@ -123,8 +126,9 @@ export class PasswordController {
     description: createPasswordDescriptionMd,
     summary: createPasswordSummaryMd,
   })
-  public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
-    return await this.passwordService.create(createPasswordReqDto);
+  public async create(@Body(ValidationPipe) createPasswordReqDto: CreatePasswordReqDto): Promise<ResponseDto<CreatePasswordResDto>> {
+    const created = await this.passwordService.create(createPasswordReqDto);
+    return await ResponseDto.OK_WITH_DATA<CreatePasswordResDto>(created);
   }
 
   // -- PUT
@@ -141,8 +145,10 @@ export class PasswordController {
     description: updatePasswordDescriptionMd,
     summary: updatePasswordSummaryMd,
   })
-  public async update(@Body(ValidationPipe) updatePasswordReqDto: UpdatePasswordReqDto) {
-    return await this.validateUtilService.validateResponse<UpdatePasswordResDto>(await this.passwordService.update(updatePasswordReqDto));
+  public async update(@Body(ValidationPipe) updatePasswordReqDto: UpdatePasswordReqDto): Promise<ResponseDto<UpdatePasswordResDto>> {
+    const updated = await this.passwordService.update(updatePasswordReqDto);
+
+    return await ResponseDto.OK_WITH_DATA<UpdatePasswordResDto>(updated);
   }
 
   // -- DELETE
@@ -153,15 +159,14 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.CREATED,
-      type: CreatePasswordResDto,
       description: deleteOneSuccMd,
     },
     description: deleteOneDescriptionMd,
     summary: deleteOneSummaryMd,
   })
-  public async deleteOneByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto) {
-    return await this.validateUtilService.validateResponse<CreatePasswordResDto>(
-      await this.passwordService.deleteOneByDomain(getDomainParamReqDto),
-    );
+  public async deleteOneByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto): Promise<ResponseDto<string>> {
+    const deleted = await this.passwordService.deleteOneByDomain(getDomainParamReqDto);
+
+    return await ResponseDto.OK_WITH_DATA(deleted);
   }
 }

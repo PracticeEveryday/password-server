@@ -7,9 +7,16 @@ export class HttpResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((result) => {
         if (result) {
-          return {
-            result,
-          };
+          if (result.hasOwnProperty('data')) {
+            return {
+              message: result.massage ? result.message : null,
+              result: result.data,
+            };
+          } else {
+            return {
+              result,
+            };
+          }
         } else {
           return {
             result: 'no data',
