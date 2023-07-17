@@ -30,12 +30,13 @@ import { GetPasswordsResDto } from './dto/api-dto/getPasswords.res.dto';
 import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword.req.dto';
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
-import { UpdatePasswordResDto } from './dto/api-dto/updatePassword.res.dto';
 import { PasswordService } from './password.service';
 import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
+import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
 import { ResponseDto } from '../common/dto/response.dto';
+import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 import { Method } from '../common/enum/method.enum';
 import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
 
@@ -120,7 +121,7 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.CREATED,
-      // type: CreatePasswordResDto,
+      type: CreatePasswordResDto,
       description: createPasswordSuccMd,
     },
     description: createPasswordDescriptionMd,
@@ -139,16 +140,16 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.CREATED,
-      type: UpdatePasswordResDto,
+      type: UpdatedResDto,
       description: updatePasswordSuccMd,
     },
     description: updatePasswordDescriptionMd,
     summary: updatePasswordSummaryMd,
   })
-  public async update(@Body(ValidationPipe) updatePasswordReqDto: UpdatePasswordReqDto): Promise<ResponseDto<UpdatePasswordResDto>> {
+  public async update(@Body(ValidationPipe) updatePasswordReqDto: UpdatePasswordReqDto): Promise<ResponseDto<UpdatedResDto>> {
     const updated = await this.passwordService.update(updatePasswordReqDto);
 
-    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<UpdatePasswordResDto>(updated, 'success update');
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<UpdatedResDto>(updated, 'success update');
   }
 
   // -- DELETE
@@ -159,12 +160,13 @@ export class PasswordController {
     },
     response: {
       code: HttpStatus.CREATED,
+      type: DeletedResDto,
       description: deleteOneSuccMd,
     },
     description: deleteOneDescriptionMd,
     summary: deleteOneSummaryMd,
   })
-  public async deleteOneByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto): Promise<ResponseDto<string>> {
+  public async deleteOneByDomain(@Param(ValidationPipe) getDomainParamReqDto: GetDomainParamReqDto): Promise<ResponseDto<DeletedResDto>> {
     const deleted = await this.passwordService.deleteOneByDomain(getDomainParamReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE(deleted, 'success delete');

@@ -8,7 +8,6 @@ import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto, PasswordResDto } from './dto/api-dto/getPasswords.res.dto';
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
-import { UpdatePasswordResDto } from './dto/api-dto/updatePassword.res.dto';
 import { FindPasswordByIdDto } from './dto/basic-dto/findOneByIdDto';
 import { PasswordRepository } from './repository/password.repository';
 import { LogService } from '../../../libs/log/log.service';
@@ -22,6 +21,8 @@ import { CustomConflictException } from '../common/customExceptions/exception/co
 import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
 import { CustomUnknownException } from '../common/customExceptions/exception/unknown.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
+import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
+import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 import { toPagination } from '../common/helper/pagination.helper';
 
 @Injectable()
@@ -39,7 +40,7 @@ export class PasswordService {
    * password의 해당 id를 삭제하는 메서드입니다. 없을 경우 404, 삭제가 제대로 되지 않은 경우 400 에러를 뱉어냅니다.
    * @param param FindOneByIdDto
    */
-  public async deleteOneByDomain(param: GetDomainParamReqDto) {
+  public async deleteOneByDomain(param: GetDomainParamReqDto): Promise<DeletedResDto> {
     try {
       const password = await this.passwordRepository.findOneByDomain(param);
       if (!password) {
@@ -47,10 +48,7 @@ export class PasswordService {
       }
 
       const deleteResult = await this.passwordRepository.deleteOneByDomain(param);
-      if (deleteResult.affectedRows === 1) {
-        return '정상적으로 삭제되었습니다.';
-      }
-      throw new CustomBadRequestException(makeExceptionScript('BadRequestException', '삭제하는 데 문제가 있습니다.'));
+      return deleteResult.affectedRows === 1 ? new DeletedResDto(true) : new DeletedResDto(false);
     } catch (error) {
       if (error instanceof BaseException) throw error;
 
@@ -103,7 +101,7 @@ export class PasswordService {
     }
   }
 
-  public async update(body: UpdatePasswordReqDto): Promise<UpdatePasswordResDto> {
+  public async update(body: UpdatePasswordReqDto): Promise<UpdatedResDto> {
     const findOnByDomain = GetDomainParamReqDto.toDTO(body.domain);
     const selectResult = await this.passwordRepository.findOneByDomain(findOnByDomain);
 
@@ -116,7 +114,7 @@ export class PasswordService {
 
     const updatedResult = await this.passwordRepository.update(password);
 
-    return updatedResult.affectedRows === 1 ? new UpdatePasswordResDto(true) : new UpdatePasswordResDto(false);
+    return updatedResult.affectedRows === 1 ? new UpdatedResDto(true) : new UpdatedResDto(false);
   }
 
   /**

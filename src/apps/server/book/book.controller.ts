@@ -26,7 +26,6 @@ import { ResponseDto } from '../common/dto/response.dto';
 import { Method } from '../common/enum/method.enum';
 import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
 import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
-import { UpdatePasswordResDto } from '../password/dto/api-dto/updatePassword.res.dto';
 
 @RouteTable({
   path: 'books',

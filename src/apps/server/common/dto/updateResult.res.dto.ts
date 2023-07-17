@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-import { IsNotEmptyBoolean } from '../../../common/decorator/validation/isCustomBoolean.decorator';
+import { IsNotEmptyBoolean } from '../decorator/validation/isCustomBoolean.decorator';
 
-export class UpdatePasswordResDto {
+export class UpdatedResDto {
   @Exclude() _isUpdated: boolean;
 
   constructor(isUpdated: boolean) {
@@ -12,7 +12,7 @@ export class UpdatePasswordResDto {
 
   @Expose()
   @IsNotEmptyBoolean()
-  @ApiProperty({ example: true, description: '비밀번호가 업데이트 되었는지의 여부입니다.' })
+  @ApiProperty({ example: true, description: '업데이트가 제대로 되었는지 여부입니다.' })
   get isUpdated(): boolean {
     return this._isUpdated;
   }

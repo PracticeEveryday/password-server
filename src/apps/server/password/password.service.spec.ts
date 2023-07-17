@@ -5,7 +5,6 @@ import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
 import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
-import { UpdatePasswordResDto } from './dto/api-dto/updatePassword.res.dto';
 import { PasswordService } from './password.service';
 import { passwordProviders } from './providers/password.provider';
 import { EnvModule } from '../../../libs/env/env.module';
@@ -13,6 +12,8 @@ import { LogModule } from '../../../libs/log/log.module';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
 import { PasswordUtilModule } from '../../../libs/utils/password-util/password-util.module';
 import { ValidateUtilModule } from '../../../libs/utils/validate-util/validate-util.module';
+import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
+import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 
 const getDomainResDto = new GetDomainResDto('test1');
 
@@ -26,10 +27,10 @@ describe('PasswordService Test', () => {
       create: jest.fn().mockImplementation(async (body: CreatePasswordReqDto): Promise<CreatePasswordResDto> => {
         return new CreatePasswordResDto('test');
       }),
-      update: jest.fn().mockImplementation(async (body: UpdatePasswordResDto): Promise<UpdatePasswordResDto> => {
-        return new UpdatePasswordResDto(true);
+      update: jest.fn().mockImplementation(async (body: UpdatedResDto): Promise<UpdatedResDto> => {
+        return new UpdatedResDto(true);
       }),
-      deleteOneByDomain: jest.fn().mockReturnValue('정상적으로 삭제되었습니다.'),
+      deleteOneByDomain: jest.fn().mockReturnValue(new DeletedResDto(true)),
     };
 
     const module: TestingModule = await Test.createTestingModule({
