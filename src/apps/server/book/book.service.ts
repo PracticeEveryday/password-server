@@ -16,6 +16,7 @@ import { SqlUtilService } from '../../../libs/utils/sql-util/sql-util.service';
 import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
 import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
+import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 
 @Injectable()
 export class BookService {
@@ -42,7 +43,7 @@ export class BookService {
     return new CreateBookResDto(createdBookResult.insertId, createdBookMetaResult.insertId);
   }
 
-  public async update(body: UpdateBookReqDto, param: FindBookByIdDto) {
+  public async update(body: UpdateBookReqDto, param: FindBookByIdDto): Promise<UpdatedResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(param);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
 
@@ -51,7 +52,12 @@ export class BookService {
 
     const bookUpdateResult = await this.bookRepository.update(updateInfo, param);
 
-    return bookUpdateResult.affectedRows === 1 ? { isUpdated: true } : { isUpdated: false };
+    if (bookUpdateResult.affectedRows === 1) {
+      const bookMetaUpdateResult = await this.bookMetaRepository.update(updateInfo, param);
+      return bookMetaUpdateResult.affectedRows === 1 ? new UpdatedResDto(true) : new UpdatedResDto(false);
+    }
+
+    new UpdatedResDto(false);
   }
 
   /**

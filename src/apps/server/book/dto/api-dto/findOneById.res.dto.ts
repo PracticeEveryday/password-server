@@ -14,9 +14,9 @@ export class FindOneByIdResDto {
   @Exclude() private readonly _startDate: Date;
   @Exclude() private readonly _endDate: Date | null;
   @Exclude() private readonly _bookMetaId: number;
-  @Exclude() private readonly _author: string;
-  @Exclude() private readonly _publisher: string;
-  @Exclude() private readonly _pageCount: number;
+  @Exclude() private readonly _bookMetaAuthor: string;
+  @Exclude() private readonly _bookMetaPublisher: string;
+  @Exclude() private readonly _bookMetaPageCount: number;
 
   constructor(data: Partial<BookSqlInterface>) {
     this._bookId = data.bookId;
@@ -26,9 +26,9 @@ export class FindOneByIdResDto {
     this._startDate = data.startDate;
     this._endDate = data.endDate;
     this._bookMetaId = data.bookMetaId;
-    this._author = data.author;
-    this._publisher = data.publisher;
-    this._pageCount = data.pageCount;
+    this._bookMetaAuthor = data.bookMetaAuthor;
+    this._bookMetaPublisher = data.bookMetaPublisher;
+    this._bookMetaPageCount = data.bookMetaPageCount;
   }
 
   @IsNotEmptyNumber(0)
@@ -69,16 +69,16 @@ export class FindOneByIdResDto {
   }
   @IsNotEmptyString(0)
   @ApiProperty({ example: '조용호', description: '책의 저자입니다.' })
-  get author(): string {
-    return this._author;
+  get bookMetaAuthor(): string {
+    return this._bookMetaAuthor;
   }
   @ApiProperty({ example: '위키북스', description: '책의 출판사입니다.' })
-  get publisher(): string {
-    return this._publisher;
+  get bookMetaPublisher(): string {
+    return this._bookMetaPublisher;
   }
   @IsNotEmptyNumber(0)
   @ApiProperty({ example: 255, description: '책의 전체 페이지 수입니다.' })
-  get pageCount(): number {
-    return this._pageCount;
+  get bookMetaPageCount(): number {
+    return this._bookMetaPageCount;
   }
 }

@@ -27,6 +27,7 @@ import { TransactionManager } from '../common/decorator/connectionPool.decorator
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
 import { ResponseDto } from '../common/dto/response.dto';
+import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 import { Method } from '../common/enum/method.enum';
 import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
 import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
@@ -115,7 +116,7 @@ export class BookController {
     },
     response: {
       code: HttpStatus.OK,
-      // type: CreateBookResDto,
+      type: UpdatedResDto,
       description: updateBookSuccMd,
     },
     description: updateBookDescriptionMd,
@@ -126,11 +127,11 @@ export class BookController {
     @Param() findBookByIdDto: FindBookByIdDto,
     @Body() updateBookReqDto: UpdateBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
-  ) {
+  ): Promise<ResponseDto<UpdatedResDto>> {
     updateBookReqDto.setConnectionPool = connectionPool;
     const updated = await this.bookService.update(updateBookReqDto, findBookByIdDto);
 
-    return updated;
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<UpdatedResDto>(updated);
   }
 
   // -- DELETE
