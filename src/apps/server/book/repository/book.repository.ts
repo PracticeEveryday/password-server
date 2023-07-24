@@ -5,6 +5,7 @@ import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { SqlUtilService } from '../../../../libs/utils/sql-util/sql-util.service';
 import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
 import { SearchBookReqDto } from '../dto/api-dto/searchBook.req.dto';
+import { UpdateBookReqDto } from '../dto/api-dto/updateBook.req.dto';
 import { FindBookByIdDto } from '../dto/book-dto/findOneById.req.dto';
 import * as Book from '../interface/book.interface';
 
@@ -26,7 +27,17 @@ export class BookRepository {
 
   public async findOneById(findBookByIdDto: FindBookByIdDto) {
     const query = `
-       SELECT book.id as bookId, title as title, price as price, book_report as bookReport, start_date as startDate, end_date as endDate, bookMetas.id as bookMetaId, bookMetas.author as author, bookMetas.publisher as publisher, bookMetas.page_count as pageCount
+       SELECT 
+           book.id as bookId, 
+           title as title,
+           price as price,
+           book_report as bookReport,
+           start_date as startDate,
+           end_date as endDate,
+           bookMetas.id as bookMetaId,
+           bookMetas.author as bookMetaAuthor,
+           bookMetas.publisher as bookMetaPublisher,
+           bookMetas.page_count as bookMetaPageCount
        FROM password.books as book 
        LEFT JOIN password.book_metas as bookMetas 
        ON book_id=${findBookByIdDto.id} 
@@ -54,5 +65,19 @@ export class BookRepository {
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
+  }
+
+  public async update(updateBookReqDto: UpdateBookReqDto, param: FindBookByIdDto): Promise<ResultSetHeader> {
+    const query = `
+        UPDATE password.books 
+        SET title='${updateBookReqDto.title}',
+            price=${updateBookReqDto.price},
+            book_report='${updateBookReqDto.bookReport}',
+            end_date='${updateBookReqDto.endDate.toISOString().slice(0, 19)}',
+            start_date='${updateBookReqDto.startDate.toISOString().slice(0, 19)}'
+        WHERE id=${param.id}`;
+
+    const updateQueryResult = await updateBookReqDto.connectionPool.execute<ResultSetHeader>(query);
+    return updateQueryResult[this.ROW_IDX];
   }
 }

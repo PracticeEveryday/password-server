@@ -12,12 +12,16 @@ import {
   searchBookByTitleDescriptionMd,
   searchBookByTitleSuccMd,
   searchBookByTitleSummaryMd,
+  updateBookDescriptionMd,
+  updateBookSuccMd,
+  updateBookSummaryMd,
 } from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
 import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
+import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
 import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
@@ -100,6 +104,33 @@ export class BookController {
     const created = await this.bookService.create(createBookReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<CreateBookResDto>(created);
+  }
+
+  // -- PUT
+
+  @Route({
+    request: {
+      method: Method.PUT,
+      path: '/:id',
+    },
+    response: {
+      code: HttpStatus.OK,
+      // type: CreateBookResDto,
+      description: updateBookSuccMd,
+    },
+    description: updateBookDescriptionMd,
+    summary: updateBookSummaryMd,
+  })
+  @UseInterceptors(TransactionInterceptor)
+  public async update(
+    @Param() findBookByIdDto: FindBookByIdDto,
+    @Body() updateBookReqDto: UpdateBookReqDto,
+    @TransactionManager() connectionPool: PoolConnection,
+  ) {
+    updateBookReqDto.setConnectionPool = connectionPool;
+    const updated = await this.bookService.update(updateBookReqDto, findBookByIdDto);
+
+    return updated;
   }
 
   // -- DELETE

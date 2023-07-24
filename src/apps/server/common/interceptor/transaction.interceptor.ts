@@ -26,6 +26,7 @@ export class TransactionInterceptor implements NestInterceptor {
         if (error instanceof BaseException) {
           throw error;
         } else {
+          console.log(error);
           throw new CustomUnknownException({ title: 'UnknownException', message: 'TransactionInterceptor', raw: error });
         }
       }),

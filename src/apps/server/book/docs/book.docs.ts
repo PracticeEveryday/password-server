@@ -25,3 +25,12 @@ export const searchBookByTitleDescriptionMd = `
 export const searchBookByTitleSummaryMd = `✅ \`search\`와  \`searchKeyword\` 쿼리로 책을 조회하는 API입니다.`;
 
 //-- searchBook
+
+export const updateBookSuccMd = `🥳 책 정보 수정을 성공하였습니다.`;
+export const updateBookDescriptionMd = `
+### 💬 책의 정보를 수정하는 API입니다.
+
+`;
+export const updateBookSummaryMd = `✅ 책의 정보를 수정하는 API입니다.`;
+
+//-- updateBook

@@ -6,6 +6,7 @@ import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
 import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
+import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
 import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { BookRepository } from './repository/book.repository';
 import { BookMetaRepository } from './repository/bookMeta.repository';
@@ -39,6 +40,18 @@ export class BookService {
     const createdBookMetaResult = await this.bookMetaRepository.create(createBookReqDto);
 
     return new CreateBookResDto(createdBookResult.insertId, createdBookMetaResult.insertId);
+  }
+
+  public async update(body: UpdateBookReqDto, param: FindBookByIdDto) {
+    const selectResult: RowDataPacket = await this.bookRepository.findOneById(param);
+    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+
+    const book = this.sqlUtilService.checkBookTypeAndConvertObj(selectResult);
+    const updateInfo = body.compareValue(book);
+
+    const bookUpdateResult = await this.bookRepository.update(updateInfo, param);
+
+    return bookUpdateResult.affectedRows === 1 ? { isUpdated: true } : { isUpdated: false };
   }
 
   /**

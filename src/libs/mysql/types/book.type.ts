@@ -8,7 +8,7 @@ export interface BookSqlInterface extends RowDataPacket {
   startDate: Date;
   endDate: Date | null;
   bookMetaId: number;
-  author: string;
-  publisher: string;
-  pageCount: number;
+  bookMetaAuthor: string;
+  bookMetaPublisher: string;
+  bookMetaPageCount: number;
 }
