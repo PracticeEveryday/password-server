@@ -28,7 +28,7 @@ export class BookRepository {
   public async findOneById(findBookByIdDto: FindBookByIdDto) {
     const query = `
        SELECT 
-           book.id as bookId, 
+           book.id as id, 
            title as title,
            price as price,
            book_report as bookReport,

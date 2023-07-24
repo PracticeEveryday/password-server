@@ -18,7 +18,7 @@ import {
 } from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
-import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
+import { FindOneByIdResDto, FindOneByIdResDtoV2 } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
 import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
@@ -51,16 +51,16 @@ export class BookController {
     },
     response: {
       code: HttpStatus.OK,
-      type: FindOneByIdResDto,
+      type: FindOneByIdResDtoV2,
       description: findBookByIdSuccMd,
     },
     description: findBookByIdDescriptionMd,
     summary: findBookByIdSummaryMd,
   })
-  public async findOneById(@Param() findBookByIdDto: FindBookByIdDto): Promise<ResponseDto<FindOneByIdResDto>> {
+  public async findOneById(@Param() findBookByIdDto: FindBookByIdDto): Promise<ResponseDto<FindOneByIdResDtoV2>> {
     const book = await this.bookService.findOneById(findBookByIdDto);
 
-    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<FindOneByIdResDto>(book);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<FindOneByIdResDtoV2>(book);
   }
 
   @Route({

@@ -3,7 +3,7 @@ import { RowDataPacket } from 'mysql2';
 
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
-import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
+import { FindOneByIdResDto, FindOneByIdResDtoV2 } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
 import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
@@ -64,11 +64,12 @@ export class BookService {
    * ID에 따른 book을 찾는 메서드입니다.
    * @param findBookByIdDto FindBookByIdDto
    */
-  public async findOneById(findBookByIdDto: FindBookByIdDto): Promise<FindOneByIdResDto> {
+  public async findOneById(findBookByIdDto: FindBookByIdDto): Promise<FindOneByIdResDtoV2> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findBookByIdDto);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
-    const book = this.sqlUtilService.checkBookType(selectResult);
-    return new FindOneByIdResDto(book);
+
+    const book = this.sqlUtilService.checkBookTypeAndConvertObj(selectResult);
+    return new FindOneByIdResDtoV2(book);
   }
 
   /**

@@ -79,6 +79,7 @@ export class SqlUtilService {
       const bookJoinColumnArr = ['bookMeta'];
       const book = <BookInterface>{};
       const sliceConditionValue = {};
+
       for (const [key, value] of Object.entries(bookSql)) {
         const sliceCondition = bookJoinColumnArr.find((column) => {
           const regex = new RegExp(column);
