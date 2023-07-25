@@ -6,6 +6,9 @@ import {
   createBookDescriptionMd,
   createBookSuccMd,
   createBookSummaryMd,
+  deleteBookDescriptionMd,
+  deleteBookSuccMd,
+  deleteBookSummaryMd,
   findBookByIdDescriptionMd,
   findBookByIdSuccMd,
   findBookByIdSummaryMd,
@@ -18,6 +21,7 @@ import {
 } from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
+import { DeleteBookReqDto } from './dto/api-dto/deleteBook.req.dto';
 import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
@@ -26,6 +30,7 @@ import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
+import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
 import { ResponseDto } from '../common/dto/response.dto';
 import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 import { Method } from '../common/enum/method.enum';
@@ -135,4 +140,28 @@ export class BookController {
   }
 
   // -- DELETE
+
+  @Route({
+    request: {
+      method: Method.DELETE,
+      path: '/:id',
+    },
+    response: {
+      code: HttpStatus.OK,
+      type: DeletedResDto,
+      description: deleteBookSuccMd,
+    },
+    description: deleteBookDescriptionMd,
+    summary: deleteBookSummaryMd,
+  })
+  @UseInterceptors(TransactionInterceptor)
+  public async deleteOne(
+    @Param() deleteBookReqDto: DeleteBookReqDto,
+    @TransactionManager() connectionPool: PoolConnection,
+  ): Promise<ResponseDto<DeletedResDto>> {
+    deleteBookReqDto.setConnectionPool = connectionPool;
+    const deleted = await this.bookService.deleteOne(deleteBookReqDto);
+
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<DeletedResDto>(deleted);
+  }
 }

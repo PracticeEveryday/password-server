@@ -3,6 +3,7 @@ import { RowDataPacket } from 'mysql2';
 
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
+import { DeleteBookReqDto } from './dto/api-dto/deleteBook.req.dto';
 import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
@@ -18,6 +19,7 @@ import { SqlUtilService } from '../../../libs/utils/sql-util/sql-util.service';
 import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
 import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
+import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
 import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 
 @Injectable()
@@ -94,5 +96,18 @@ export class BookService {
         return new FindOneByIdResDto(book);
       }),
     );
+  }
+
+  public async deleteOne(deleteBookReqDto: DeleteBookReqDto): Promise<DeletedResDto> {
+    const findBookByIdDto = FindBookByIdDto.toDTO(deleteBookReqDto.id);
+    const selectResult: RowDataPacket = await this.bookRepository.findOneById(findBookByIdDto);
+    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+
+    const deletedBookMetaResult = await this.bookMetaRepository.deleteOne(deleteBookReqDto);
+    if (deletedBookMetaResult.affectedRows === 1) {
+      const deletedBookResult = await this.bookRepository.deleteOne(deleteBookReqDto);
+      return deletedBookResult.affectedRows === 1 ? new DeletedResDto(true) : new DeletedResDto(false);
+    }
+    return new DeletedResDto(false);
   }
 }

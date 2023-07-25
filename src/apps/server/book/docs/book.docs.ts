@@ -34,3 +34,12 @@ export const updateBookDescriptionMd = `
 export const updateBookSummaryMd = `✅ 책의 정보를 수정하는 API입니다.`;
 
 //-- updateBook
+
+export const deleteBookSuccMd = `🥳 책 정보 삭제를 성공하였습니다.`;
+export const deleteBookDescriptionMd = `
+### 💬 책의 정보를 삭제하는 API입니다.
+
+`;
+export const deleteBookSummaryMd = `✅ 책의 정보를 삭제하는 API입니다.`;
+
+//-- deleteBook

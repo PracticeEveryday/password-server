@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
-import { BookInterface } from '../../../apps/server/book/interface/book.interface';
-import { BookSqlInterface } from '../../mysql/types/book.type';
 import { StringUtilService } from '../string-util/string-util.service';
 
 @Injectable()

@@ -4,6 +4,7 @@ import { ResultSetHeader } from 'mysql2';
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { CustomUnknownException } from '../../common/customExceptions/exception/unknown.exception';
 import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
+import { DeleteBookReqDto } from '../dto/api-dto/deleteBook.req.dto';
 import { UpdateBookReqDto } from '../dto/api-dto/updateBook.req.dto';
 import { FindBookByIdDto } from '../dto/book-dto/findOneById.req.dto';
 
@@ -36,5 +37,13 @@ export class BookMetaRepository {
 
     const updateQueryResult = await updateBookReqDto.connectionPool.execute<ResultSetHeader>(query);
     return updateQueryResult[this.ROW_IDX];
+  }
+
+  public async deleteOne(deleteBookReqDto: DeleteBookReqDto): Promise<ResultSetHeader> {
+    const query = `DELETE FROM password.book_metas WHERE book_id=${deleteBookReqDto.id}`;
+
+    const deleteQueryResult = await deleteBookReqDto.connectionPool.execute<ResultSetHeader>(query);
+
+    return deleteQueryResult[this.ROW_IDX];
   }
 }
