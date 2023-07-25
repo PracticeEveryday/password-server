@@ -67,12 +67,6 @@ export class SqlUtilService {
     return selectQuery;
   }
 
-  public checkBookType = (data: RowDataPacket): Partial<BookSqlInterface> => {
-    if (data.hasOwnProperty('title')) {
-      return data as Partial<BookSqlInterface>;
-    }
-  };
-
   public checkBookTypeAndConvertObj = (data: RowDataPacket): BookInterface => {
     if (data.hasOwnProperty('title')) {
       const bookSql = data as Partial<BookSqlInterface>;
@@ -97,4 +91,29 @@ export class SqlUtilService {
       return book;
     }
   };
+
+  public checkBookTypeAndConvertObjV2<T extends object, U>(data: RowDataPacket, bookJoinColumnArr: Array<Extract<keyof T, string>>): U {
+    if (data.hasOwnProperty('title')) {
+      const bookSql = data as Partial<T>;
+      const book = <U>{};
+      const sliceConditionValue = <Partial<U>>{};
+
+      for (const [key, value] of Object.entries(bookSql)) {
+        const sliceCondition = bookJoinColumnArr.find((column) => {
+          const regex = new RegExp(String(column));
+          return regex.test(key);
+        });
+
+        if (sliceCondition) {
+          const [_splitedKey, splitedValue] = key.split(sliceCondition);
+
+          sliceConditionValue[splitedValue.replace(/^./, splitedValue[0].toLowerCase())] = value;
+          book[sliceCondition as string] = sliceConditionValue;
+        } else {
+          book[key] = value;
+        }
+      }
+      return book;
+    }
+  }
 }

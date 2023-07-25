@@ -1,3 +1,6 @@
+/**
+ * book에서 가능한 조건
+ */
 export interface BookWhereInterface {
   id?: number;
   title?: string;
@@ -10,6 +13,9 @@ export interface BookWhereInterface {
   deletedAt?: Date;
 }
 
+/**
+ * bookMeta 인터페이스
+ */
 export interface BookMetaInterface {
   id: number;
   bookId: number;
@@ -21,6 +27,9 @@ export interface BookMetaInterface {
   deletedAt?: Date | null;
 }
 
+/**
+ * book 인터페이스
+ */
 export interface BookInterface {
   id: number;
   title: string;

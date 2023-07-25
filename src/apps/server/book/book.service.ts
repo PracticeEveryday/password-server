@@ -8,10 +8,12 @@ import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
 import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
 import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
+import { BookInterface } from './interface/book.interface';
 import { BookRepository } from './repository/book.repository';
 import { BookMetaRepository } from './repository/bookMeta.repository';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
+import { BookSqlInterface } from '../../../libs/mysql/types/book.type';
 import { SqlUtilService } from '../../../libs/utils/sql-util/sql-util.service';
 import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
 import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
@@ -28,7 +30,7 @@ export class BookService {
   ) {}
 
   /**
-   * 책 정보를 생성하는 메서드입니다.
+   * 책 생성
    * @param createBookReqDto CreateBookReqDto
    */
   public async create(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
@@ -43,6 +45,9 @@ export class BookService {
     return new CreateBookResDto(createdBookResult.insertId, createdBookMetaResult.insertId);
   }
 
+  /**
+   * 책 수정
+   */
   public async update(body: UpdateBookReqDto, param: FindBookByIdDto): Promise<UpdatedResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(param);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
@@ -61,19 +66,19 @@ export class BookService {
   }
 
   /**
-   * ID에 따른 book을 찾는 메서드입니다.
+   * 책 조회 By id
    * @param findBookByIdDto FindBookByIdDto
    */
   public async findOneById(findBookByIdDto: FindBookByIdDto): Promise<FindOneByIdResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findBookByIdDto);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
 
-    const book = this.sqlUtilService.checkBookTypeAndConvertObj(selectResult);
+    const book = this.sqlUtilService.checkBookTypeAndConvertObjV2<BookSqlInterface, BookInterface>(selectResult, ['bookMeta']);
     return new FindOneByIdResDto(book);
   }
 
   /**
-   * 책을 조회하는 메서드
+   * 책 검색
    * @param searchBookReqDto SearchBookReqDto
    */
   public async searchBook(searchBookReqDto: SearchBookReqDto): Promise<SearchBookResDto> {
@@ -85,7 +90,7 @@ export class BookService {
       selectResultArr.map((selectResult) => {
         if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
         const book = this.sqlUtilService.checkBookTypeAndConvertObj(selectResult);
-        console.log(book);
+
         return new FindOneByIdResDto(book);
       }),
     );
