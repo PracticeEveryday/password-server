@@ -98,6 +98,10 @@ export class BookService {
     );
   }
 
+  /**
+   * 책 단일 삭제
+   * @param deleteBookReqDto DeleteBookReqDto
+   */
   public async deleteOne(deleteBookReqDto: DeleteBookReqDto): Promise<DeletedResDto> {
     const findBookByIdDto = FindBookByIdDto.toDTO(deleteBookReqDto.id);
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findBookByIdDto);

@@ -37,7 +37,7 @@ export class PasswordService {
   ) {}
 
   /**
-   * password의 해당 id를 삭제하는 메서드입니다. 없을 경우 404, 삭제가 제대로 되지 않은 경우 400 에러를 뱉어냅니다.
+   * 비밀번호 조회 By id
    * @param param FindOneByIdDto
    */
   public async deleteOneByDomain(param: GetDomainParamReqDto): Promise<DeletedResDto> {
@@ -57,7 +57,7 @@ export class PasswordService {
   }
 
   /**
-   * 페이지네이션을 통해 password를 가져온다.
+   * 비밀번호 조회 By 페이지네이션
    * @param getPasswordsReqDto pagination을 상속 받은 dto
    */
   public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
@@ -75,7 +75,7 @@ export class PasswordService {
   }
 
   /**
-   * password를 생성하는 서비스
+   * 비밀번호 생성
    * @param body CreatePassworeReqDto
    */
   public async create(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
@@ -102,7 +102,7 @@ export class PasswordService {
   }
 
   /**
-   * 비밀번호 업데이트 메서드
+   * 비밀번호 수정
    * @param body UpdatePasswordReqDto
    */
   public async update(body: UpdatePasswordReqDto): Promise<UpdatedResDto> {
@@ -122,7 +122,7 @@ export class PasswordService {
   }
 
   /**
-   * 도메인에 따른 비밀번호를 조회하는 메서드
+   * 비밀번호 조회 By 도메인
    * @param param GetDomainReqDto
    */
   public async findOneByDomain(param: GetDomainParamReqDto): Promise<GetDomainResDto> {
