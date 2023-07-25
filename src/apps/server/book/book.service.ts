@@ -52,7 +52,7 @@ export class BookService {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(param);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
 
-    const book = this.sqlUtilService.checkBookTypeAndConvertObj(selectResult);
+    const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
     const updateInfo = body.compareValue(book);
 
     const bookUpdateResult = await this.bookRepository.update(updateInfo, param);
@@ -73,7 +73,7 @@ export class BookService {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findBookByIdDto);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
 
-    const book = this.sqlUtilService.checkBookTypeAndConvertObjV2<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
+    const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
     return new FindOneByIdResDto(book);
   }
 
@@ -89,7 +89,7 @@ export class BookService {
     return new SearchBookResDto(
       selectResultArr.map((selectResult) => {
         if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
-        const book = this.sqlUtilService.checkBookTypeAndConvertObj(selectResult);
+        const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
 
         return new FindOneByIdResDto(book);
       }),

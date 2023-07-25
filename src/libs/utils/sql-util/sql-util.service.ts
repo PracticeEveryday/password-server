@@ -67,32 +67,7 @@ export class SqlUtilService {
     return selectQuery;
   }
 
-  public checkBookTypeAndConvertObj = (data: RowDataPacket): BookInterface => {
-    if (data.hasOwnProperty('title')) {
-      const bookSql = data as Partial<BookSqlInterface>;
-      const bookJoinColumnArr = ['bookMeta'];
-      const book = <BookInterface>{};
-      const sliceConditionValue = {};
-
-      for (const [key, value] of Object.entries(bookSql)) {
-        const sliceCondition = bookJoinColumnArr.find((column) => {
-          const regex = new RegExp(column);
-          return regex.test(key);
-        });
-        if (sliceCondition) {
-          const [_splitedKey, splitedValue] = key.split(sliceCondition);
-
-          sliceConditionValue[splitedValue.replace(/^./, splitedValue[0].toLowerCase())] = value;
-          book[sliceCondition] = sliceConditionValue;
-        } else {
-          book[key] = value;
-        }
-      }
-      return book;
-    }
-  };
-
-  public checkBookTypeAndConvertObjV2<T extends object, U>(
+  public checkTypeAndConvertObj<T extends object, U>(
     data: RowDataPacket,
     bookJoinColumnArr: Array<Extract<keyof T, string>>,
     propertyFlag: keyof T,
