@@ -51,13 +51,13 @@ export class UpdateBookReqDto {
   }
 
   public compareValue(book: Partial<BookInterface>): UpdateBookReqDto {
-    if (this.title) book.title = this.title;
-    if (this.price) book.price = this.price;
-    if (this.author) book.bookMeta.author = this.author;
-    if (this.publisher) book.bookMeta.publisher = this.publisher;
-    if (this.pageCount) book.bookMeta.pageCount = this.pageCount;
-    if (this.endDate) book.endDate = this.endDate;
-    if (this.startDate) book.startDate = this.startDate;
+    if (!this.title) this.title = book.title;
+    if (!this.price) this.price = book.price;
+    if (!this.author) this.author = book.bookMeta.author;
+    if (!this.publisher) this.publisher = book.bookMeta.publisher;
+    if (!this.pageCount) this.pageCount = book.bookMeta.pageCount;
+    if (!this.endDate) this.endDate = book.endDate;
+    if (!this.startDate) this.startDate = book.startDate;
 
     return this;
   }
