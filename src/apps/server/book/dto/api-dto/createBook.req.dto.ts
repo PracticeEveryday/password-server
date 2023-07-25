@@ -37,4 +37,15 @@ export class CreateBookReqDto extends PickType(BookDto, ['title', 'price']) {
   get bookId(): number {
     return this._bookId;
   }
+
+  static toDTO(data: { title: string; price: number; author: string; publisher: string; pageCount: number }): CreateBookReqDto {
+    const createBookReqDto = new CreateBookReqDto();
+    createBookReqDto.title = data.title;
+    createBookReqDto.price = data.price;
+    createBookReqDto.author = data.author;
+    createBookReqDto.publisher = data.publisher;
+    createBookReqDto.pageCount = data.pageCount;
+
+    return createBookReqDto;
+  }
 }

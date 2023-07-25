@@ -14,4 +14,10 @@ export class DeleteBookReqDto extends PickType(BookDto, ['id']) {
   get connectionPool(): PoolConnection {
     return this._connectionPool;
   }
+
+  static toDTO(id: number) {
+    const deleteBookReqDto = new DeleteBookReqDto();
+    deleteBookReqDto.id = id;
+    return deleteBookReqDto;
+  }
 }

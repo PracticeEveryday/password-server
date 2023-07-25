@@ -21,6 +21,7 @@ export class BookRepository {
 
   public async create(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
     const query = `INSERT INTO password.books (title, price, book_report, start_date, end_date, createdAt, updatedAt, deletedAt) VALUES ('${createBookReqDto.title}', ${createBookReqDto.price}, null, CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
+
     const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
 
     return createQueryResult[this.ROW_IDX];
