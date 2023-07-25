@@ -61,4 +61,25 @@ export class UpdateBookReqDto {
 
     return this;
   }
+
+  static toDTO(data: {
+    title: string;
+    price: number;
+    author: string;
+    publisher: string;
+    pageCount: number;
+    startDate: Date;
+    endDate: Date;
+  }): UpdateBookReqDto {
+    const updateBookReqDto = new UpdateBookReqDto();
+    updateBookReqDto.title = data.title;
+    updateBookReqDto.price = data.price;
+    updateBookReqDto.author = data.author;
+    updateBookReqDto.publisher = data.publisher;
+    updateBookReqDto.pageCount = data.pageCount;
+    updateBookReqDto.startDate = data.startDate;
+    updateBookReqDto.endDate = data.endDate;
+
+    return updateBookReqDto;
+  }
 }
