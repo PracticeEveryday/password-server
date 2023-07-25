@@ -24,10 +24,10 @@ describe('PasswordService Test', () => {
   beforeEach(async () => {
     mockPasswordService = {
       findOneByDomain: jest.fn().mockReturnValue(getDomainResDto),
-      create: jest.fn().mockImplementation(async (body: CreatePasswordReqDto): Promise<CreatePasswordResDto> => {
+      create: jest.fn().mockImplementation(async (_body: CreatePasswordReqDto): Promise<CreatePasswordResDto> => {
         return new CreatePasswordResDto('test');
       }),
-      update: jest.fn().mockImplementation(async (body: UpdatedResDto): Promise<UpdatedResDto> => {
+      update: jest.fn().mockImplementation(async (_body: UpdatedResDto): Promise<UpdatedResDto> => {
         return new UpdatedResDto(true);
       }),
       deleteOneByDomain: jest.fn().mockReturnValue(new DeletedResDto(true)),
