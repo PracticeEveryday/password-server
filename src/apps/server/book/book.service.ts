@@ -73,7 +73,7 @@ export class BookService {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findBookByIdDto);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
 
-    const book = this.sqlUtilService.checkBookTypeAndConvertObjV2<BookSqlInterface, BookInterface>(selectResult, ['bookMeta']);
+    const book = this.sqlUtilService.checkBookTypeAndConvertObjV2<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
     return new FindOneByIdResDto(book);
   }
 
