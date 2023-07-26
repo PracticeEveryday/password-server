@@ -1,6 +1,7 @@
 import { ClassProvider, ClassSerializerInterceptor, Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
+import { AlcoholModule } from './alcohol/alcohol.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BookModule } from './book/book.module';
@@ -13,7 +14,6 @@ import { EnvModule } from '../../libs/env/env.module';
 import { LogModule } from '../../libs/log/log.module';
 import { MysqlModule } from '../../libs/mysql/mysql.module';
 import { ReadlineModule } from '../../libs/readline/readline.module';
-import { AlcoholModule } from './alcohol/alcohol.module';
 
 const filter: ClassProvider[] = [
   {

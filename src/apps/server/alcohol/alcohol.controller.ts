@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+
 import { AlcoholService } from './alcohol.service';
 import { CreateAlcoholDto } from './dto/create-alcohol.dto';
 import { UpdateAlcoholDto } from './dto/update-alcohol.dto';
+import { RouteTable } from '../common/decorator/router-table.decorator';
 
-@Controller('alcohol')
+@RouteTable({
+  path: 'alcohols',
+  tag: {
+    title: '💸 술 API',
+    category: 'public',
+  },
+})
 export class AlcoholController {
   constructor(private readonly alcoholService: AlcoholService) {}
 
