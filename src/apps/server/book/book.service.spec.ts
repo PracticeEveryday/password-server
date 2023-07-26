@@ -6,12 +6,12 @@ import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
 import { DeleteBookReqDto } from './dto/api-dto/deleteBook.req.dto';
 import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
-import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { bookProviders } from './providers/book.provider';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
 import { SqlUtilModule } from '../../../libs/utils/sql-util/sql-util.module';
 import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '../common/dto/findOneById.req.dto';
 import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 
 describe('BookService Test', () => {
@@ -26,7 +26,7 @@ describe('BookService Test', () => {
         return new DeletedResDto(true);
       }),
       findOneById: jest.fn().mockReturnValue(FindOneByIdResDto),
-      update: jest.fn().mockImplementation(async (_body: UpdateBookReqDto, _param: FindBookByIdDto) => {
+      update: jest.fn().mockImplementation(async (_body: UpdateBookReqDto, _param: FindOneByIdReqDto) => {
         return new UpdatedResDto(true);
       }),
     };
@@ -72,12 +72,12 @@ describe('BookService Test', () => {
       endDate: new Date(),
     });
 
-    const findBookByIdDto = FindBookByIdDto.toDTO(newBookId);
+    const findOneByIdReqDto = FindOneByIdReqDto.toDTO(newBookId);
 
     updatedBookReqDto.setConnectionPool = await mysqlService.getConnectionPool();
 
-    const updated = await bookService.update(updatedBookReqDto, findBookByIdDto);
-    const updatedMock = await bookMockService.update(updatedBookReqDto, findBookByIdDto);
+    const updated = await bookService.update(updatedBookReqDto, findOneByIdReqDto);
+    const updatedMock = await bookMockService.update(updatedBookReqDto, findOneByIdReqDto);
     expect(updated).toStrictEqual(updatedMock);
   });
 

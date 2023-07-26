@@ -26,11 +26,11 @@ import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
 import { SearchBookPaginationDto } from './dto/api-dto/searchBook.res.dto';
 import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
-import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
 import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '../common/dto/findOneById.req.dto';
 import { ResponseDto } from '../common/dto/response.dto';
 import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 import { Method } from '../common/enum/method.enum';
@@ -62,8 +62,8 @@ export class BookController {
     description: findBookByIdDescriptionMd,
     summary: findBookByIdSummaryMd,
   })
-  public async findOneById(@Param() findBookByIdDto: FindBookByIdDto): Promise<ResponseDto<FindOneByIdResDto>> {
-    const book = await this.bookService.findOneById(findBookByIdDto);
+  public async findOneById(@Param() findOneByIdReqDto: FindOneByIdReqDto): Promise<ResponseDto<FindOneByIdResDto>> {
+    const book = await this.bookService.findOneById(findOneByIdReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<FindOneByIdResDto>(book);
   }
@@ -129,12 +129,12 @@ export class BookController {
   })
   @UseInterceptors(TransactionInterceptor)
   public async update(
-    @Param() findBookByIdDto: FindBookByIdDto,
+    @Param() findOneByIdReqDto: FindOneByIdReqDto,
     @Body() updateBookReqDto: UpdateBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
   ): Promise<ResponseDto<UpdatedResDto>> {
     updateBookReqDto.setConnectionPool = connectionPool;
-    const updated = await this.bookService.update(updateBookReqDto, findBookByIdDto);
+    const updated = await this.bookService.update(updateBookReqDto, findOneByIdReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<UpdatedResDto>(updated);
   }

@@ -3,11 +3,11 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { SqlUtilService } from '../../../../libs/utils/sql-util/sql-util.service';
+import { FindOneByIdReqDto } from '../../common/dto/findOneById.req.dto';
 import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
 import { DeleteBookReqDto } from '../dto/api-dto/deleteBook.req.dto';
 import { SearchBookReqDto } from '../dto/api-dto/searchBook.req.dto';
 import { UpdateBookReqDto } from '../dto/api-dto/updateBook.req.dto';
-import { FindBookByIdDto } from '../dto/book-dto/findOneById.req.dto';
 import * as Book from '../interface/book.interface';
 
 @Injectable()
@@ -27,7 +27,7 @@ export class BookRepository {
     return createQueryResult[this.ROW_IDX];
   }
 
-  public async findOneById(findBookByIdDto: FindBookByIdDto) {
+  public async findOneById(findOneByIdReqDto: FindOneByIdReqDto) {
     const query = `
        SELECT 
            book.id as id, 
@@ -42,8 +42,8 @@ export class BookRepository {
            bookMetas.page_count as bookMetaPageCount
        FROM password.books as book 
        LEFT JOIN password.book_metas as bookMetas 
-       ON book_id=${findBookByIdDto.id} 
-       WHERE book.id=${findBookByIdDto.id}`;
+       ON book_id=${findOneByIdReqDto.id} 
+       WHERE book.id=${findOneByIdReqDto.id}`;
 
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
@@ -96,7 +96,7 @@ export class BookRepository {
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
-  public async update(updateBookReqDto: UpdateBookReqDto, param: FindBookByIdDto): Promise<ResultSetHeader> {
+  public async update(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
     const query = `
         UPDATE password.books 
         SET title='${updateBookReqDto.title}',

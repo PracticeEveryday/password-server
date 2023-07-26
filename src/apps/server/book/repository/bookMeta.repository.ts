@@ -3,10 +3,10 @@ import { ResultSetHeader } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { CustomUnknownException } from '../../common/customExceptions/exception/unknown.exception';
+import { FindOneByIdReqDto } from '../../common/dto/findOneById.req.dto';
 import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
 import { DeleteBookReqDto } from '../dto/api-dto/deleteBook.req.dto';
 import { UpdateBookReqDto } from '../dto/api-dto/updateBook.req.dto';
-import { FindBookByIdDto } from '../dto/book-dto/findOneById.req.dto';
 
 export class BookMetaRepository {
   private ROW_IDX = 0 as const;
@@ -27,7 +27,7 @@ export class BookMetaRepository {
     }
   }
 
-  public async update(updateBookReqDto: UpdateBookReqDto, param: FindBookByIdDto): Promise<ResultSetHeader> {
+  public async update(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
     const query = `
       UPDATE password.book_metas
       SET author='${updateBookReqDto.author}',

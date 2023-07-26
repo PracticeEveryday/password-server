@@ -3,10 +3,10 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { PasswordInterface } from '../../../../libs/mysql/types/password.type';
+import { FindOneByIdReqDto } from '../../common/dto/findOneById.req.dto';
 import { CreatePasswordReqDto } from '../dto/api-dto/create-password.req.dto';
 import { GetDomainParamReqDto } from '../dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '../dto/api-dto/getPasswords.req.dto';
-import { FindPasswordByIdDto } from '../dto/basic-dto/findOneByIdDto';
 
 @Injectable()
 export class PasswordRepository {
@@ -81,10 +81,10 @@ export class PasswordRepository {
 
   /**
    * id가 일치하는 것을 반환합니다.
-   * @param findOneByIdDto id 숫자
+   * @param findOneByIdReqDto id 숫자
    */
-  public async findOneById(findOneByIdDto: FindPasswordByIdDto): Promise<RowDataPacket> {
-    const query = `SELECT * FROM password.passwords WHERE id=${findOneByIdDto.id}`;
+  public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<RowDataPacket> {
+    const query = `SELECT * FROM password.passwords WHERE id=${findOneByIdReqDto.id}`;
     const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return queryResult[this.ROW_IDX][this.ROW_IDX];

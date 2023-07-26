@@ -8,7 +8,6 @@ import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto, PasswordResDto } from './dto/api-dto/getPasswords.res.dto';
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
-import { FindPasswordByIdDto } from './dto/basic-dto/findOneByIdDto';
 import { PasswordRepository } from './repository/password.repository';
 import { LogService } from '../../../libs/log/log.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
@@ -22,6 +21,7 @@ import { CustomNotFoundException } from '../common/customExceptions/exception/no
 import { CustomUnknownException } from '../common/customExceptions/exception/unknown.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
 import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '../common/dto/findOneById.req.dto';
 import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 import { toPagination } from '../common/helper/pagination.helper';
 
@@ -97,9 +97,9 @@ export class PasswordService {
 
     const createResult = await this.passwordRepository.create(body);
     if (createResult.affectedRows === 1) {
-      const findOneByIdDto = FindPasswordByIdDto.toDTO(createResult.insertId);
+      const findOneByIdReqDto = FindOneByIdReqDto.toDTO(createResult.insertId);
 
-      const rowDataPacket = await this.passwordRepository.findOneById(findOneByIdDto);
+      const rowDataPacket = await this.passwordRepository.findOneById(findOneByIdReqDto);
       const password = await this.validatePasswordType(rowDataPacket);
 
       return new CreatePasswordResDto(password.domain);
