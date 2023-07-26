@@ -65,12 +65,28 @@ export class BookRepository {
         bookMetas.page_count as bookMetaPageCount
       FROM password.books as book
       LEFT JOIN password.book_metas as bookMetas 
-      ON book.id = bookMetas.book_id
-      WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}`;
+        ON book.id = bookMetas.book_id
+      WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}
+      LIMIT ${searchBookReqDto.pageSize} OFFSET ${(searchBookReqDto.pageNo - 1) * searchBookReqDto.pageSize}
+    `;
 
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return selectQueryResult[this.ROW_IDX];
+  }
+
+  public async count(searchBookReqDto: SearchBookReqDto) {
+    const query = `
+      SELECT COUNT(*) as totalCount
+        FROM password.books as book
+      LEFT JOIN password.book_metas as bookMetas 
+        ON book.id = bookMetas.book_id
+      WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}
+    `;
+
+    const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+
+    return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
   public async findOneByWhere(where: Book.BookWhereInterface) {

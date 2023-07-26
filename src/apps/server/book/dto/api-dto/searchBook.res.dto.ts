@@ -2,11 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
 import { FindOneByIdResDto } from './findOneById.res.dto';
+import { PaginationResDto } from '../../../common/dto/pagination';
 
-export class SearchBookResDto {
+export class SearchBookPaginationDto extends PaginationResDto {
   @Exclude() _bookArr: FindOneByIdResDto[];
 
-  constructor(bookArr: FindOneByIdResDto[]) {
+  constructor(bookArr: FindOneByIdResDto[], paginationInfo: PaginationResDto) {
+    super(paginationInfo);
     this._bookArr = bookArr;
   }
 

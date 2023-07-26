@@ -6,7 +6,7 @@ import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
 import { DeleteBookReqDto } from './dto/api-dto/deleteBook.req.dto';
 import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
-import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
+import { SearchBookPaginationDto } from './dto/api-dto/searchBook.res.dto';
 import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
 import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { BookInterface } from './interface/book.interface';
@@ -21,6 +21,7 @@ import { CustomNotFoundException } from '../common/customExceptions/exception/no
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
 import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
 import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
+import { toPagination } from '../common/helper/pagination.helper';
 
 @Injectable()
 export class BookService {
@@ -83,19 +84,22 @@ export class BookService {
    * 책 검색
    * @param searchBookReqDto SearchBookReqDto
    */
-  public async searchBook(searchBookReqDto: SearchBookReqDto): Promise<SearchBookResDto> {
+  public async searchBook(searchBookReqDto: SearchBookReqDto): Promise<SearchBookPaginationDto> {
     const selectResultArr: RowDataPacket[] = await this.bookRepository.searchBook(searchBookReqDto);
-    if (selectResultArr.length === 0)
+    if (selectResultArr.length === 0) {
       throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 검색 조건의 책이 없습니다.'));
+    }
 
-    return new SearchBookResDto(
-      selectResultArr.map((selectResult) => {
-        if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
-        const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
+    const { totalCount } = await this.bookRepository.count(searchBookReqDto);
+    const pagination = toPagination(totalCount, searchBookReqDto.pageNo, searchBookReqDto.pageSize);
+    const searchBookResDto = selectResultArr.map((selectResult) => {
+      if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+      const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
 
-        return new FindOneByIdResDto(book);
-      }),
-    );
+      return new FindOneByIdResDto(book);
+    });
+
+    return new SearchBookPaginationDto(searchBookResDto, pagination);
   }
 
   /**

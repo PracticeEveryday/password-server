@@ -2,9 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { IsBookWhereProperty } from '../../../common/decorator/validation/isBookWhereProperty.decorator';
 import { IsNotEmptyString } from '../../../common/decorator/validation/isCustomString.decorator';
+import { PaginationQueryDto } from '../../../common/dto/pagination';
 import { BookWhereInterface } from '../../interface/book.interface';
 
-export class SearchBookReqDto {
+export class SearchBookReqDto extends PaginationQueryDto {
   @IsNotEmptyString(0)
   @IsBookWhereProperty()
   @ApiProperty({ example: 'title', description: '어떤 컬럼으로 검색할지에 대한 조건입니다.' })

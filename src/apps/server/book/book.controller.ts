@@ -24,7 +24,7 @@ import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
 import { DeleteBookReqDto } from './dto/api-dto/deleteBook.req.dto';
 import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
 import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
-import { SearchBookResDto } from './dto/api-dto/searchBook.res.dto';
+import { SearchBookPaginationDto } from './dto/api-dto/searchBook.res.dto';
 import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
 import { FindBookByIdDto } from './dto/book-dto/findOneById.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
@@ -75,16 +75,16 @@ export class BookController {
     },
     response: {
       code: HttpStatus.OK,
-      type: SearchBookResDto,
+      type: SearchBookPaginationDto,
       description: searchBookByTitleSuccMd,
     },
     description: searchBookByTitleDescriptionMd,
     summary: searchBookByTitleSummaryMd,
   })
-  public async searchBook(@Query() searchBookReqDto: SearchBookReqDto): Promise<ResponseDto<SearchBookResDto>> {
+  public async searchBook(@Query() searchBookReqDto: SearchBookReqDto): Promise<ResponseDto<SearchBookPaginationDto>> {
     const book = await this.bookService.searchBook(searchBookReqDto);
 
-    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<SearchBookResDto>(book);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<SearchBookPaginationDto>(book);
   }
 
   // -- POST
