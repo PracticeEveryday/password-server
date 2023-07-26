@@ -61,16 +61,16 @@ export class PasswordService {
    * @param getPasswordsReqDto pagination을 상속 받은 dto
    */
   public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
-    const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
-    if (result.length === 0) {
+    const selectQueryResultArr = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
+    if (selectQueryResultArr.length === 0) {
       throw new CustomNotFoundException(makeExceptionScript('not found password', 'password가 없습니다.'));
     }
 
-    const passwords = result.map((password: RowDataPacket) => {
-      if (!this.validateUtilService.isPasswordInterfaceType(password)) {
+    const passwords = selectQueryResultArr.map((selectQueryResult: RowDataPacket) => {
+      if (!this.validateUtilService.isPasswordInterfaceType(selectQueryResult)) {
         throw new CustomBadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
       }
-      return new PasswordResDto(password);
+      return new PasswordResDto(selectQueryResult);
     });
 
     const { totalCount } = await this.passwordRepository.count();
@@ -85,9 +85,9 @@ export class PasswordService {
    */
   public async create(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
     const getDomainQueryReqDto = GetDomainParamReqDto.toDTO(body.domain);
-    const password = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
+    const selectQueryResult = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
 
-    if (password) {
+    if (selectQueryResult) {
       throw new CustomConflictException(
         makeExceptionScript('conflict exist domain', '해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.'),
       );
@@ -131,13 +131,17 @@ export class PasswordService {
    * @param param GetDomainReqDto
    */
   public async findOneByDomain(param: GetDomainParamReqDto): Promise<GetDomainResDto> {
-    const password = await this.passwordRepository.findOneByDomain(param);
+    const selectQueryResult = await this.passwordRepository.findOneByDomain(param);
 
-    if (!password) {
+    if (!selectQueryResult) {
       throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
     }
 
-    return new GetDomainResDto(this.passwordUtilService.decodedPassword(password.password));
+    if (!this.validateUtilService.isPasswordInterfaceType(selectQueryResult)) {
+      throw new CustomBadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
+    }
+
+    return new GetDomainResDto(this.passwordUtilService.decodedPassword(selectQueryResult.password));
   }
 
   /**
