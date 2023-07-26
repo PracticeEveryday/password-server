@@ -62,12 +62,17 @@ export class PasswordService {
    */
   public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
     const result = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
+    if (result.length === 0) {
+      throw new CustomNotFoundException(makeExceptionScript('not found password', 'password가 없습니다.'));
+    }
+
     const passwords = result.map((password: RowDataPacket) => {
       if (!this.validateUtilService.isPasswordInterfaceType(password)) {
         throw new CustomBadRequestException(makeExceptionScript('type error', 'password 타입이 아닙니다.'));
       }
       return new PasswordResDto(password);
     });
+
     const { totalCount } = await this.passwordRepository.count();
 
     const pagination = toPagination(totalCount, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
