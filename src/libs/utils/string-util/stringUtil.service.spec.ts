@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { StringUtilService } from './string-util.service';
+import { StringUtilService } from './stringUtil.service';
 
 describe('StringUtilService', () => {
   let stringUtilService: StringUtilService;

@@ -3,7 +3,7 @@ import { Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { AlcoholService } from './alcohol.service';
 import { CreateAlcoholDto } from './dto/create-alcohol.dto';
 import { UpdateAlcoholDto } from './dto/update-alcohol.dto';
-import { RouteTable } from '../common/decorator/router-table.decorator';
+import { RouteTable } from '../common/decorator/routerTable.decorator';
 
 @RouteTable({
   path: 'alcohols',

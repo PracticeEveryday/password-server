@@ -4,7 +4,7 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { PasswordInterface } from '../../../../libs/mysql/types/password.type';
 import { FindOneByIdReqDto } from '../../common/dto/basic-api-dto/findOneById.req.dto';
-import { CreatePasswordReqDto } from '../dto/api-dto/create-password.req.dto';
+import { CreatePasswordReqDto } from '../dto/api-dto/createPassword.req.dto';
 import { GetDomainParamReqDto } from '../dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '../dto/api-dto/getPasswords.req.dto';
 

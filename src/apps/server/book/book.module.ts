@@ -4,7 +4,7 @@ import { BookController } from './book.controller';
 import { BookService } from './book.service';
 import { bookProviders } from './providers/book.provider';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
-import { SqlUtilModule } from '../../../libs/utils/sql-util/sql-util.module';
+import { SqlUtilModule } from '../../../libs/utils/sql-util/sqlUtil.module';
 
 @Module({
   imports: [MysqlModule, SqlUtilModule],

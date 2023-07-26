@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
-import { DateUtilService } from './date-util.service';
+import { DateUtilService } from './dateUtil.service';
 
 @Module({
-  providers: [DateUtilService]
+  providers: [DateUtilService],
 })
 export class DateUtilModule {}

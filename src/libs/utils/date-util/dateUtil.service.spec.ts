@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as dayjs from 'dayjs';
 
-import { DateUtilService } from './date-util.service';
+import { DateUtilService } from './dateUtil.service';
 
 describe('DateUtilService Test', () => {
   let dateUtilService: DateUtilService;

@@ -21,8 +21,8 @@ import {
   updatePasswordSuccMd,
   updatePasswordSummaryMd,
 } from './docs/password.docs';
-import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
-import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
+import { CreatePasswordReqDto } from './dto/api-dto/createPassword.req.dto';
+import { CreatePasswordResDto } from './dto/api-dto/createPassword.res.dto';
 import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto, GetDomainResDtoNotFoundExceptionResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
@@ -31,9 +31,9 @@ import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
 import { PasswordService } from './password.service';
-import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
-import { RouteTable } from '../common/decorator/router-table.decorator';
+import { PasswordUtilService } from '../../../libs/utils/password-util/passwordUtil.service';
 import { Route } from '../common/decorator/router.decorator';
+import { RouteTable } from '../common/decorator/routerTable.decorator';
 import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
 import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
 import { ResponseDto } from '../common/dto/response.dto';

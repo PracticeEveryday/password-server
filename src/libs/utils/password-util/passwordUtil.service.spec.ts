@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { PasswordUtilService } from './password-util.service';
+import { PasswordUtilService } from './passwordUtil.service';
 import { EnvModule } from '../../env/env.module';
 
 describe('PasswordUtilService Test', () => {

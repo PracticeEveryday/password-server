@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { StringUtilService } from './string-util.service';
+import { StringUtilService } from './stringUtil.service';
 
 @Module({
   providers: [StringUtilService],

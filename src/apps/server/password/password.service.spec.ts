@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
-import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
+import { CreatePasswordReqDto } from './dto/api-dto/createPassword.req.dto';
+import { CreatePasswordResDto } from './dto/api-dto/createPassword.res.dto';
 import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
@@ -10,8 +10,8 @@ import { passwordProviders } from './providers/password.provider';
 import { EnvModule } from '../../../libs/env/env.module';
 import { LogModule } from '../../../libs/log/log.module';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
-import { PasswordUtilModule } from '../../../libs/utils/password-util/password-util.module';
-import { ValidateUtilModule } from '../../../libs/utils/validate-util/validate-util.module';
+import { PasswordUtilModule } from '../../../libs/utils/password-util/passwordUtil.module';
+import { ValidateUtilModule } from '../../../libs/utils/validate-util/validateUtil.module';
 import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
 import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
 

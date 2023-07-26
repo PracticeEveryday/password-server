@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
-import { CreatePasswordReqDto } from './dto/api-dto/create-password.req.dto';
-import { CreatePasswordResDto } from './dto/api-dto/create-password.res.dto';
+import { CreatePasswordReqDto } from './dto/api-dto/createPassword.req.dto';
+import { CreatePasswordResDto } from './dto/api-dto/createPassword.res.dto';
 import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
@@ -12,8 +12,8 @@ import { PasswordRepository } from './repository/password.repository';
 import { LogService } from '../../../libs/log/log.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
 import { PasswordInterface } from '../../../libs/mysql/types/password.type';
-import { PasswordUtilService } from '../../../libs/utils/password-util/password-util.service';
-import { ValidateUtilService } from '../../../libs/utils/validate-util/validate-util.service';
+import { PasswordUtilService } from '../../../libs/utils/password-util/passwordUtil.service';
+import { ValidateUtilService } from '../../../libs/utils/validate-util/validateUtil.service';
 import { CustomBadRequestException } from '../common/customExceptions/exception/badRequest.exception';
 import { BaseException } from '../common/customExceptions/exception/base.exception';
 import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';

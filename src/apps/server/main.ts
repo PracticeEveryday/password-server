@@ -21,7 +21,7 @@ import {
 } from '../../libs/mysql/sql/initTablePassword';
 import { ReadlineService } from '../../libs/readline/readline.service';
 import { setupSwagger } from '../../libs/swagger/swagger';
-import { DateUtilService } from '../../libs/utils/date-util/date-util.service';
+import { DateUtilService } from '../../libs/utils/date-util/dateUtil.service';
 
 class Server {
   private readonly ROW_IDX = 0 as const;

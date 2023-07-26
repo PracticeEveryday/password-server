@@ -14,7 +14,7 @@ import { BookMetaRepository } from './repository/bookMeta.repository';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
 import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
 import { BookSqlInterface } from '../../../libs/mysql/types/book.type';
-import { SqlUtilService } from '../../../libs/utils/sql-util/sql-util.service';
+import { SqlUtilService } from '../../../libs/utils/sql-util/sqlUtil.service';
 import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
 import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';

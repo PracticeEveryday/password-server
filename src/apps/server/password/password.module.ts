@@ -5,8 +5,8 @@ import { PasswordService } from './password.service';
 import { passwordProviders } from './providers/password.provider';
 import { LogModule } from '../../../libs/log/log.module';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
-import { PasswordUtilModule } from '../../../libs/utils/password-util/password-util.module';
-import { ValidateUtilModule } from '../../../libs/utils/validate-util/validate-util.module';
+import { PasswordUtilModule } from '../../../libs/utils/password-util/passwordUtil.module';
+import { ValidateUtilModule } from '../../../libs/utils/validate-util/validateUtil.module';
 
 @Module({
   imports: [PasswordUtilModule, MysqlModule, ValidateUtilModule, LogModule],

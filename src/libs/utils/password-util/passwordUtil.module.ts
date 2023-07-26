@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { PasswordUtilService } from './password-util.service';
+import { PasswordUtilService } from './passwordUtil.service';
 import { EnvModule } from '../../env/env.module';
 
 @Module({

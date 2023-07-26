@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { ValidateUtilService } from './validate-util.service';
+import { ValidateUtilService } from './validateUtil.service';
 
 @Module({
   providers: [ValidateUtilService],
