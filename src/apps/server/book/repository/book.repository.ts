@@ -3,7 +3,7 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { SqlUtilService } from '../../../../libs/utils/sql-util/sql-util.service';
-import { FindOneByIdReqDto } from '../../common/dto/findOneById.req.dto';
+import { FindOneByIdReqDto } from '../../common/dto/basic-api-dto/findOneById.req.dto';
 import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
 import { DeleteBookReqDto } from '../dto/api-dto/deleteBook.req.dto';
 import { SearchBookReqDto } from '../dto/api-dto/searchBook.req.dto';

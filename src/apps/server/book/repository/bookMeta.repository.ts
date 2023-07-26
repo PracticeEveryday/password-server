@@ -3,7 +3,7 @@ import { ResultSetHeader } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
 import { CustomUnknownException } from '../../common/customExceptions/exception/unknown.exception';
-import { FindOneByIdReqDto } from '../../common/dto/findOneById.req.dto';
+import { FindOneByIdReqDto } from '../../common/dto/basic-api-dto/findOneById.req.dto';
 import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
 import { DeleteBookReqDto } from '../dto/api-dto/deleteBook.req.dto';
 import { UpdateBookReqDto } from '../dto/api-dto/updateBook.req.dto';

@@ -10,9 +10,9 @@ import { bookProviders } from './providers/book.provider';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
 import { MysqlService } from '../../../libs/mysql/mysql.service';
 import { SqlUtilModule } from '../../../libs/utils/sql-util/sql-util.module';
-import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '../common/dto/findOneById.req.dto';
-import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
+import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '../common/dto/basic-api-dto/findOneById.req.dto';
+import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
 
 describe('BookService Test', () => {
   let bookService: BookService;

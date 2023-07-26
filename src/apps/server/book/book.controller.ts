@@ -29,10 +29,10 @@ import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
 import { TransactionManager } from '../common/decorator/connectionPool.decorator';
 import { RouteTable } from '../common/decorator/router-table.decorator';
 import { Route } from '../common/decorator/router.decorator';
-import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '../common/dto/findOneById.req.dto';
+import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '../common/dto/basic-api-dto/findOneById.req.dto';
+import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
 import { ResponseDto } from '../common/dto/response.dto';
-import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
 import { Method } from '../common/enum/method.enum';
 import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
 import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
@@ -51,16 +51,16 @@ export class BookController {
   // --GET
   @Route({
     request: {
-      method: Method.GET,
       path: '/:id',
+      method: Method.GET,
     },
     response: {
       code: HttpStatus.OK,
       type: FindOneByIdResDto,
       description: findBookByIdSuccMd,
     },
-    description: findBookByIdDescriptionMd,
     summary: findBookByIdSummaryMd,
+    description: findBookByIdDescriptionMd,
   })
   public async findOneById(@Param() findOneByIdReqDto: FindOneByIdReqDto): Promise<ResponseDto<FindOneByIdResDto>> {
     const book = await this.bookService.findOneById(findOneByIdReqDto);
@@ -70,16 +70,16 @@ export class BookController {
 
   @Route({
     request: {
-      method: Method.GET,
       path: '/',
+      method: Method.GET,
     },
     response: {
       code: HttpStatus.OK,
       type: SearchBookPaginationDto,
       description: searchBookByTitleSuccMd,
     },
-    description: searchBookByTitleDescriptionMd,
     summary: searchBookByTitleSummaryMd,
+    description: searchBookByTitleDescriptionMd,
   })
   public async searchBook(@Query() searchBookReqDto: SearchBookReqDto): Promise<ResponseDto<SearchBookPaginationDto>> {
     const book = await this.bookService.searchBook(searchBookReqDto);
@@ -90,16 +90,16 @@ export class BookController {
   // -- POST
   @Route({
     request: {
-      method: Method.POST,
       path: '/',
+      method: Method.POST,
     },
     response: {
       code: HttpStatus.CREATED,
       type: CreateBookResDto,
       description: createBookSuccMd,
     },
-    description: createBookDescriptionMd,
     summary: createBookSummaryMd,
+    description: createBookDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
   public async create(
@@ -116,16 +116,16 @@ export class BookController {
 
   @Route({
     request: {
-      method: Method.PUT,
       path: '/:id',
+      method: Method.PUT,
     },
     response: {
       code: HttpStatus.OK,
       type: UpdatedResDto,
       description: updateBookSuccMd,
     },
-    description: updateBookDescriptionMd,
     summary: updateBookSummaryMd,
+    description: updateBookDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
   public async update(
@@ -143,16 +143,16 @@ export class BookController {
 
   @Route({
     request: {
-      method: Method.DELETE,
       path: '/:id',
+      method: Method.DELETE,
     },
     response: {
       code: HttpStatus.OK,
       type: DeletedResDto,
       description: deleteBookSuccMd,
     },
-    description: deleteBookDescriptionMd,
     summary: deleteBookSummaryMd,
+    description: deleteBookDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
   public async deleteOne(

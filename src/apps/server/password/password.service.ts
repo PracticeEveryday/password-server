@@ -20,9 +20,9 @@ import { CustomConflictException } from '../common/customExceptions/exception/co
 import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
 import { CustomUnknownException } from '../common/customExceptions/exception/unknown.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
-import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '../common/dto/findOneById.req.dto';
-import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
+import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '../common/dto/basic-api-dto/findOneById.req.dto';
+import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
 import { toPagination } from '../common/helper/pagination.helper';
 
 @Injectable()

@@ -12,8 +12,8 @@ import { LogModule } from '../../../libs/log/log.module';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
 import { PasswordUtilModule } from '../../../libs/utils/password-util/password-util.module';
 import { ValidateUtilModule } from '../../../libs/utils/validate-util/validate-util.module';
-import { DeletedResDto } from '../common/dto/deleteResult.res.dto';
-import { UpdatedResDto } from '../common/dto/updateResult.res.dto';
+import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
+import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
 
 const getDomainResDto = new GetDomainResDto('test1');
 
@@ -68,7 +68,6 @@ describe('PasswordService Test', () => {
     expect(mockResult).toStrictEqual(password);
   });
 
-  //TODO:
   it('password update', async () => {
     const updatePasswordReqDto = new UpdatePasswordReqDto();
     updatePasswordReqDto.domain = 'test';
