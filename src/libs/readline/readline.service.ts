@@ -114,25 +114,25 @@ export class ReadlineService {
 
   /**
    * 서버를 시작하기 위한 사전 질문 프로세스
-   * @param prequalificationsArr 사전 질문지 배열
+   * @param prequalificationArr 사전 질문지 배열
    */
-  async processingAboutPrequalifications(prequalificationsArr: { id: number; question: string; answer: string }[]) {
+  async processingAboutPrequalifications(prequalificationArr: { id: number; question: string; answer: string }[]) {
     const rl = this.getReadline();
-    for (let i = 0; i < prequalificationsArr.length; i++) {
-      const answer = await this.askPrequalification(rl, prequalificationsArr[i].question);
+    for (let i = 0; i < prequalificationArr.length; i++) {
+      const answer = await this.askPrequalification(rl, prequalificationArr[i].question);
 
-      if (answer !== prequalificationsArr[i].answer) {
+      if (answer !== prequalificationArr[i].answer) {
         console.log('😠 답변이 틀립니다 다시 시작해주세요.');
         rl.close();
         return false;
       } else {
-        if (i === prequalificationsArr.length - 1) {
+        if (i === prequalificationArr.length - 1) {
           console.log('🥳 정답을 모두 맞췄습니다! 5초 후 서버가 시작됩니다!');
           this.sleep(5000);
           rl.close();
           return true;
         }
-        console.log(`🤔 계속해서 문제를 풀어주세요 ${prequalificationsArr.length - (i + 1)}문제 남았습니다!!\n`);
+        console.log(`🤔 계속해서 문제를 풀어주세요 ${prequalificationArr.length - (i + 1)}문제 남았습니다!!\n`);
       }
     }
   }

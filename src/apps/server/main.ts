@@ -16,8 +16,10 @@ import {
   initTableIsFirst,
   initTablePrequalification,
   initFirstValue,
-  initTableBooks,
-  initTableBookMetas,
+  initTableBook,
+  initTableBookMeta,
+  initTableAlcohol,
+  initTableRound,
 } from '../../libs/mysql/sql/initTablePassword';
 import { ReadlineService } from '../../libs/readline/readline.service';
 import { setupSwagger } from '../../libs/swagger/swagger';
@@ -45,7 +47,16 @@ class Server {
    */
   public async precondition(): Promise<void> {
     try {
-      const initial = [initTablePassword, initTableIsFirst, initTablePrequalification, initTableBooks, initTableBookMetas, initFirstValue];
+      const initial = [
+        initTablePassword,
+        initTableIsFirst,
+        initTablePrequalification,
+        initTableBook,
+        initTableBookMeta,
+        initFirstValue,
+        initTableAlcohol,
+        initTableRound,
+      ];
       await this.mysql.parallelTransaction(initial);
     } catch (error) {
       this.logService.errorLog('Server', 'precondition error', error);
@@ -60,12 +71,12 @@ class Server {
     try {
       const selectResult = await this.mysql.connection
         .promise()
-        .query<OkPacket>('SELECT server_status, updatedAt FROM password.server_infos WHERE id = 1');
+        .query<OkPacket>('SELECT server_status, updatedAt FROM password.server_info WHERE id = 1');
 
       const dateDiff = this.dateUtilService.diffDays(selectResult[this.ROW_IDX][this.ROW_IDX].updatedAt, new Date());
       if (dateDiff >= 1) {
         await this.mysql.executeSingleQuery(
-          `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.PENDING}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
+          `UPDATE password.server_info SET server_status = '${ServerStatusEnum.PENDING}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
         );
       }
     } catch (error) {
@@ -85,7 +96,7 @@ class Server {
    * 서버를 시작하기 위해 질문에 답하는 함수입니다.
    */
   public async confirmAboutPrequalifications(): Promise<boolean> {
-    const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.prequalifications');
+    const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.prequalification');
     const prequalificationArr = totalPrequalifications[this.ROW_IDX] as unknown as { id: number; question: string; answer: string }[];
 
     return await this.readlineService.processingAboutPrequalifications(prequalificationArr);
@@ -112,15 +123,16 @@ class Server {
    */
   public async init(): Promise<void> {
     try {
-      const rows = await this.mysql.connection.promise().query('SELECT server_status FROM password.server_infos WHERE id = 1');
+      const rows = await this.mysql.connection.promise().query('SELECT server_status FROM password.server_info WHERE id = 1');
       const flag = rows[this.ROW_IDX][this.ROW_IDX].server_status;
 
-      if (flag === 'pending') {
+      if (flag === ServerStatusEnum.PENDING) {
         // pending이라면 질문합니다.
         const test = await this.confirmAboutPrequalifications();
+
         if (test) {
           await this.mysql.executeSingleQuery(
-            `UPDATE password.server_infos SET server_status = '${ServerStatusEnum.ACTIVE}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
+            `UPDATE password.server_info SET server_status = '${ServerStatusEnum.ACTIVE}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
           );
           await this.bootstrap();
         }

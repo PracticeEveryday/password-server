@@ -16,7 +16,7 @@ export class BookMetaRepository {
 
   public async create(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
     try {
-      const query = `INSERT INTO password.book_metas (book_id, author, publisher, page_count, createdAt, updatedAt, deletedAt)
+      const query = `INSERT INTO password.book_meta (book_id, author, publisher, page_count, createdAt, updatedAt, deletedAt)
                      VALUES (${createBookReqDto.bookId}, '${createBookReqDto.author}', '${createBookReqDto.publisher}',
                              ${createBookReqDto.pageCount}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
       const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
@@ -29,7 +29,7 @@ export class BookMetaRepository {
 
   public async update(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
     const query = `
-      UPDATE password.book_metas
+      UPDATE password.book_meta
       SET author='${updateBookReqDto.author}',
           publisher='${updateBookReqDto.publisher}',
           page_count='${updateBookReqDto.pageCount}'
@@ -40,7 +40,7 @@ export class BookMetaRepository {
   }
 
   public async deleteOne(deleteBookReqDto: DeleteBookReqDto): Promise<ResultSetHeader> {
-    const query = `DELETE FROM password.book_metas WHERE book_id=${deleteBookReqDto.id}`;
+    const query = `DELETE FROM password.book_meta WHERE book_id=${deleteBookReqDto.id}`;
 
     const deleteQueryResult = await deleteBookReqDto.connectionPool.execute<ResultSetHeader>(query);
 

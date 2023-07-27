@@ -11,7 +11,7 @@ export class PrequalificationRepository {
   constructor(private readonly mysqlService: MysqlService) {}
 
   public async findOneById(id: number): Promise<RowDataPacket> {
-    const query = `SELECT * FROM password.prequalifications WHERE id=${id}`;
+    const query = `SELECT * FROM password.prequalification WHERE id=${id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
@@ -19,7 +19,7 @@ export class PrequalificationRepository {
 
   public async create(question: string, answer: string) {
     const query = `
-        INSERT INTO password.prequalifications  (question, answer, createdAt, updatedAt, deletedAt)
+        INSERT INTO password.prequalification  (question, answer, createdAt, updatedAt, deletedAt)
         VALUES('${question}', '${answer}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
       `;
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
@@ -27,7 +27,7 @@ export class PrequalificationRepository {
   }
 
   public async update(id: number, serverStatus: ServerStatusEnum): Promise<RowDataPacket> {
-    const query = `UPDATE password.prequalifications SET server_status='${serverStatus}'`;
+    const query = `UPDATE password.prequalification SET server_status='${serverStatus}'`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];

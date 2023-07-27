@@ -20,7 +20,7 @@ export class BookRepository {
   ) {}
 
   public async create(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
-    const query = `INSERT INTO password.books (title, price, book_report, start_date, end_date, createdAt, updatedAt, deletedAt) VALUES ('${createBookReqDto.title}', ${createBookReqDto.price}, null, CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
+    const query = `INSERT INTO password.book (title, price, book_report, start_date, end_date, createdAt, updatedAt, deletedAt) VALUES ('${createBookReqDto.title}', ${createBookReqDto.price}, null, CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
 
     const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
 
@@ -36,12 +36,12 @@ export class BookRepository {
            book_report as bookReport,
            start_date as startDate,
            end_date as endDate,
-           bookMetas.id as bookMetaId,
-           bookMetas.author as bookMetaAuthor,
-           bookMetas.publisher as bookMetaPublisher,
-           bookMetas.page_count as bookMetaPageCount
-       FROM password.books as book 
-       LEFT JOIN password.book_metas as bookMetas 
+           bookMeta.id as bookMetaId,
+           bookMeta.author as bookMetaAuthor,
+           bookMeta.publisher as bookMetaPublisher,
+           bookMeta.page_count as bookMetaPageCount
+       FROM password.book as book 
+       LEFT JOIN password.book_meta as bookMeta 
        ON book_id=${findOneByIdReqDto.id} 
        WHERE book.id=${findOneByIdReqDto.id}`;
 
@@ -59,13 +59,13 @@ export class BookRepository {
         book_report as bookReport,
         start_date as startDate,
         end_date as endDate,
-        bookMetas.id as bookMetaId,
-        bookMetas.author as bookMetaAuthor,
-        bookMetas.publisher as bookMetaPublisher,
-        bookMetas.page_count as bookMetaPageCount
-      FROM password.books as book
-      LEFT JOIN password.book_metas as bookMetas 
-        ON book.id = bookMetas.book_id
+        bookMeta.id as bookMetaId,
+        bookMeta.author as bookMetaAuthor,
+        bookMeta.publisher as bookMetaPublisher,
+        bookMeta.page_count as bookMetaPageCount
+      FROM password.book as book
+      LEFT JOIN password.book_meta as bookMeta 
+        ON book.id = bookMeta.book_id
       WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}
       LIMIT ${searchBookReqDto.pageSize} OFFSET ${(searchBookReqDto.pageNo - 1) * searchBookReqDto.pageSize}
     `;
@@ -78,9 +78,9 @@ export class BookRepository {
   public async count(searchBookReqDto: SearchBookReqDto) {
     const query = `
       SELECT COUNT(*) as totalCount
-        FROM password.books as book
-      LEFT JOIN password.book_metas as bookMetas 
-        ON book.id = bookMetas.book_id
+        FROM password.book as book
+      LEFT JOIN password.book_meta as bookMeta 
+        ON book.id = bookMeta.book_id
       WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}
     `;
 
@@ -90,7 +90,7 @@ export class BookRepository {
   }
 
   public async findOneByWhere(where: Book.BookWhereInterface) {
-    const query = `SELECT * FROM password.books WHERE ${this.sqlUtilService.makeWhereEqualQuery<Book.BookWhereInterface>(where)}`;
+    const query = `SELECT * FROM password.book WHERE ${this.sqlUtilService.makeWhereEqualQuery<Book.BookWhereInterface>(where)}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
@@ -98,7 +98,7 @@ export class BookRepository {
 
   public async update(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
     const query = `
-        UPDATE password.books 
+        UPDATE password.book 
         SET title='${updateBookReqDto.title}',
             price=${updateBookReqDto.price},
             book_report='${updateBookReqDto.bookReport}',
@@ -111,7 +111,7 @@ export class BookRepository {
   }
 
   public async deleteOne(deleteBookReqDto: DeleteBookReqDto): Promise<ResultSetHeader> {
-    const query = `DELETE FROM password.books WHERE id=${deleteBookReqDto.id}`;
+    const query = `DELETE FROM password.book WHERE id=${deleteBookReqDto.id}`;
     const deleteQueryResult = await deleteBookReqDto.connectionPool.execute<ResultSetHeader>(query);
 
     return deleteQueryResult[this.ROW_IDX];

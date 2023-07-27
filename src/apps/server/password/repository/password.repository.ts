@@ -19,7 +19,7 @@ export class PasswordRepository {
    * @param param GetDomainParamReqDto
    */
   public async deleteOneByDomain(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
-    const query = `DELETE FROM password.passwords WHERE domain = '${param.domain}'`;
+    const query = `DELETE FROM password.password WHERE domain = '${param.domain}'`;
     const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
     return deleteQueryResult[this.ROW_IDX];
@@ -30,7 +30,7 @@ export class PasswordRepository {
    * @param queryDto GetPasswordsQueryReqDto
    */
   public async findAllWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
-    const query = `SELECT * FROM password.passwords ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
+    const query = `SELECT * FROM password.password ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return selectQueryResult[this.ROW_IDX];
@@ -40,7 +40,7 @@ export class PasswordRepository {
    * 전체 개수를 반환합니다.
    */
   public async count() {
-    const query = `SELECT COUNT(*) AS totalCount FROM password.passwords `;
+    const query = `SELECT COUNT(*) AS totalCount FROM password.password `;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
@@ -51,7 +51,7 @@ export class PasswordRepository {
    * @param password PasswordInterface
    */
   public async update(password: PasswordInterface) {
-    const query = `UPDATE password.passwords SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
+    const query = `UPDATE password.password SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
     return selectQueryResult[this.ROW_IDX];
@@ -62,7 +62,7 @@ export class PasswordRepository {
    * @param body CreatePassworeReqDto(domain, 해쉬된 password 정보가 들어 있습니다.)
    */
   public async create(body: CreatePasswordReqDto): Promise<ResultSetHeader> {
-    const query = `INSERT INTO password.passwords (domain, password, createdAt, updatedAt, deletedAt) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
+    const query = `INSERT INTO password.password (domain, password, createdAt, updatedAt, deletedAt) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
     return createQueryResult[this.ROW_IDX];
@@ -73,7 +73,7 @@ export class PasswordRepository {
    * @param getDomainQueryReqDto 도메인 ex naver, google...
    */
   public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<RowDataPacket> {
-    const query = `SELECT * FROM password.passwords WHERE domain='${getDomainQueryReqDto.domain}'`;
+    const query = `SELECT * FROM password.password WHERE domain='${getDomainQueryReqDto.domain}'`;
     const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return queryResult[this.ROW_IDX][this.ROW_IDX];
@@ -84,7 +84,7 @@ export class PasswordRepository {
    * @param findOneByIdReqDto id 숫자
    */
   public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<RowDataPacket> {
-    const query = `SELECT * FROM password.passwords WHERE id=${findOneByIdReqDto.id}`;
+    const query = `SELECT * FROM password.password WHERE id=${findOneByIdReqDto.id}`;
     const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return queryResult[this.ROW_IDX][this.ROW_IDX];
