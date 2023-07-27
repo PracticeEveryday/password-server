@@ -2,8 +2,8 @@ import { Get, Body, Patch, Param, Delete, HttpStatus, UseInterceptors } from '@n
 
 import { AlcoholService } from './alcohol.service';
 import * as AlcoholDocs from './docs/alcohol.docs';
-import { CreateAlcoholDto } from './dto/create-alcohol.dto';
-import { UpdateAlcoholDto } from './dto/update-alcohol.dto';
+import { CreateAlcoholDto } from './dto/createAlcohol.dto';
+import { UpdateAlcoholDto } from './dto/updateAlcohol.dto';
 import { Route } from '../common/decorator/router.decorator';
 import { RouteTable } from '../common/decorator/routerTable.decorator';
 import { Method } from '../common/enum/method.enum';

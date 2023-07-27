@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
 
-import { CreateAlcoholDto } from './create-alcohol.dto';
+import { CreateAlcoholDto } from './createAlcohol.dto';
 
 export class UpdateAlcoholDto extends PartialType(CreateAlcoholDto) {}
