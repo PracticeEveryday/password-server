@@ -1,12 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateAlcoholDto } from './dto/create-alcohol.dto';
 import { UpdateAlcoholDto } from './dto/update-alcohol.dto';
+import { AlcoholRepositoryInterface } from './interface/alcohol.interface';
+import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
 
 @Injectable()
 export class AlcoholService {
-  create(createAlcoholDto: CreateAlcoholDto) {
-    return 'This action adds a new alcohol';
+  constructor(@Inject(InjectionToken.ALCOHOL_REPOSIROTY) private readonly alcoholRepository: AlcoholRepositoryInterface) {}
+
+  public async create(createAlcoholDto: CreateAlcoholDto) {
+    const result = await this.alcoholRepository.create(createAlcoholDto);
+    console.log(result);
+    return result;
   }
 
   findAll() {

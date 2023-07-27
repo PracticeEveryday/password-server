@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS book_meta (
 export const initTableAlcohol = `
 CREATE TABLE IF NOT EXISTS alcohol (
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT 'alcohols의 UniqueId',
-    month INT NOT NULL COMMENT '몇 월달',
+    drinking_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP) COMMENT '술마신 날짜',
     relationship VARCHAR(30) NOT NULL COMMENT '어떤 관계의 사람들',
     mood VARCHAR(30) NOT NULL COMMENT '어떤 기분이었는지',
     createdAt TIMESTAMP DEFAULT (CURRENT_TIMESTAMP) COMMENT '생성된 시간',
