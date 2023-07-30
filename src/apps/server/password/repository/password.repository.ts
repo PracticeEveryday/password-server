@@ -18,7 +18,7 @@ export class PasswordRepository {
    * 도메인과 일치하는 것을 삭제합니다.
    * @param param GetDomainParamReqDto
    */
-  public async deleteOneByDomain(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
+  public async removeOneByDomain(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
     const query = `DELETE FROM password.password WHERE domain = '${param.domain}'`;
     const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
@@ -29,7 +29,7 @@ export class PasswordRepository {
    * 페이지네이션 옵션만큼 가져옵니다.
    * @param queryDto GetPasswordsQueryReqDto
    */
-  public async findAllWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
+  public async findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
     const query = `SELECT * FROM password.password ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
@@ -50,7 +50,7 @@ export class PasswordRepository {
    * 비밀번호 정보를 업데이트합니다.
    * @param password PasswordInterface
    */
-  public async update(password: PasswordInterface) {
+  public async updateOne(password: PasswordInterface) {
     const query = `UPDATE password.password SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
@@ -61,7 +61,7 @@ export class PasswordRepository {
    * 비밀번호 정보 생성
    * @param body CreatePassworeReqDto(domain, 해쉬된 password 정보가 들어 있습니다.)
    */
-  public async create(body: CreatePasswordReqDto): Promise<ResultSetHeader> {
+  public async createOne(body: CreatePasswordReqDto): Promise<ResultSetHeader> {
     const query = `INSERT INTO password.password (domain, password, createdAt, updatedAt, deletedAt) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 

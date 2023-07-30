@@ -40,14 +40,14 @@ export class PasswordService {
    * 비밀번호 조회 By id
    * @param param FindOneByIdDto
    */
-  public async deleteOneByDomain(param: GetDomainParamReqDto): Promise<DeletedResDto> {
+  public async removeOneByDomain(param: GetDomainParamReqDto): Promise<DeletedResDto> {
     try {
       const password = await this.passwordRepository.findOneByDomain(param);
       if (!password) {
         throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
       }
 
-      const deleteResult = await this.passwordRepository.deleteOneByDomain(param);
+      const deleteResult = await this.passwordRepository.removeOneByDomain(param);
       return deleteResult.affectedRows === 1 ? new DeletedResDto(true) : new DeletedResDto(false);
     } catch (error) {
       if (error instanceof BaseException) throw error;
@@ -60,8 +60,8 @@ export class PasswordService {
    * 비밀번호 조회 By 페이지네이션
    * @param getPasswordsReqDto pagination을 상속 받은 dto
    */
-  public async findAllWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
-    const selectQueryResultArr = await this.passwordRepository.findAllWithPagination(getPasswordsReqDto);
+  public async findManyWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
+    const selectQueryResultArr = await this.passwordRepository.findManyWithPagination(getPasswordsReqDto);
     if (selectQueryResultArr.length === 0) {
       throw new CustomNotFoundException(makeExceptionScript('not found password', 'password가 없습니다.'));
     }
@@ -83,7 +83,7 @@ export class PasswordService {
    * 비밀번호 생성
    * @param body CreatePassworeReqDto
    */
-  public async create(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
+  public async createOne(body: CreatePasswordReqDto): Promise<CreatePasswordResDto> {
     const getDomainQueryReqDto = GetDomainParamReqDto.toDTO(body.domain);
     const selectQueryResult = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
 
@@ -95,7 +95,7 @@ export class PasswordService {
 
     body.password = this.passwordUtilService.hashPassword(body.password);
 
-    const createResult = await this.passwordRepository.create(body);
+    const createResult = await this.passwordRepository.createOne(body);
     if (createResult.affectedRows === 1) {
       const findOneByIdReqDto = FindOneByIdReqDto.toDTO(createResult.insertId);
 
@@ -110,7 +110,7 @@ export class PasswordService {
    * 비밀번호 수정
    * @param body UpdatePasswordReqDto
    */
-  public async update(body: UpdatePasswordReqDto): Promise<UpdatedResDto> {
+  public async updateOne(body: UpdatePasswordReqDto): Promise<UpdatedResDto> {
     const findOnByDomain = GetDomainParamReqDto.toDTO(body.domain);
     const selectResult = await this.passwordRepository.findOneByDomain(findOnByDomain);
 
@@ -121,7 +121,7 @@ export class PasswordService {
     password = body.compareValue(password);
     password.password = this.passwordUtilService.hashPassword(password.password);
 
-    const updatedResult = await this.passwordRepository.update(password);
+    const updatedResult = await this.passwordRepository.updateOne(password);
 
     return updatedResult.affectedRows === 1 ? new UpdatedResDto(true) : new UpdatedResDto(false);
   }

@@ -3,21 +3,21 @@ import { PoolConnection } from 'mysql2/promise';
 
 import { BookService } from './book.service';
 import {
-  createBookDescriptionMd,
-  createBookSuccMd,
-  createBookSummaryMd,
-  deleteBookDescriptionMd,
-  deleteBookSuccMd,
-  deleteBookSummaryMd,
-  findBookByIdDescriptionMd,
-  findBookByIdSuccMd,
-  findBookByIdSummaryMd,
-  searchBookByTitleDescriptionMd,
-  searchBookByTitleSuccMd,
-  searchBookByTitleSummaryMd,
-  updateBookDescriptionMd,
-  updateBookSuccMd,
-  updateBookSummaryMd,
+  createOneDescriptionMd,
+  createOneSuccMd,
+  createOneSummaryMd,
+  removeOneDescriptionMd,
+  removeOneSuccMd,
+  removeOneSummaryMd,
+  findOneByIdDescriptionMd,
+  findOneByIdSuccMd,
+  findOneByIdSummaryMd,
+  updateOneDescriptionMd,
+  updateOneSuccMd,
+  updateOneSummaryMd,
+  findManyByQueryWithPaginationSuccMd,
+  findManyByQueryWithPaginationSummaryMd,
+  findManyByQueryWithPaginationDescriptionMd,
 } from './docs/book.docs';
 import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
@@ -57,10 +57,10 @@ export class BookController {
     response: {
       code: HttpStatus.OK,
       type: FindOneByIdResDto,
-      description: findBookByIdSuccMd,
+      description: findOneByIdSuccMd,
     },
-    summary: findBookByIdSummaryMd,
-    description: findBookByIdDescriptionMd,
+    summary: findOneByIdSummaryMd,
+    description: findOneByIdDescriptionMd,
   })
   public async findOneById(@Param() findOneByIdReqDto: FindOneByIdReqDto): Promise<ResponseDto<FindOneByIdResDto>> {
     const book = await this.bookService.findOneById(findOneByIdReqDto);
@@ -76,13 +76,13 @@ export class BookController {
     response: {
       code: HttpStatus.OK,
       type: SearchBookPaginationDto,
-      description: searchBookByTitleSuccMd,
+      description: findManyByQueryWithPaginationSuccMd,
     },
-    summary: searchBookByTitleSummaryMd,
-    description: searchBookByTitleDescriptionMd,
+    summary: findManyByQueryWithPaginationSummaryMd,
+    description: findManyByQueryWithPaginationDescriptionMd,
   })
-  public async searchBook(@Query() searchBookReqDto: SearchBookReqDto): Promise<ResponseDto<SearchBookPaginationDto>> {
-    const book = await this.bookService.searchBook(searchBookReqDto);
+  public async findManyByQueryWithPagination(@Query() searchBookReqDto: SearchBookReqDto): Promise<ResponseDto<SearchBookPaginationDto>> {
+    const book = await this.bookService.findManyByQueryWithPagination(searchBookReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<SearchBookPaginationDto>(book);
   }
@@ -96,18 +96,18 @@ export class BookController {
     response: {
       code: HttpStatus.CREATED,
       type: CreateBookResDto,
-      description: createBookSuccMd,
+      description: createOneSuccMd,
     },
-    summary: createBookSummaryMd,
-    description: createBookDescriptionMd,
+    summary: createOneSummaryMd,
+    description: createOneDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
-  public async create(
+  public async createOne(
     @Body() createBookReqDto: CreateBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
   ): Promise<ResponseDto<CreateBookResDto>> {
     createBookReqDto.setConnectionPool = connectionPool;
-    const created = await this.bookService.create(createBookReqDto);
+    const created = await this.bookService.createOne(createBookReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<CreateBookResDto>(created);
   }
@@ -122,19 +122,19 @@ export class BookController {
     response: {
       code: HttpStatus.OK,
       type: UpdatedResDto,
-      description: updateBookSuccMd,
+      description: updateOneSuccMd,
     },
-    summary: updateBookSummaryMd,
-    description: updateBookDescriptionMd,
+    summary: updateOneSummaryMd,
+    description: updateOneDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
-  public async update(
+  public async updateOne(
     @Param() findOneByIdReqDto: FindOneByIdReqDto,
     @Body() updateBookReqDto: UpdateBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
   ): Promise<ResponseDto<UpdatedResDto>> {
     updateBookReqDto.setConnectionPool = connectionPool;
-    const updated = await this.bookService.update(updateBookReqDto, findOneByIdReqDto);
+    const updated = await this.bookService.updateOne(updateBookReqDto, findOneByIdReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<UpdatedResDto>(updated);
   }
@@ -149,18 +149,18 @@ export class BookController {
     response: {
       code: HttpStatus.OK,
       type: DeletedResDto,
-      description: deleteBookSuccMd,
+      description: removeOneSuccMd,
     },
-    summary: deleteBookSummaryMd,
-    description: deleteBookDescriptionMd,
+    summary: removeOneSummaryMd,
+    description: removeOneDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
-  public async deleteOne(
+  public async removeOne(
     @Param() deleteBookReqDto: DeleteBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
   ): Promise<ResponseDto<DeletedResDto>> {
     deleteBookReqDto.setConnectionPool = connectionPool;
-    const deleted = await this.bookService.deleteOne(deleteBookReqDto);
+    const deleted = await this.bookService.removeOne(deleteBookReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<DeletedResDto>(deleted);
   }

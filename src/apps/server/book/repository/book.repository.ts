@@ -19,7 +19,7 @@ export class BookRepository {
     @Inject(SqlUtilService) private readonly sqlUtilService: SqlUtilService,
   ) {}
 
-  public async create(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
+  public async createOne(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
     const query = `INSERT INTO password.book (title, price, book_report, start_date, end_date, createdAt, updatedAt, deletedAt) VALUES ('${createBookReqDto.title}', ${createBookReqDto.price}, null, CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
 
     const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
@@ -50,7 +50,7 @@ export class BookRepository {
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
-  public async searchBook(searchBookReqDto: SearchBookReqDto) {
+  public async findManyByQueryWithPagination(searchBookReqDto: SearchBookReqDto) {
     const query = `
       SELECT
         book.id as id,
@@ -110,7 +110,7 @@ export class BookRepository {
     return updateQueryResult[this.ROW_IDX];
   }
 
-  public async deleteOne(deleteBookReqDto: DeleteBookReqDto): Promise<ResultSetHeader> {
+  public async removeOne(deleteBookReqDto: DeleteBookReqDto): Promise<ResultSetHeader> {
     const query = `DELETE FROM password.book WHERE id=${deleteBookReqDto.id}`;
     const deleteQueryResult = await deleteBookReqDto.connectionPool.execute<ResultSetHeader>(query);
 

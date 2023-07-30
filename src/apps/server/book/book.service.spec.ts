@@ -21,12 +21,12 @@ describe('BookService Test', () => {
   let newBookId: number;
   beforeEach(async () => {
     bookMockService = {
-      create: jest.fn().mockReturnValue(CreateBookResDto),
-      deleteOne: jest.fn().mockImplementation(async (_body: DeleteBookReqDto): Promise<DeletedResDto> => {
+      createOne: jest.fn().mockReturnValue(CreateBookResDto),
+      removeOne: jest.fn().mockImplementation(async (_body: DeleteBookReqDto): Promise<DeletedResDto> => {
         return new DeletedResDto(true);
       }),
       findOneById: jest.fn().mockReturnValue(FindOneByIdResDto),
-      update: jest.fn().mockImplementation(async (_body: UpdateBookReqDto, _param: FindOneByIdReqDto) => {
+      updateOne: jest.fn().mockImplementation(async (_body: UpdateBookReqDto, _param: FindOneByIdReqDto) => {
         return new UpdatedResDto(true);
       }),
     };
@@ -54,7 +54,7 @@ describe('BookService Test', () => {
     });
     createBookReqDto.setConnectionPool = await mysqlService.getConnectionPool();
 
-    const newBook = await bookService.create(createBookReqDto);
+    const newBook = await bookService.createOne(createBookReqDto);
     newBookId = newBook.bookId;
 
     expect(newBook).toHaveProperty('bookId');
@@ -76,8 +76,8 @@ describe('BookService Test', () => {
 
     updatedBookReqDto.setConnectionPool = await mysqlService.getConnectionPool();
 
-    const updated = await bookService.update(updatedBookReqDto, findOneByIdReqDto);
-    const updatedMock = await bookMockService.update(updatedBookReqDto, findOneByIdReqDto);
+    const updated = await bookService.updateOne(updatedBookReqDto, findOneByIdReqDto);
+    const updatedMock = await bookMockService.updateOne(updatedBookReqDto, findOneByIdReqDto);
     expect(updated).toStrictEqual(updatedMock);
   });
 
@@ -85,8 +85,8 @@ describe('BookService Test', () => {
     const deleteBookReqDto = DeleteBookReqDto.toDTO(newBookId);
     deleteBookReqDto.setConnectionPool = await mysqlService.getConnectionPool();
 
-    const deletedResult = await bookService.deleteOne(deleteBookReqDto);
-    const deletedMockResult = await bookMockService.deleteOne(deleteBookReqDto);
+    const deletedResult = await bookService.removeOne(deleteBookReqDto);
+    const deletedMockResult = await bookMockService.removeOne(deleteBookReqDto);
 
     expect(deletedResult).toEqual(deletedMockResult);
   });

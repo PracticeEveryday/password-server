@@ -36,14 +36,14 @@ export class BookService {
    * 책 생성
    * @param createBookReqDto CreateBookReqDto
    */
-  public async create(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
+  public async createOne(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
     const selectResult = await this.bookRepository.findOneByWhere({ title: createBookReqDto.title });
     if (selectResult) throw new CustomConflictException(makeExceptionScript('already exist', '해당 타이틀의 책이 존재합니다.'));
 
-    const createdBookResult = await this.bookRepository.create(createBookReqDto);
+    const createdBookResult = await this.bookRepository.createOne(createBookReqDto);
     createBookReqDto.setBookId = createdBookResult.insertId;
 
-    const createdBookMetaResult = await this.bookMetaRepository.create(createBookReqDto);
+    const createdBookMetaResult = await this.bookMetaRepository.createOne(createBookReqDto);
 
     return new CreateBookResDto(createdBookResult.insertId, createdBookMetaResult.insertId);
   }
@@ -51,7 +51,7 @@ export class BookService {
   /**
    * 책 수정
    */
-  public async update(body: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<UpdatedResDto> {
+  public async updateOne(body: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<UpdatedResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(param);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
 
@@ -61,7 +61,7 @@ export class BookService {
     const bookUpdateResult = await this.bookRepository.update(updateInfo, param);
 
     if (bookUpdateResult.affectedRows === 1) {
-      const bookMetaUpdateResult = await this.bookMetaRepository.update(updateInfo, param);
+      const bookMetaUpdateResult = await this.bookMetaRepository.updateOne(updateInfo, param);
       return bookMetaUpdateResult.affectedRows === 1 ? new UpdatedResDto(true) : new UpdatedResDto(false);
     }
 
@@ -84,8 +84,8 @@ export class BookService {
    * 책 검색
    * @param searchBookReqDto SearchBookReqDto
    */
-  public async searchBook(searchBookReqDto: SearchBookReqDto): Promise<SearchBookPaginationDto> {
-    const selectResultArr: RowDataPacket[] = await this.bookRepository.searchBook(searchBookReqDto);
+  public async findManyByQueryWithPagination(searchBookReqDto: SearchBookReqDto): Promise<SearchBookPaginationDto> {
+    const selectResultArr: RowDataPacket[] = await this.bookRepository.findManyByQueryWithPagination(searchBookReqDto);
     if (selectResultArr.length === 0) {
       throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 검색 조건의 책이 없습니다.'));
     }
@@ -106,14 +106,14 @@ export class BookService {
    * 책 단일 삭제
    * @param deleteBookReqDto DeleteBookReqDto
    */
-  public async deleteOne(deleteBookReqDto: DeleteBookReqDto): Promise<DeletedResDto> {
+  public async removeOne(deleteBookReqDto: DeleteBookReqDto): Promise<DeletedResDto> {
     const findOneByIdReqDto = FindOneByIdReqDto.toDTO(deleteBookReqDto.id);
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
 
-    const deletedBookMetaResult = await this.bookMetaRepository.deleteOne(deleteBookReqDto);
+    const deletedBookMetaResult = await this.bookMetaRepository.removeOne(deleteBookReqDto);
     if (deletedBookMetaResult.affectedRows === 1) {
-      const deletedBookResult = await this.bookRepository.deleteOne(deleteBookReqDto);
+      const deletedBookResult = await this.bookRepository.removeOne(deleteBookReqDto);
       return deletedBookResult.affectedRows === 1 ? new DeletedResDto(true) : new DeletedResDto(false);
     }
     return new DeletedResDto(false);

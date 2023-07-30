@@ -24,13 +24,13 @@ describe('PasswordService Test', () => {
   beforeEach(async () => {
     mockPasswordService = {
       findOneByDomain: jest.fn().mockReturnValue(getDomainResDto),
-      create: jest.fn().mockImplementation(async (_body: CreatePasswordReqDto): Promise<CreatePasswordResDto> => {
+      createOne: jest.fn().mockImplementation(async (_body: CreatePasswordReqDto): Promise<CreatePasswordResDto> => {
         return new CreatePasswordResDto('test');
       }),
-      update: jest.fn().mockImplementation(async (_body: UpdatedResDto): Promise<UpdatedResDto> => {
+      updateOne: jest.fn().mockImplementation(async (_body: UpdatedResDto): Promise<UpdatedResDto> => {
         return new UpdatedResDto(true);
       }),
-      deleteOneByDomain: jest.fn().mockReturnValue(new DeletedResDto(true)),
+      removeOneByDomain: jest.fn().mockReturnValue(new DeletedResDto(true)),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -50,9 +50,9 @@ describe('PasswordService Test', () => {
 
   it('password 생성하기', async () => {
     const createPasswordReqDto = CreatePasswordReqDto.toDTO('test', 'test1');
-    const newPassword = await passwordService.create(createPasswordReqDto);
+    const newPassword = await passwordService.createOne(createPasswordReqDto);
     const createPasswordResDto = new CreatePasswordResDto('test');
-    const result = await mockPasswordService.create(createPasswordReqDto);
+    const result = await mockPasswordService.createOne(createPasswordReqDto);
 
     // 생성하는 것도 같음.
     expect(result).toStrictEqual(newPassword);
@@ -72,17 +72,17 @@ describe('PasswordService Test', () => {
     const updatePasswordReqDto = new UpdatePasswordReqDto();
     updatePasswordReqDto.domain = 'test';
     updatePasswordReqDto.password = '12345678a';
-    const updated = await passwordService.update(updatePasswordReqDto);
+    const updated = await passwordService.updateOne(updatePasswordReqDto);
 
-    const mockResult = await mockPasswordService.update(updatePasswordReqDto);
+    const mockResult = await mockPasswordService.updateOne(updatePasswordReqDto);
     // 있는 거는 같음.
     expect(mockResult).toStrictEqual(updated);
   });
 
   it('Domain의 비밀번호 삭제하기', async () => {
     const getDomainBodyReqDto = GetDomainParamReqDto.toDTO('test');
-    const deleteResult = await passwordService.deleteOneByDomain(getDomainBodyReqDto);
-    const mockResult = await mockPasswordService.deleteOneByDomain(getDomainBodyReqDto);
+    const deleteResult = await passwordService.removeOneByDomain(getDomainBodyReqDto);
+    const mockResult = await mockPasswordService.removeOneByDomain(getDomainBodyReqDto);
     // 있는 거는 같음.
     expect(mockResult).toStrictEqual(deleteResult);
   });
@@ -97,7 +97,7 @@ describe('PasswordService Test', () => {
     it('Domain의 비밀번호가 존재하지 않을 때', async () => {
       // 없으면 에러 던짐
       const notFoundDto = GetDomainParamReqDto.toDTO('없는거');
-      await expect(async () => await passwordService.deleteOneByDomain(notFoundDto)).rejects.toThrow();
+      await expect(async () => await passwordService.removeOneByDomain(notFoundDto)).rejects.toThrow();
     });
 
     it('password update 시 도메인 정보가 없을떄', async () => {
@@ -105,7 +105,7 @@ describe('PasswordService Test', () => {
       updatePasswordReqDto.domain = 'test1';
       updatePasswordReqDto.password = '12345678a';
 
-      await expect(async () => await passwordService.update(updatePasswordReqDto)).rejects.toThrow();
+      await expect(async () => await passwordService.updateOne(updatePasswordReqDto)).rejects.toThrow();
     });
   });
 });

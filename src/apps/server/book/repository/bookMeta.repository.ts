@@ -14,7 +14,7 @@ export class BookMetaRepository {
 
   constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
 
-  public async create(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
+  public async createOne(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
     try {
       const query = `INSERT INTO password.book_meta (book_id, author, publisher, page_count, createdAt, updatedAt, deletedAt)
                      VALUES (${createBookReqDto.bookId}, '${createBookReqDto.author}', '${createBookReqDto.publisher}',
@@ -27,7 +27,7 @@ export class BookMetaRepository {
     }
   }
 
-  public async update(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
+  public async updateOne(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
     const query = `
       UPDATE password.book_meta
       SET author='${updateBookReqDto.author}',
@@ -39,7 +39,7 @@ export class BookMetaRepository {
     return updateQueryResult[this.ROW_IDX];
   }
 
-  public async deleteOne(deleteBookReqDto: DeleteBookReqDto): Promise<ResultSetHeader> {
+  public async removeOne(deleteBookReqDto: DeleteBookReqDto): Promise<ResultSetHeader> {
     const query = `DELETE FROM password.book_meta WHERE book_id=${deleteBookReqDto.id}`;
 
     const deleteQueryResult = await deleteBookReqDto.connectionPool.execute<ResultSetHeader>(query);

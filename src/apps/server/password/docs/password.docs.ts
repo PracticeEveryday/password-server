@@ -1,11 +1,11 @@
-export const getPasswordByDomainSuccMd = `🥳 비밀번호 조회를 성공하였습니다.`;
-export const getPasswordByDomainDescriptionMd = `
+export const findOneByDomainSuccMd = `🥳 비밀번호 조회를 성공하였습니다.`;
+export const findOneByDomainDescriptionMd = `
 ### 💬 도메인의 비밀번호를 조회하는 API입니다.\n 
 저장된 도메인이 없을 경우 \`404\` Error를 뱉어냅니다.
 `;
-export const getPasswordByDomainSummaryMd = `✅ Domain의 Password를 조회하는 API입니다.`;
+export const findOneByDomainSummaryMd = `✅ Domain의 Password를 조회하는 API입니다.`;
 
-//-- getPasswordByDomain
+//-- findOneByDomain
 
 export const recommendPasswordSuccMd = `🥳 비밀번호 추천에 성공하였습니다.`;
 export const recommendPasswordDescriptionMd = `
@@ -20,38 +20,38 @@ export const recommendPasswordSummaryMd = `✅ 원하는 길이의 무작위 비
 
 //-- recommendPassword
 
-export const getPasswordArrWithPaginationSuccMd = `🥳 비밀번호 pagination 조회에 성공했습니다 :).`;
-export const getPasswordArrWithPaginationDescriptionMd = `
+export const findManyWithPaginationWithPaginationSuccMd = `🥳 비밀번호 pagination 조회에 성공했습니다 :).`;
+export const findManyWithPaginationWithPaginationDescriptionMd = `
 ### 💬 비밀번호 개수를 원하는 페이지의 개수만큼 가져오는 API입니다..
 반환되는 타입은 pagination 상태(정보)와 페이지네이션 된 정보입니다.
 `;
-export const getPasswordArrWithPaginationSummaryMd = `✅ 비밀번호를 페이지네이션하여 가져오는 API입니다.`;
+export const findManyWithPaginationWithPaginationSummaryMd = `✅ 비밀번호를 페이지네이션하여 가져오는 API입니다.`;
 
-//-- getPasswordArrWithPagination
+//-- findManyWithPaginationWithPagination
 
-export const createPasswordSuccMd = `🥳 비밀번호 저장을 성공하였습니다.`;
-export const createPasswordDescriptionMd = `
+export const createOnePasswordSuccMd = `🥳 비밀번호 저장을 성공하였습니다.`;
+export const createOnePasswordDescriptionMd = `
 ### 💬 도메인의 비밀번호를 저장하는 API입니다.\n 
 비밀번호는 [AES 암호화](https://namu.wiki/w/AES)로 해싱되어 저장됩니다.
 `;
-export const createPasswordSummaryMd = `✅ Domain의 Password를 저장하는 API입니다.`;
+export const createOnePasswordSummaryMd = `✅ Domain의 Password를 저장하는 API입니다.`;
 
-//-- createPassword
+//-- createOnePassword
 
-export const updatePasswordSuccMd = `🥳 비밀번호 업데이트에 성공하였습니다.`;
-export const updatePasswordDescriptionMd = `
+export const updateOnePasswordSuccMd = `🥳 비밀번호 업데이트에 성공하였습니다.`;
+export const updateOnePasswordDescriptionMd = `
 ### 💬 도메인의 비밀번호를 업데이트하는 API입니다.\n 
 
 `;
-export const updatePasswordSummaryMd = `✅ Domain의 Password를 업데이트하는 API입니다.`;
+export const updateOnePasswordSummaryMd = `✅ Domain의 Password를 업데이트하는 API입니다.`;
 
-//-- updatePassword
+//-- updateOnePassword
 
-export const deleteOneSuccMd = `🥳 비밀번호 단일 삭제에 성공했습니다. :).`;
-export const deleteOneDescriptionMd = `
+export const removeOneByDomainSuccMd = `🥳 비밀번호 단일 삭제에 성공했습니다. :).`;
+export const removeOneByDomainDescriptionMd = `
 ### 💬 비밀번호 하나를 삭제하는 API입니다.
 삭제할 도메인의 비밀번호가 존재하지 않으면 \`404\` Error를 반환합니다.
 `;
-export const deleteOneSummaryMd = `✅ 비밀번호 단일 삭제 API입니다.`;
+export const removeOneByDomainSummaryMd = `✅ 비밀번호 단일 삭제 API입니다.`;
 
-//-- deleteOneByDomain
+//-- removeOneByDomainByDomain
