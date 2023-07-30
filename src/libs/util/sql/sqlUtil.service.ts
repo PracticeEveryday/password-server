@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
-import { StringUtilService } from '../string-util/stringUtil.service';
+import { StringUtilService } from '../string/stringUtil.service';
 
 @Injectable()
 export class SqlUtilService {

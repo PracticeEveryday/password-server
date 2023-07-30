@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-import { PasswordInterface } from '../../../../../libs/mysql/types/password.type';
+import { PasswordInterface } from '../../../../../libs/mysql/type/password.type';
 import { IsNotEmptyDate, IsOptionalDate } from '../../../common/decorator/validation/isCustomDate.decorator';
 import { IsNotEmptyNumber } from '../../../common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString } from '../../../common/decorator/validation/isCustomString.decorator';

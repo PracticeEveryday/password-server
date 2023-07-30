@@ -1,6 +1,6 @@
 import { Provider } from '@nestjs/common';
 
-import { InjectionToken } from '../../../../libs/mysql/repositories/injectionToken';
+import { InjectionToken } from '../../../../libs/mysql/repository/injectionToken';
 import { BookRepository } from '../repository/book.repository';
 import { BookMetaRepository } from '../repository/bookMeta.repository';
 

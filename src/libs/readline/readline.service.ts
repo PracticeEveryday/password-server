@@ -6,9 +6,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { FinishScriptAboutProcessAboutResisterQuestions } from './docs/readline.docs';
 import { CustomUnknownException } from '../../apps/server/common/customExceptions/exception/unknown.exception';
 import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enum';
-import { InjectionToken } from '../mysql/repositories/injectionToken';
-import { PrequalificationRepository } from '../mysql/repositories/prequalification.repository';
-import { ServerInfoRepository } from '../mysql/repositories/serverInfo.repository';
+import { InjectionToken } from '../mysql/repository/injectionToken';
+import { PrequalificationRepository } from '../mysql/repository/prequalification.repository';
+import { ServerInfoRepository } from '../mysql/repository/serverInfo.repository';
 
 @Injectable()
 export class ReadlineService {

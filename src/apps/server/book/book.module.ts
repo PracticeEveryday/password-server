@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 
 import { BookController } from './book.controller';
 import { BookService } from './book.service';
-import { bookProviders } from './providers/book.provider';
+import { bookProviders } from './provider/book.provider';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
-import { SqlUtilModule } from '../../../libs/utils/sql-util/sqlUtil.module';
+import { SqlUtilModule } from '../../../libs/util/sql/sqlUtil.module';
 
 @Module({
   imports: [MysqlModule, SqlUtilModule],

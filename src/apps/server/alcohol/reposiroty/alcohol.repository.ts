@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ResultSetHeader } from 'mysql2';
 
 import { MysqlService } from '../../../../libs/mysql/mysql.service';
-import { SqlUtilService } from '../../../../libs/utils/sql-util/sqlUtil.service';
+import { SqlUtilService } from '../../../../libs/util/sql/sqlUtil.service';
 import { AlcoholDto } from '../../common/dto/alcohol.dto';
 import { AlcoholRepositoryInterface } from '../interface/alcohol.interface';
 

@@ -17,7 +17,7 @@ export function setupSwagger(app: INestApplication): void {
     }),
   );
 
-  const swaggerInfo = fs.readFileSync('src/libs/swagger/swagger-info.md', 'utf-8');
+  const swaggerInfo = fs.readFileSync('src/libs/swagger/swaggerInfo.md', 'utf-8');
 
   const options = new DocumentBuilder()
     .setTitle('password-server')

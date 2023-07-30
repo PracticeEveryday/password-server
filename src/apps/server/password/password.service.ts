@@ -10,10 +10,10 @@ import { GetPasswordsResDto, PasswordResDto } from './dto/api-dto/getPasswords.r
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
 import { PasswordRepository } from './repository/password.repository';
 import { LogService } from '../../../libs/log/log.service';
-import { InjectionToken } from '../../../libs/mysql/repositories/injectionToken';
-import { PasswordInterface } from '../../../libs/mysql/types/password.type';
-import { PasswordUtilService } from '../../../libs/utils/password-util/passwordUtil.service';
-import { ValidateUtilService } from '../../../libs/utils/validate-util/validateUtil.service';
+import { InjectionToken } from '../../../libs/mysql/repository/injectionToken';
+import { PasswordInterface } from '../../../libs/mysql/type/password.type';
+import { PasswordUtilService } from '../../../libs/util/password/passwordUtil.service';
+import { ValidateUtilService } from '../../../libs/util/validate/validateUtil.service';
 import { CustomBadRequestException } from '../common/customExceptions/exception/badRequest.exception';
 import { BaseException } from '../common/customExceptions/exception/base.exception';
 import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';

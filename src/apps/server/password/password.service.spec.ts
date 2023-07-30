@@ -6,12 +6,12 @@ import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
 import { PasswordService } from './password.service';
-import { passwordProviders } from './providers/password.provider';
+import { passwordProviders } from './provider/password.provider';
 import { EnvModule } from '../../../libs/env/env.module';
 import { LogModule } from '../../../libs/log/log.module';
 import { MysqlModule } from '../../../libs/mysql/mysql.module';
-import { PasswordUtilModule } from '../../../libs/utils/password-util/passwordUtil.module';
-import { ValidateUtilModule } from '../../../libs/utils/validate-util/validateUtil.module';
+import { PasswordUtilModule } from '../../../libs/util/password/passwordUtil.module';
+import { ValidateUtilModule } from '../../../libs/util/validate/validateUtil.module';
 import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
 import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
 

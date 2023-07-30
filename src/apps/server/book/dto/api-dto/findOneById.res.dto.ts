@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-import { BookSqlInterface } from '../../../../../libs/mysql/types/book.type';
+import { BookSqlInterface } from '../../../../../libs/mysql/type/book.type';
 import { IsNotEmptyDate, IsOptionalDate } from '../../../common/decorator/validation/isCustomDate.decorator';
 import { IsNotEmptyNumber } from '../../../common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString, IsOptionalString } from '../../../common/decorator/validation/isCustomString.decorator';

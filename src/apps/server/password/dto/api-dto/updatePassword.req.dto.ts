@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { PasswordInterface } from '../../../../../libs/mysql/types/password.type';
+import { PasswordInterface } from '../../../../../libs/mysql/type/password.type';
 import { IsOptionalString } from '../../../common/decorator/validation/isCustomString.decorator';
 
 export class UpdatePasswordReqDto {

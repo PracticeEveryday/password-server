@@ -9,8 +9,8 @@ import { EnvService } from '../../libs/env/env.service';
 import { EnvEnum } from '../../libs/env/envEnum';
 import { LogService } from '../../libs/log/log.service';
 import { MysqlService } from '../../libs/mysql/mysql.service';
-import { PrequalificationRepository } from '../../libs/mysql/repositories/prequalification.repository';
-import { ServerInfoRepository } from '../../libs/mysql/repositories/serverInfo.repository';
+import { PrequalificationRepository } from '../../libs/mysql/repository/prequalification.repository';
+import { ServerInfoRepository } from '../../libs/mysql/repository/serverInfo.repository';
 import {
   initTablePassword,
   initTableIsFirst,
@@ -23,7 +23,7 @@ import {
 } from '../../libs/mysql/sql/initTablePassword';
 import { ReadlineService } from '../../libs/readline/readline.service';
 import { setupSwagger } from '../../libs/swagger/swagger';
-import { DateUtilService } from '../../libs/utils/date-util/dateUtil.service';
+import { DateUtilService } from '../../libs/util/date/dateUtil.service';
 
 class Server {
   private readonly ROW_IDX = 0 as const;

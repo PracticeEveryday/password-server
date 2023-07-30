@@ -31,7 +31,7 @@ import { GetRecommendPasswordReqQueryDto } from './dto/api-dto/recommendPassword
 import { GetRecommendPasswordResDto } from './dto/api-dto/recommendPassword.res.dto';
 import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
 import { PasswordService } from './password.service';
-import { PasswordUtilService } from '../../../libs/utils/password-util/passwordUtil.service';
+import { PasswordUtilService } from '../../../libs/util/password/passwordUtil.service';
 import { Route } from '../common/decorator/router.decorator';
 import { RouteTable } from '../common/decorator/routerTable.decorator';
 import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';

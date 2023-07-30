@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { QueryError } from 'mysql2';
 
-import { PasswordInterface } from '../../mysql/types/password.type';
+import { PasswordInterface } from '../../mysql/type/password.type';
 
 @Injectable()
 export class ValidateUtilService {

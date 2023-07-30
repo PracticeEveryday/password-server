@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { QueryError } from 'mysql2';
 
 import { ValidateUtilService } from './validateUtil.service';
-import { PasswordInterface } from '../../mysql/types/password.type';
+import { PasswordInterface } from '../../mysql/type/password.type';
 
 describe('ValidateUtilService Test', () => {
   let validateUserService: ValidateUtilService;
