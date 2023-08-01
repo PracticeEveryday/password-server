@@ -9,8 +9,11 @@ import { BookInterface, BookMetaInterface } from '../../interface/book.interface
 
 export class BookMetaResDto {
   @Exclude() private readonly _id: number;
+
   @Exclude() private readonly _author: string;
+
   @Exclude() private readonly _publisher: string;
+
   @Exclude() private readonly _pageCount: number;
 
   constructor(data: Partial<BookSqlInterface>) {
@@ -29,15 +32,18 @@ export class BookMetaResDto {
   get id(): number {
     return this._id;
   }
+
   @IsNotEmptyString(0)
   @ApiProperty({ example: '조용호', description: '책의 저자입니다.' })
   get author(): string {
     return this._author;
   }
+
   @ApiProperty({ example: '위키북스', description: '책의 출판사입니다.' })
   get publisher(): string {
     return this._publisher;
   }
+
   @IsNotEmptyNumber(0)
   @ApiProperty({ example: 255, description: '책의 전체 페이지 수입니다.' })
   get pageCount(): number {
@@ -47,11 +53,17 @@ export class BookMetaResDto {
 
 export class FindOneByIdResDto {
   @Exclude() private readonly _id: number;
+
   @Exclude() private readonly _title: string;
+
   @Exclude() private readonly _price: number;
+
   @Exclude() private readonly _bookReport: string | null;
+
   @Exclude() private readonly _startDate: Date;
+
   @Exclude() private readonly _endDate: Date | null;
+
   @Exclude() private readonly _bookMeta: BookMetaInterface;
 
   constructor(data: BookInterface) {
@@ -69,11 +81,13 @@ export class FindOneByIdResDto {
   get id(): number {
     return this._id;
   }
+
   @IsNotEmptyString(0)
   @ApiProperty({ example: '객체 지향의 사실과 오해', description: '책의 제목입니다.' })
   get title(): string {
     return this._title;
   }
+
   @IsNotEmptyNumber(0)
   @ApiProperty({ example: 20000, description: '책의 가격입니다.' })
   get price(): number {
@@ -85,11 +99,13 @@ export class FindOneByIdResDto {
   get bookReport(): string | null {
     return this._bookReport;
   }
+
   @IsNotEmptyDate()
   @ApiProperty({ example: '2023-07-10T00:18:37.000Z', description: '읽기 시작한 날짜입니다.' })
   get startDate(): Date {
     return this._startDate;
   }
+
   @IsOptionalDate()
   @ApiProperty({ example: null, description: '완독한 날짜입니다.' })
   get endDate(): Date | null {

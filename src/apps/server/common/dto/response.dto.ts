@@ -7,6 +7,7 @@ import { makeExceptionScript } from '../customExceptions/makeExceptionScript';
 
 export class ResponseDto<T> {
   @Exclude() private readonly _data: T;
+
   @Exclude() private readonly _message?: string;
 
   constructor(data: T, message?: string) {

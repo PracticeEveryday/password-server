@@ -5,6 +5,7 @@ import { IsNotEmptyNumber } from '../../../common/decorator/validation/isCustomN
 
 export class CreateBookResDto {
   @Exclude() _bookId: number;
+
   @Exclude() _bookMetaId: number;
 
   constructor(bookId: number, bookMetaId: number) {

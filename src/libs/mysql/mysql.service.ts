@@ -9,6 +9,7 @@ import { NodeEnvEnum } from '../env/nodeEnv.enum';
 @Injectable()
 export class MysqlService {
   public connection: Connection;
+
   public connectionOptions: ConnectionOptions;
 
   constructor(private readonly envService: EnvService) {

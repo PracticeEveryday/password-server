@@ -14,7 +14,7 @@ export const IsBookWhereProperty = (validationOptions?) => {
     registerDecorator({
       name: DECORATOR_NAME,
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       validator: {
         validate(check: keyof BookWhereInterface): boolean {

@@ -26,8 +26,11 @@ export class PaginationQueryDto {
 
 export class PaginationResDto {
   @Exclude() _pageNo;
+
   @Exclude() _pageSize;
+
   @Exclude() _totalCount;
+
   @Exclude() _totalPage;
 
   constructor(paginationInfo: { pageNo: number; pageSize: number; totalCount: number; totalPage: number }) {
@@ -65,8 +68,10 @@ export class PaginationResDto {
 export class Pagination {
   @ApiProperty({ example: 200 })
   statusCode?: number;
+
   @ApiProperty({ type: PaginationResDto })
   pagination: PaginationResDto;
+
   @ApiProperty({ type: Object })
   additional?: NonNullable<unknown>;
 }

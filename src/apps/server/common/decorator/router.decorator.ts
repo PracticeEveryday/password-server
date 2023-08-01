@@ -14,7 +14,7 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 
-export type RouteProps<ResponseBody = any> = {
+export type RouteProps<ResponseBody> = {
   request: {
     method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
     path?: string;
@@ -30,7 +30,7 @@ export type RouteProps<ResponseBody = any> = {
   description?: string;
 };
 
-export function Route({ summary, description, request, response }: RouteProps) {
+export function Route({ summary, description, request, response }: RouteProps<any>) {
   const conditionDecorator: (ClassDecorator | MethodDecorator | PropertyDecorator)[] = [];
 
   if (request) {

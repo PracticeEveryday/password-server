@@ -11,7 +11,9 @@ import { GetPasswordsQueryReqDto } from '../dto/api-dto/getPasswords.req.dto';
 @Injectable()
 export class PasswordRepository {
   private ROW_IDX = 0 as const;
+
   private FILED_IDX = 1 as const;
+
   constructor(private readonly mysqlService: MysqlService) {}
 
   /**

@@ -7,7 +7,9 @@ import { MysqlService } from '../mysql.service';
 @Injectable()
 export class PrequalificationRepository {
   private ROW_IDX = 0 as const;
+
   private FILED_IDX = 1 as const;
+
   constructor(private readonly mysqlService: MysqlService) {}
 
   public async findOneById(id: number): Promise<RowDataPacket> {

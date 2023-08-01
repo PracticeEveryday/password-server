@@ -13,7 +13,9 @@ import * as Book from '../interface/book.interface';
 @Injectable()
 export class BookRepository {
   private ROW_IDX = 0 as const;
+
   private FILED_IDX = 1 as const;
+
   constructor(
     @Inject(MysqlService) private readonly mysqlService: MysqlService,
     @Inject(SqlUtilService) private readonly sqlUtilService: SqlUtilService,

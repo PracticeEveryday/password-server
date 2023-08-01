@@ -17,15 +17,15 @@ export class SqlUtilService {
     for (const [key, value] of Object.entries(where)) {
       if (typeof key === 'number') {
         if (i > 0) {
-          whereQuery = whereQuery + `AND ${key}=${value} `;
+          whereQuery = `${whereQuery  }AND ${key}=${value} `;
         } else {
-          whereQuery = whereQuery + `${key}=${value} `;
+          whereQuery = `${whereQuery  }${key}=${value} `;
         }
       } else {
         if (i > 0) {
-          whereQuery = whereQuery + `AND ${key}='${value}' `;
+          whereQuery = `${whereQuery  }AND ${key}='${value}' `;
         } else {
-          whereQuery = whereQuery + `${key}='${value}' `;
+          whereQuery = `${whereQuery  }${key}='${value}' `;
         }
       }
       i++;
@@ -41,8 +41,8 @@ export class SqlUtilService {
     let whereQuery = '';
     for (const [key, value] of Object.entries(where)) {
       typeof key === 'number'
-        ? (whereQuery = whereQuery + `${key} LIKE %${value}% `)
-        : (whereQuery = whereQuery + `${key} LIKE '%${value}%' `);
+        ? (whereQuery = `${whereQuery  }${key} LIKE %${value}% `)
+        : (whereQuery = `${whereQuery  }${key} LIKE '%${value}%' `);
     }
     return whereQuery;
   }
@@ -56,10 +56,10 @@ export class SqlUtilService {
 
     propertyArr.forEach((property: keyof T, idx: number) => {
       if (idx === propertyArr.length - 1) {
-        selectQuery = selectQuery + `${this.stringUtilService.parseCamelCaseToSnameCase(String(property))} AS ${String(property)}`;
+        selectQuery = `${selectQuery  }${this.stringUtilService.parseCamelCaseToSnameCase(String(property))} AS ${String(property)}`;
         return;
       }
-      selectQuery = selectQuery + `${this.stringUtilService.parseCamelCaseToSnameCase(String(property))} AS ${String(property)}, `;
+      selectQuery = `${selectQuery  }${this.stringUtilService.parseCamelCaseToSnameCase(String(property))} AS ${String(property)}, `;
     });
 
     return selectQuery;

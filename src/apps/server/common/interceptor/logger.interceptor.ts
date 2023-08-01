@@ -8,7 +8,7 @@ import { LogService } from '../../../../libs/log/log.service';
 export class LogInterceptor implements NestInterceptor {
   constructor(private readonly logService: LogService) {}
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const ctx = context.switchToHttp();
     const req = ctx.getRequest() as Request;
 

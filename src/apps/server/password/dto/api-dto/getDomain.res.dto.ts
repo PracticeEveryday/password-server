@@ -21,8 +21,10 @@ export class GetDomainResDto {
 export class GetDomainResDtoNotFoundExceptionResDto {
   @ApiProperty({ example: 404 })
   statusCode: number;
+
   @ApiProperty({ example: 'not found domain' })
   title: string;
+
   @ApiProperty({ example: '해당 도메인의 비밀번호 데이터가 없습니다' })
   message: string;
 }

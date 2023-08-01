@@ -27,9 +27,13 @@ import { DateUtilService } from '../../libs/util/date/dateUtil.service';
 
 class Server {
   private readonly ROW_IDX = 0 as const;
+
   private readonly mysql: MysqlService;
+
   private readonly readlineService: ReadlineService;
+
   private readonly dateUtilService: DateUtilService;
+
   private readonly logService: LogService;
 
   constructor() {

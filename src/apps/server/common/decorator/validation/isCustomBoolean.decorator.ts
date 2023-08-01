@@ -8,7 +8,7 @@ export function IsTrue(validationOptions?: ValidationOptions) {
     registerDecorator({
       name: 'isTrue',
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       constraints: [],
       options: validationOptions,
       validator: {

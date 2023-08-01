@@ -8,9 +8,13 @@ type BaseExceptionPropertyType = 'statusCode' | 'title' | 'message' | 'errorType
 
 export class BaseException extends HttpException {
   @Exclude() private readonly _statusCode: number;
+
   @Exclude() private readonly _success = false as const;
+
   @Exclude() private readonly _title: string;
+
   @Expose() private readonly _errorType: ErrorTypeEnum;
+
   @Exclude() raw?: any;
 
   constructor(properties: Pick<BaseException, BaseExceptionPropertyType>) {

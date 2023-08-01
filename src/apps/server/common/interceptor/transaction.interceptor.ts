@@ -12,7 +12,8 @@ import { CustomUnknownException } from '../customExceptions/exception/unknown.ex
 @Injectable()
 export class TransactionInterceptor implements NestInterceptor {
   constructor(private readonly mysqlService: MysqlService) {}
-  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
+
+  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<unknown>> {
     const req = context.switchToHttp().getRequest();
     const connectionPool = await this.dbInit();
 

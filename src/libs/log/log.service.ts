@@ -6,16 +6,28 @@ import { BaseException } from '../../apps/server/common/customExceptions/excepti
 export class LogService {
   private readonly logger = new Logger();
 
-  debug(label: string, message: string, data: any = {}): void {
-    this.logger.debug({ message, ...data }, label);
+  debug(label: string, message: string, data: unknown = {}): void {
+    if (typeof data === 'object') {
+      this.logger.debug({ message, ...data }, label);
+    } else {
+      this.logger.debug({ message, data }, label);
+    }
   }
 
-  info(label: string, message: string, data: any = {}): void {
-    this.logger.log({ message, ...data }, label);
+  info(label: string, message: string, data: unknown = {}): void {
+    if (typeof data === 'object') {
+      this.logger.debug({ message, ...data }, label);
+    } else {
+      this.logger.debug({ message, data }, label);
+    }
   }
 
-  errorLog(label: string, message: string, data: any = {}): void {
-    this.logger.error({ message, ...data }, label);
+  errorLog(label: string, message: string, data: unknown = {}): void {
+    if (typeof data === 'object') {
+      this.logger.debug({ message, ...data }, label);
+    } else {
+      this.logger.debug({ message, data }, label);
+    }
   }
 
   warn(label: string, error: BaseException): void {

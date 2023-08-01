@@ -3,23 +3,23 @@ import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class HttpResponseInterceptor implements NestInterceptor {
-  intercept(_context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
+  intercept(_context: ExecutionContext, next: CallHandler<any>): Observable<unknown> | Promise<Observable<unknown>> {
     return next.handle().pipe(
       map((result) => {
-        if (result) {
-          if (result.hasOwnProperty('data')) {
-            return {
-              message: result.message ? result.message : null,
-              result: result.data,
-            };
-          } else {
-            return {
-              result,
-            };
-          }
-        } else {
+        if (!result) {
           return {
             result: 'no data',
+          };
+        }
+
+        if (result.hasOwnProperty('data')) {
+          return {
+            message: result.message ? result.message : null,
+            result: result.data,
+          };
+        } else {
+          return {
+            result,
           };
         }
       }),

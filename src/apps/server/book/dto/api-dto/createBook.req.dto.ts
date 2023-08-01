@@ -20,6 +20,7 @@ export class CreateBookReqDto extends PickType(BookDto, ['title', 'price']) {
 
   // 로직을 진행하다가 추가되는 프로퍼티들
   private _bookId: number;
+
   private _connectionPool?: PoolConnection;
 
   set setBookId(id: number) {

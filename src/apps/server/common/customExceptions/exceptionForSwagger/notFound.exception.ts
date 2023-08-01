@@ -4,8 +4,10 @@ import { ApiProperty } from '@nestjs/swagger';
 export class NotFoundException {
   @ApiProperty({ example: 404 })
   statusCode: number;
+
   @ApiProperty({ example: 'not found something' })
   title: string;
+
   @ApiProperty({ example: 'something을 찾을 수 없습니다.' })
   message: string;
 }

@@ -11,8 +11,7 @@ export class ValidationException extends BaseException {
       title: '데이터 형식이 잘못되었습니다.',
       message: errors
         .map(
-          (error) =>
-            `${error.property} / ${error.value} / ${Object.values(error.constraints)
+          (error) => `${error.property} / ${error.value} / ${Object.values(error.constraints)
               .map((value) => value)
               .join(',')}`,
         )

@@ -15,10 +15,8 @@ import { PasswordInterface } from '../../../libs/mysql/type/password.type';
 import { PasswordUtilService } from '../../../libs/util/password/passwordUtil.service';
 import { ValidateUtilService } from '../../../libs/util/validate/validateUtil.service';
 import { CustomBadRequestException } from '../common/customExceptions/exception/badRequest.exception';
-import { BaseException } from '../common/customExceptions/exception/base.exception';
 import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
 import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
-import { CustomUnknownException } from '../common/customExceptions/exception/unknown.exception';
 import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
 import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
 import { FindOneByIdReqDto } from '../common/dto/basic-api-dto/findOneById.req.dto';
@@ -41,19 +39,13 @@ export class PasswordService {
    * @param param FindOneByIdDto
    */
   public async removeOneByDomain(param: GetDomainParamReqDto): Promise<DeletedResDto> {
-    try {
-      const password = await this.passwordRepository.findOneByDomain(param);
-      if (!password) {
-        throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
-      }
-
-      const deleteResult = await this.passwordRepository.removeOneByDomain(param);
-      return deleteResult.affectedRows === 1 ? new DeletedResDto(true) : new DeletedResDto(false);
-    } catch (error) {
-      if (error instanceof BaseException) throw error;
-
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'password deleteOne', raw: error });
+    const password = await this.passwordRepository.findOneByDomain(param);
+    if (!password) {
+      throw new CustomNotFoundException({ title: 'not found domain', message: '해당 도메인의 비밀번호 데이터가 없습니다.' });
     }
+
+    const deleteResult = await this.passwordRepository.removeOneByDomain(param);
+    return deleteResult.affectedRows === 1 ? new DeletedResDto(true) : new DeletedResDto(false);
   }
 
   /**

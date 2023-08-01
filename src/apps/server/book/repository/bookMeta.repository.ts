@@ -10,6 +10,7 @@ import { UpdateBookReqDto } from '../dto/api-dto/updateBook.req.dto';
 
 export class BookMetaRepository {
   private ROW_IDX = 0 as const;
+
   private FILED_IDX = 1 as const;
 
   constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}

@@ -9,6 +9,7 @@ import { AlcoholRepositoryInterface } from '../interface/alcohol.interface';
 @Injectable()
 export class AlcoholRepository implements AlcoholRepositoryInterface {
   private ROW_IDX = 0 as const;
+
   private FILED_IDX = 1 as const;
 
   constructor(
