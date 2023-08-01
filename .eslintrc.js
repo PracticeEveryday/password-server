@@ -18,7 +18,6 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': 'off',
     // Typescript가 유추할 수 있도록 하기에 Off합니다.
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    indent: ['error', 2, { SwitchCase: 1 }],
     semi: ['error', 'always'],
     camelcase: ['error', { properties: 'always' }],
     'prefer-const': [
@@ -35,7 +34,7 @@ module.exports = {
     'no-new-func': 'error',
     'no-inner-declarations': 'error',
     'prefer-arrow-callback': 'error',
-    'implicit-arrow-linebreak': ['error', 'beside'],
+    // 'implicit-arrow-linebreak': ['error', 'beside'],
     'object-shorthand': 'error',
     'lines-between-class-members': ['error', 'always'],
     'prefer-template': 'error',
