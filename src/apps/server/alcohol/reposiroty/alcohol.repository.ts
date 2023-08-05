@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ResultSetHeader } from 'mysql2';
 
-import { MysqlService } from '../../../../libs/mysql/mysql.service';
-import { SqlUtilService } from '../../../../libs/util/sql/sqlUtil.service';
-import { AlcoholDto } from '../../common/dto/alcohol.dto';
-import { AlcoholRepositoryInterface } from '../interface/alcohol.interface';
+import { AlcoholRepositoryInterface } from '@apps/server/alcohol/interface/alcohol.interface';
+import { AlcoholDto } from '@apps/server/common/dto/alcohol.dto';
+import { MysqlService } from '@libs/mysql/mysql.service';
+import { SqlUtilService } from '@libs/util/sql/sqlUtil.service';
 
 @Injectable()
 export class AlcoholRepository implements AlcoholRepositoryInterface {

@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 
-import { BaseException } from './base.exception';
-import { ErrorTypeEnum } from '../../enum/errorType.enum';
+import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
+import { ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
 
 export type ExceptionPropertyType = 'title' | 'message' | 'raw';
 export class CustomUnknownException extends BaseException {

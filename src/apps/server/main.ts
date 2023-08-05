@@ -2,28 +2,28 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { OkPacket } from 'mysql2';
 
-import { AppModule } from './app.module';
-import { CustomUnknownException } from './common/customExceptions/exception/unknown.exception';
-import { ServerStatusEnum } from './common/enum/serverStatus.enum';
-import { EnvService } from '../../libs/env/env.service';
-import { EnvEnum } from '../../libs/env/envEnum';
-import { LogService } from '../../libs/log/log.service';
-import { MysqlService } from '../../libs/mysql/mysql.service';
-import { PrequalificationRepository } from '../../libs/mysql/repository/prequalification.repository';
-import { ServerInfoRepository } from '../../libs/mysql/repository/serverInfo.repository';
+import { AppModule } from '@apps/server/app.module';
+import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
+import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
+import { EnvService } from '@libs/env/env.service';
+import { EnvEnum } from '@libs/env/envEnum';
+import { LogService } from '@libs/log/log.service';
+import { MysqlService } from '@libs/mysql/mysql.service';
+import { PrequalificationRepository } from '@libs/mysql/repository/prequalification.repository';
+import { ServerInfoRepository } from '@libs/mysql/repository/serverInfo.repository';
 import {
-  initTablePassword,
-  initTableIsFirst,
-  initTablePrequalification,
   initFirstValue,
+  initTableAlcohol,
   initTableBook,
   initTableBookMeta,
-  initTableAlcohol,
+  initTableIsFirst,
+  initTablePassword,
+  initTablePrequalification,
   initTableRound,
-} from '../../libs/mysql/sql/initTablePassword';
-import { ReadlineService } from '../../libs/readline/readline.service';
-import { setupSwagger } from '../../libs/swagger/swagger';
-import { DateUtilService } from '../../libs/util/date/dateUtil.service';
+} from '@libs/mysql/sql/initTablePassword';
+import { ReadlineService } from '@libs/readline/readline.service';
+import { setupSwagger } from '@libs/swagger/swagger';
+import { DateUtilService } from '@libs/util/date/dateUtil.service';
 
 class Server {
   private readonly ROW_IDX = 0 as const;

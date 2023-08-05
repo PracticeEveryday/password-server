@@ -1,27 +1,27 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
-import { CreatePasswordReqDto } from './dto/api-dto/createPassword.req.dto';
-import { CreatePasswordResDto } from './dto/api-dto/createPassword.res.dto';
-import { GetDomainParamReqDto } from './dto/api-dto/getDomain.req.dto';
-import { GetDomainResDto } from './dto/api-dto/getDomain.res.dto';
-import { GetPasswordsQueryReqDto } from './dto/api-dto/getPasswords.req.dto';
-import { GetPasswordsResDto, PasswordResDto } from './dto/api-dto/getPasswords.res.dto';
-import { UpdatePasswordReqDto } from './dto/api-dto/updatePassword.req.dto';
-import { PasswordRepository } from './repository/password.repository';
-import { LogService } from '../../../libs/log/log.service';
-import { InjectionToken } from '../../../libs/mysql/repository/injectionToken';
-import { PasswordInterface } from '../../../libs/mysql/type/password.type';
-import { PasswordUtilService } from '../../../libs/util/password/passwordUtil.service';
-import { ValidateUtilService } from '../../../libs/util/validate/validateUtil.service';
-import { CustomBadRequestException } from '../common/customExceptions/exception/badRequest.exception';
-import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
-import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
-import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
-import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '../common/dto/basic-api-dto/findOneById.req.dto';
-import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
-import { toPagination } from '../common/helper/pagination.helper';
+import { CustomBadRequestException } from '@apps/server/common/customExceptions/exception/badRequest.exception';
+import { CustomConflictException } from '@apps/server/common/customExceptions/exception/conflict.exception';
+import { CustomNotFoundException } from '@apps/server/common/customExceptions/exception/notFound.exception';
+import { makeExceptionScript } from '@apps/server/common/customExceptions/makeExceptionScript';
+import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
+import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
+import { toPagination } from '@apps/server/common/helper/pagination.helper';
+import { CreatePasswordReqDto } from '@apps/server/password/dto/api-dto/createPassword.req.dto';
+import { CreatePasswordResDto } from '@apps/server/password/dto/api-dto/createPassword.res.dto';
+import { GetDomainParamReqDto } from '@apps/server/password/dto/api-dto/getDomain.req.dto';
+import { GetDomainResDto } from '@apps/server/password/dto/api-dto/getDomain.res.dto';
+import { GetPasswordsQueryReqDto } from '@apps/server/password/dto/api-dto/getPasswords.req.dto';
+import { GetPasswordsResDto, PasswordResDto } from '@apps/server/password/dto/api-dto/getPasswords.res.dto';
+import { UpdatePasswordReqDto } from '@apps/server/password/dto/api-dto/updatePassword.req.dto';
+import { PasswordRepository } from '@apps/server/password/repository/password.repository';
+import { LogService } from '@libs/log/log.service';
+import { InjectionToken } from '@libs/mysql/repository/injectionToken';
+import { PasswordInterface } from '@libs/mysql/type/password.type';
+import { PasswordUtilService } from '@libs/util/password/passwordUtil.service';
+import { ValidateUtilService } from '@libs/util/validate/validateUtil.service';
 
 @Injectable()
 export class PasswordService {

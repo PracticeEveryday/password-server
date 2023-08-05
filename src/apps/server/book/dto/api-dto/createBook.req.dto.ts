@@ -1,9 +1,9 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { PoolConnection } from 'mysql2/promise';
 
-import { IsNotEmptyNumber } from '../../../common/decorator/validation/isCustomNumber.decorator';
-import { IsNotEmptyString } from '../../../common/decorator/validation/isCustomString.decorator';
-import { BookDto } from '../../../common/dto/book.dto';
+import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
+import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
+import { BookDto } from '@apps/server/common/dto/book.dto';
 
 export class CreateBookReqDto extends PickType(BookDto, ['title', 'price']) {
   @IsNotEmptyString(0, 50)

@@ -12,6 +12,12 @@ module.exports = {
     node: true,
     jest: true,
   },
+  settings: {
+    'import/resolver': {
+      webpack: {},
+      typescript: { project: 'packages/tsconfig.json' },
+    },
+  },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
     // interface에 prefix를 두지 않도록 합니다.
@@ -41,12 +47,23 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', ['parent', 'sibling'], 'index'],
+        groups: ['builtin', 'external', 'internal', ['sibling', 'parent', 'index'], 'type', 'unknown'],
+        pathGroups: [
+          {
+            pattern: '@apps/*',
+            group: 'unknown',
+          },
+          {
+            pattern: '@libs/*',
+            group: 'unknown',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['unknown'],
+        'newlines-between': 'always',
         alphabetize: {
           order: 'asc',
           caseInsensitive: true,
         },
-        'newlines-between': 'always',
       },
     ],
 

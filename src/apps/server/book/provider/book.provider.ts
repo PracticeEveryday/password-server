@@ -1,8 +1,8 @@
 import { Provider } from '@nestjs/common';
 
-import { InjectionToken } from '../../../../libs/mysql/repository/injectionToken';
-import { BookRepository } from '../repository/book.repository';
-import { BookMetaRepository } from '../repository/bookMeta.repository';
+import { BookRepository } from '@apps/server/book/repository/book.repository';
+import { BookMetaRepository } from '@apps/server/book/repository/bookMeta.repository';
+import { InjectionToken } from '@libs/mysql/repository/injectionToken';
 
 export const bookProviders: Provider[] = [
   { provide: InjectionToken.BOOK_REPOSITORY, useClass: BookRepository },

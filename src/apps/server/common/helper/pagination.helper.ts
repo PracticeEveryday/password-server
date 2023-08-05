@@ -1,4 +1,4 @@
-import { PaginationResDto } from '../dto/pagination';
+import { PaginationResDto } from '@apps/server/common/dto/pagination';
 
 interface PaginationOptions {
   default: number;

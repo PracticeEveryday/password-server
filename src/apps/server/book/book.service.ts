@@ -1,27 +1,27 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
-import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
-import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
-import { DeleteBookReqDto } from './dto/api-dto/deleteBook.req.dto';
-import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
-import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
-import { SearchBookPaginationDto } from './dto/api-dto/searchBook.res.dto';
-import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
-import { BookInterface } from './interface/book.interface';
-import { BookRepository } from './repository/book.repository';
-import { BookMetaRepository } from './repository/bookMeta.repository';
-import { MysqlService } from '../../../libs/mysql/mysql.service';
-import { InjectionToken } from '../../../libs/mysql/repository/injectionToken';
-import { BookSqlInterface } from '../../../libs/mysql/type/book.type';
-import { SqlUtilService } from '../../../libs/util/sql/sqlUtil.service';
-import { CustomConflictException } from '../common/customExceptions/exception/conflict.exception';
-import { CustomNotFoundException } from '../common/customExceptions/exception/notFound.exception';
-import { makeExceptionScript } from '../common/customExceptions/makeExceptionScript';
-import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '../common/dto/basic-api-dto/findOneById.req.dto';
-import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
-import { toPagination } from '../common/helper/pagination.helper';
+import { CreateBookReqDto } from '@apps/server/book/dto/api-dto/createBook.req.dto';
+import { CreateBookResDto } from '@apps/server/book/dto/api-dto/createBook.res.dto';
+import { DeleteBookReqDto } from '@apps/server/book/dto/api-dto/deleteBook.req.dto';
+import { FindOneByIdResDto } from '@apps/server/book/dto/api-dto/findOneById.res.dto';
+import { SearchBookReqDto } from '@apps/server/book/dto/api-dto/searchBook.req.dto';
+import { SearchBookPaginationDto } from '@apps/server/book/dto/api-dto/searchBook.res.dto';
+import { UpdateBookReqDto } from '@apps/server/book/dto/api-dto/updateBook.req.dto';
+import { BookInterface } from '@apps/server/book/interface/book.interface';
+import { BookRepository } from '@apps/server/book/repository/book.repository';
+import { BookMetaRepository } from '@apps/server/book/repository/bookMeta.repository';
+import { CustomConflictException } from '@apps/server/common/customExceptions/exception/conflict.exception';
+import { CustomNotFoundException } from '@apps/server/common/customExceptions/exception/notFound.exception';
+import { makeExceptionScript } from '@apps/server/common/customExceptions/makeExceptionScript';
+import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
+import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
+import { toPagination } from '@apps/server/common/helper/pagination.helper';
+import { MysqlService } from '@libs/mysql/mysql.service';
+import { InjectionToken } from '@libs/mysql/repository/injectionToken';
+import { BookSqlInterface } from '@libs/mysql/type/book.type';
+import { SqlUtilService } from '@libs/util/sql/sqlUtil.service';
 
 @Injectable()
 export class BookService {

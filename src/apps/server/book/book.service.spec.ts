@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { BookService } from './book.service';
-import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
-import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
-import { DeleteBookReqDto } from './dto/api-dto/deleteBook.req.dto';
-import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
-import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
-import { bookProviders } from './provider/book.provider';
-import { MysqlModule } from '../../../libs/mysql/mysql.module';
-import { MysqlService } from '../../../libs/mysql/mysql.service';
-import { SqlUtilModule } from '../../../libs/util/sql/sqlUtil.module';
-import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '../common/dto/basic-api-dto/findOneById.req.dto';
-import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
+import { BookService } from '@apps/server/book/book.service';
+import { CreateBookReqDto } from '@apps/server/book/dto/api-dto/createBook.req.dto';
+import { CreateBookResDto } from '@apps/server/book/dto/api-dto/createBook.res.dto';
+import { DeleteBookReqDto } from '@apps/server/book/dto/api-dto/deleteBook.req.dto';
+import { FindOneByIdResDto } from '@apps/server/book/dto/api-dto/findOneById.res.dto';
+import { UpdateBookReqDto } from '@apps/server/book/dto/api-dto/updateBook.req.dto';
+import { bookProviders } from '@apps/server/book/provider/book.provider';
+import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
+import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
+import { MysqlModule } from '@libs/mysql/mysql.module';
+import { MysqlService } from '@libs/mysql/mysql.service';
+import { SqlUtilModule } from '@libs/util/sql/sqlUtil.module';
 
 describe('BookService Test', () => {
   let bookService: BookService;

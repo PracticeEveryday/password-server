@@ -1,9 +1,9 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable, tap } from 'rxjs';
 
-import { MysqlService } from '../../../../libs/mysql/mysql.service';
-import { BaseException } from '../customExceptions/exception/base.exception';
-import { CustomUnknownException } from '../customExceptions/exception/unknown.exception';
+import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
+import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
+import { MysqlService } from '@libs/mysql/mysql.service';
 
 /**
  * 트랜젝션을 위한 인터셉터입니다.

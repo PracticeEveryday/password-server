@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose, Transform } from 'class-transformer';
 
-import { IsOptionalNumber } from '../decorator/validation/isCustomNumber.decorator';
-import { toPage, toSize } from '../helper/pagination.helper';
+import { IsOptionalNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
+import { toPage, toSize } from '@apps/server/common/helper/pagination.helper';
 
 export class PaginationQueryDto {
   @Transform(({ value }) => toPage(value, { default: 1 }))

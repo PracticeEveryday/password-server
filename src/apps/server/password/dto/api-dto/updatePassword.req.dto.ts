@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { PasswordInterface } from '../../../../../libs/mysql/type/password.type';
-import { IsOptionalString } from '../../../common/decorator/validation/isCustomString.decorator';
+import { IsOptionalString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
+import { PasswordInterface } from '@libs/mysql/type/password.type';
 
 export class UpdatePasswordReqDto {
   @IsOptionalString(0, 100)

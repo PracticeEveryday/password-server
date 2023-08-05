@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsNotEmptyDate, IsOptionalDate } from '../decorator/validation/isCustomDate.decorator';
-import { IsNotEmptyNumber } from '../decorator/validation/isCustomNumber.decorator';
-import { IsNotEmptyString } from '../decorator/validation/isCustomString.decorator';
+import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/validation/isCustomDate.decorator';
+import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
+import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 
 export class PasswordDto {
   @IsNotEmptyNumber(0)

@@ -1,9 +1,9 @@
 import { Exclude, Expose } from 'class-transformer';
 import { validate } from 'class-validator';
 
-import { CustomConflictException } from '../customExceptions/exception/conflict.exception';
-import { ValidationException } from '../customExceptions/exception/validation.exception';
-import { makeExceptionScript } from '../customExceptions/makeExceptionScript';
+import { CustomConflictException } from '@apps/server/common/customExceptions/exception/conflict.exception';
+import { ValidationException } from '@apps/server/common/customExceptions/exception/validation.exception';
+import { makeExceptionScript } from '@apps/server/common/customExceptions/makeExceptionScript';
 
 export class ResponseDto<T> {
   @Exclude() private readonly _data: T;

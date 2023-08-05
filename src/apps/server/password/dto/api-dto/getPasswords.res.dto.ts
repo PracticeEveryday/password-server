@@ -1,11 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-import { PasswordInterface } from '../../../../../libs/mysql/type/password.type';
-import { IsNotEmptyDate, IsOptionalDate } from '../../../common/decorator/validation/isCustomDate.decorator';
-import { IsNotEmptyNumber } from '../../../common/decorator/validation/isCustomNumber.decorator';
-import { IsNotEmptyString } from '../../../common/decorator/validation/isCustomString.decorator';
-import { PaginationResDto } from '../../../common/dto/pagination';
+import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/validation/isCustomDate.decorator';
+import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
+import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
+import { PaginationResDto } from '@apps/server/common/dto/pagination';
+import { PasswordInterface } from '@libs/mysql/type/password.type';
 
 export class PasswordResDto {
   @Exclude() _id: number;

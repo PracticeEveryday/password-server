@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PoolConnection } from 'mysql2/promise';
 
-import { IsOptionalDate } from '../../../common/decorator/validation/isCustomDate.decorator';
-import { IsOptionalNumber } from '../../../common/decorator/validation/isCustomNumber.decorator';
-import { IsOptionalString } from '../../../common/decorator/validation/isCustomString.decorator';
-import { BookInterface } from '../../interface/book.interface';
+import { BookInterface } from '@apps/server/book/interface/book.interface';
+import { IsOptionalDate } from '@apps/server/common/decorator/validation/isCustomDate.decorator';
+import { IsOptionalNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
+import { IsOptionalString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 
 export class UpdateBookReqDto {
   @IsOptionalString(0, 50)

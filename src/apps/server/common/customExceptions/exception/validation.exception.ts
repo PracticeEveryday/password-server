@@ -1,8 +1,8 @@
 import { HttpStatus } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 
-import { BaseException } from './base.exception';
-import { ErrorTypeEnum } from '../../enum/errorType.enum';
+import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
+import { ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
 
 export class ValidationException extends BaseException {
   constructor(errors: ValidationError[]) {
@@ -11,7 +11,8 @@ export class ValidationException extends BaseException {
       title: '데이터 형식이 잘못되었습니다.',
       message: errors
         .map(
-          (error) => `${error.property} / ${error.value} / ${Object.values(error.constraints)
+          (error) =>
+            `${error.property} / ${error.value} / ${Object.values(error.constraints)
               .map((value) => value)
               .join(',')}`,
         )

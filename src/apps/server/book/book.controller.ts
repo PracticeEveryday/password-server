@@ -1,41 +1,26 @@
 import { Body, HttpStatus, Param, Query, UseInterceptors } from '@nestjs/common';
 import { PoolConnection } from 'mysql2/promise';
 
+import { CreateBookReqDto } from '@apps/server/book/dto/api-dto/createBook.req.dto';
+import { CreateBookResDto } from '@apps/server/book/dto/api-dto/createBook.res.dto';
+import { DeleteBookReqDto } from '@apps/server/book/dto/api-dto/deleteBook.req.dto';
+import { FindOneByIdResDto } from '@apps/server/book/dto/api-dto/findOneById.res.dto';
+import { SearchBookReqDto } from '@apps/server/book/dto/api-dto/searchBook.req.dto';
+import { SearchBookPaginationDto } from '@apps/server/book/dto/api-dto/searchBook.res.dto';
+import { UpdateBookReqDto } from '@apps/server/book/dto/api-dto/updateBook.req.dto';
+import { TransactionManager } from '@apps/server/common/decorator/connectionPool.decorator';
+import { Route } from '@apps/server/common/decorator/router.decorator';
+import { RouteTable } from '@apps/server/common/decorator/routerTable.decorator';
+import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
+import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
+import { ResponseDto } from '@apps/server/common/dto/response.dto';
+import { Method } from '@apps/server/common/enum/method.enum';
+import { TransactionInterceptor } from '@apps/server/common/interceptor/transaction.interceptor';
+import { TryCatchInterceptor } from '@apps/server/common/interceptor/tryCatch.interceptor';
+
 import { BookService } from './book.service';
-import {
-  createOneDescriptionMd,
-  createOneSuccMd,
-  createOneSummaryMd,
-  removeOneDescriptionMd,
-  removeOneSuccMd,
-  removeOneSummaryMd,
-  findOneByIdDescriptionMd,
-  findOneByIdSuccMd,
-  findOneByIdSummaryMd,
-  updateOneDescriptionMd,
-  updateOneSuccMd,
-  updateOneSummaryMd,
-  findManyByQueryWithPaginationSuccMd,
-  findManyByQueryWithPaginationSummaryMd,
-  findManyByQueryWithPaginationDescriptionMd,
-} from './docs/book.docs';
-import { CreateBookReqDto } from './dto/api-dto/createBook.req.dto';
-import { CreateBookResDto } from './dto/api-dto/createBook.res.dto';
-import { DeleteBookReqDto } from './dto/api-dto/deleteBook.req.dto';
-import { FindOneByIdResDto } from './dto/api-dto/findOneById.res.dto';
-import { SearchBookReqDto } from './dto/api-dto/searchBook.req.dto';
-import { SearchBookPaginationDto } from './dto/api-dto/searchBook.res.dto';
-import { UpdateBookReqDto } from './dto/api-dto/updateBook.req.dto';
-import { TransactionManager } from '../common/decorator/connectionPool.decorator';
-import { Route } from '../common/decorator/router.decorator';
-import { RouteTable } from '../common/decorator/routerTable.decorator';
-import { DeletedResDto } from '../common/dto/basic-api-dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '../common/dto/basic-api-dto/findOneById.req.dto';
-import { UpdatedResDto } from '../common/dto/basic-api-dto/updateResult.res.dto';
-import { ResponseDto } from '../common/dto/response.dto';
-import { Method } from '../common/enum/method.enum';
-import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
-import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
+import * as BookDocs from './docs/book.docs';
 
 @RouteTable({
   path: 'books',
@@ -57,10 +42,10 @@ export class BookController {
     response: {
       code: HttpStatus.OK,
       type: FindOneByIdResDto,
-      description: findOneByIdSuccMd,
+      description: BookDocs.findOneByIdSuccMd,
     },
-    summary: findOneByIdSummaryMd,
-    description: findOneByIdDescriptionMd,
+    summary: BookDocs.findOneByIdSummaryMd,
+    description: BookDocs.findOneByIdDescriptionMd,
   })
   public async findOneById(@Param() findOneByIdReqDto: FindOneByIdReqDto): Promise<ResponseDto<FindOneByIdResDto>> {
     const book = await this.bookService.findOneById(findOneByIdReqDto);
@@ -76,10 +61,10 @@ export class BookController {
     response: {
       code: HttpStatus.OK,
       type: SearchBookPaginationDto,
-      description: findManyByQueryWithPaginationSuccMd,
+      description: BookDocs.findManyByQueryWithPaginationSuccMd,
     },
-    summary: findManyByQueryWithPaginationSummaryMd,
-    description: findManyByQueryWithPaginationDescriptionMd,
+    summary: BookDocs.findManyByQueryWithPaginationSummaryMd,
+    description: BookDocs.findManyByQueryWithPaginationDescriptionMd,
   })
   public async findManyByQueryWithPagination(@Query() searchBookReqDto: SearchBookReqDto): Promise<ResponseDto<SearchBookPaginationDto>> {
     const book = await this.bookService.findManyByQueryWithPagination(searchBookReqDto);
@@ -96,10 +81,10 @@ export class BookController {
     response: {
       code: HttpStatus.CREATED,
       type: CreateBookResDto,
-      description: createOneSuccMd,
+      description: BookDocs.createOneSuccMd,
     },
-    summary: createOneSummaryMd,
-    description: createOneDescriptionMd,
+    summary: BookDocs.createOneSummaryMd,
+    description: BookDocs.createOneDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
   public async createOne(
@@ -122,10 +107,10 @@ export class BookController {
     response: {
       code: HttpStatus.OK,
       type: UpdatedResDto,
-      description: updateOneSuccMd,
+      description: BookDocs.updateOneSuccMd,
     },
-    summary: updateOneSummaryMd,
-    description: updateOneDescriptionMd,
+    summary: BookDocs.updateOneSummaryMd,
+    description: BookDocs.updateOneDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
   public async updateOne(
@@ -149,10 +134,10 @@ export class BookController {
     response: {
       code: HttpStatus.OK,
       type: DeletedResDto,
-      description: removeOneSuccMd,
+      description: BookDocs.removeOneSuccMd,
     },
-    summary: removeOneSummaryMd,
-    description: removeOneDescriptionMd,
+    summary: BookDocs.removeOneSummaryMd,
+    description: BookDocs.removeOneDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
   public async removeOne(

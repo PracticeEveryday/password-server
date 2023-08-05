@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { CreateAlcoholDto } from './dto/createAlcohol.dto';
-import { UpdateAlcoholDto } from './dto/updateAlcohol.dto';
-import { AlcoholRepositoryInterface } from './interface/alcohol.interface';
-import { InjectionToken } from '../../../libs/mysql/repository/injectionToken';
+import { CreateAlcoholDto } from '@apps/server/alcohol/dto/createAlcohol.dto';
+import { UpdateAlcoholDto } from '@apps/server/alcohol/dto/updateAlcohol.dto';
+import { AlcoholRepositoryInterface } from '@apps/server/alcohol/interface/alcohol.interface';
+import { InjectionToken } from '@libs/mysql/repository/injectionToken';
 
 @Injectable()
 export class AlcoholService {

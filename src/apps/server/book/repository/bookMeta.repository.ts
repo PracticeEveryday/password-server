@@ -1,12 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { ResultSetHeader } from 'mysql2';
 
-import { MysqlService } from '../../../../libs/mysql/mysql.service';
-import { CustomUnknownException } from '../../common/customExceptions/exception/unknown.exception';
-import { FindOneByIdReqDto } from '../../common/dto/basic-api-dto/findOneById.req.dto';
-import { CreateBookReqDto } from '../dto/api-dto/createBook.req.dto';
-import { DeleteBookReqDto } from '../dto/api-dto/deleteBook.req.dto';
-import { UpdateBookReqDto } from '../dto/api-dto/updateBook.req.dto';
+import { CreateBookReqDto } from '@apps/server/book/dto/api-dto/createBook.req.dto';
+import { DeleteBookReqDto } from '@apps/server/book/dto/api-dto/deleteBook.req.dto';
+import { UpdateBookReqDto } from '@apps/server/book/dto/api-dto/updateBook.req.dto';
+import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
+import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
+import { MysqlService } from '@libs/mysql/mysql.service';
 
 export class BookMetaRepository {
   private ROW_IDX = 0 as const;

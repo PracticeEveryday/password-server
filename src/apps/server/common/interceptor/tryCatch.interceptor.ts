@@ -1,8 +1,8 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
 
-import { BaseException } from '../customExceptions/exception/base.exception';
-import { CustomUnknownException } from '../customExceptions/exception/unknown.exception';
+import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
+import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 
 @Injectable()
 export class TryCatchInterceptor implements NestInterceptor {

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 
-import { IsNotEmptyNumber } from '../../../common/decorator/validation/isCustomNumber.decorator';
+import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
 
 export class CreateBookResDto {
   @Exclude() _bookId: number;

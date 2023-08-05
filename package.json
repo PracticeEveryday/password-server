@@ -14,7 +14,7 @@
     "start:prod": "yarn build && node dist/apps/server/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "npx cross-env NODE_ENV=test jest",
-    "test:watch": "npx cross-env NODE_ENV=test jest --watchAll",
+    "test:watch": "npx cross-env NODE_ENV=test jest --watchAll`",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
@@ -47,7 +47,9 @@
     "class-transformer": "^0.5.1",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-import-resolver-webpack": "^0.13.2",
+    "eslint-plugin-import": "^2.28.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^8.0.3",
     "jest": "29.3.1",
@@ -75,6 +77,10 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@apps/(.*)$": "<rootDir>/apps/$1",
+      "^@libs/(.*)$": "<rootDir>/libs/$1"
+    }
   }
 }

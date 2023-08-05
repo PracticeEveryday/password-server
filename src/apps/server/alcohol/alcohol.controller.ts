@@ -1,16 +1,18 @@
 import { Get, Body, Patch, Param, Delete, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { PoolConnection } from 'mysql2/promise';
 
-import { AlcoholService } from './alcohol.service';
+import { AlcoholService } from '@apps/server/alcohol/alcohol.service';
+import { CreateAlcoholDto } from '@apps/server/alcohol/dto/createAlcohol.dto';
+import { UpdateAlcoholDto } from '@apps/server/alcohol/dto/updateAlcohol.dto';
+import { TransactionManager } from '@apps/server/common/decorator/connectionPool.decorator';
+import { Route } from '@apps/server/common/decorator/router.decorator';
+import { RouteTable } from '@apps/server/common/decorator/routerTable.decorator';
+import { Method } from '@apps/server/common/enum/method.enum';
+import { TransactionInterceptor } from '@apps/server/common/interceptor/transaction.interceptor';
+import { TryCatchInterceptor } from '@apps/server/common/interceptor/tryCatch.interceptor';
+
 import * as AlcoholDocs from './docs/alcohol.docs';
-import { CreateAlcoholDto } from './dto/createAlcohol.dto';
-import { UpdateAlcoholDto } from './dto/updateAlcohol.dto';
-import { TransactionManager } from '../common/decorator/connectionPool.decorator';
-import { Route } from '../common/decorator/router.decorator';
-import { RouteTable } from '../common/decorator/routerTable.decorator';
-import { Method } from '../common/enum/method.enum';
-import { TransactionInterceptor } from '../common/interceptor/transaction.interceptor';
-import { TryCatchInterceptor } from '../common/interceptor/tryCatch.interceptor';
+
 @RouteTable({
   path: 'alcohols',
   tag: {

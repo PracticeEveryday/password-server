@@ -1,6 +1,6 @@
 import { registerDecorator } from 'class-validator';
 
-import { BookWhereInterface } from '../../../book/interface/book.interface';
+import { BookWhereInterface } from '@apps/server/book/interface/book.interface';
 
 /**
  * BookInterface의 프로퍼티인지 여부 확인하는 데코레이터

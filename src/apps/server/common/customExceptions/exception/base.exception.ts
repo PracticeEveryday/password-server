@@ -2,7 +2,7 @@ import { HttpException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-import { ErrorTypeEnum } from '../../enum/errorType.enum';
+import { ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
 
 type BaseExceptionPropertyType = 'statusCode' | 'title' | 'message' | 'errorType' | 'raw';
 

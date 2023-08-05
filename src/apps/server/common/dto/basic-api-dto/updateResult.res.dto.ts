@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-import { IsNotEmptyBoolean } from '../../decorator/validation/isCustomBoolean.decorator';
+import { IsNotEmptyBoolean } from '@apps/server/common/decorator/validation/isCustomBoolean.decorator';
 
 export class UpdatedResDto {
   @Exclude() _isUpdated: boolean;

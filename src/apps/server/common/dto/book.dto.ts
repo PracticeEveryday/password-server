@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsNotEmptyDate, IsOptionalDate } from '../decorator/validation/isCustomDate.decorator';
-import { IsNotEmptyNumber } from '../decorator/validation/isCustomNumber.decorator';
-import { IsNotEmptyString, IsOptionalString } from '../decorator/validation/isCustomString.decorator';
+import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/validation/isCustomDate.decorator';
+import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
+import { IsNotEmptyString, IsOptionalString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 
 export class BookMetaDto {
   @IsNotEmptyNumber(0)

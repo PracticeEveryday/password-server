@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsBookWhereProperty } from '../../../common/decorator/validation/isBookWhereProperty.decorator';
-import { IsNotEmptyString } from '../../../common/decorator/validation/isCustomString.decorator';
-import { PaginationQueryDto } from '../../../common/dto/pagination';
-import { BookWhereInterface } from '../../interface/book.interface';
+import { BookWhereInterface } from '@apps/server/book/interface/book.interface';
+import { IsBookWhereProperty } from '@apps/server/common/decorator/validation/isBookWhereProperty.decorator';
+import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
+import { PaginationQueryDto } from '@apps/server/common/dto/pagination';
 
 export class SearchBookReqDto extends PaginationQueryDto {
   @IsNotEmptyString(0)

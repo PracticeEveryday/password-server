@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { AppService } from './app.service';
-import { ReadlineService } from '../../libs/readline/readline.service';
+import { AppService } from '@apps/server/app.service';
+import { ReadlineService } from '@libs/readline/readline.service';
 
 @Controller()
 export class AppController {
