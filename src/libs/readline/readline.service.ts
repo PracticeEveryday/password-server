@@ -85,7 +85,6 @@ export class ReadlineService {
         console.log(error);
         throw new CustomUnknownException({
           title: 'sql error',
-          message: 'DB에 데이터를 넣을 때 나는 에러입니다. 타입을 확인해주세요',
           raw: error,
         });
       }

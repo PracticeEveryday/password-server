@@ -43,7 +43,6 @@ export class BaseException extends HttpException {
       success: false,
       data: {
         title: this.title,
-        message: this.message,
         errorCode: this.errorCode,
       },
     };

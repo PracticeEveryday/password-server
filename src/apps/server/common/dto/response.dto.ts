@@ -16,7 +16,7 @@ export class ResponseDto<T> {
   }
 
   static async OK_DATA_WITH_OPTIONAL_MESSAGE<T>(data: T, message?: string): Promise<ResponseDto<T>> {
-    if (typeof data !== 'object') throw new CustomConflictException(makeExceptionScript('type error', 'object가 아닙니다.'));
+    if (typeof data !== 'object') throw new CustomConflictException(makeExceptionScript('type error'));
     const errors = await validate(data);
 
     if (errors.length > 0) throw new ValidationException(errors);

@@ -38,7 +38,7 @@ export class BookService {
    */
   public async createOne(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
     const selectResult = await this.bookRepository.findOneByWhere({ title: createBookReqDto.title });
-    if (selectResult) throw new CustomConflictException(makeExceptionScript('already exist', '해당 타이틀의 책이 존재합니다.'));
+    if (selectResult) throw new CustomConflictException(makeExceptionScript('already exist'));
 
     const createdBookResult = await this.bookRepository.createOne(createBookReqDto);
     createBookReqDto.setBookId = createdBookResult.insertId;
@@ -53,7 +53,7 @@ export class BookService {
    */
   public async updateOne(body: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<UpdatedResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(param);
-    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor'));
 
     const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
     const updateInfo = body.compareValue(book);
@@ -74,7 +74,7 @@ export class BookService {
    */
   public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<FindOneByIdResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findOneByIdReqDto);
-    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor'));
 
     const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
     return new FindOneByIdResDto(book);
@@ -87,13 +87,13 @@ export class BookService {
   public async findManyByQueryWithPagination(searchBookReqDto: SearchBookReqDto): Promise<SearchBookPaginationDto> {
     const selectResultArr: RowDataPacket[] = await this.bookRepository.findManyByQueryWithPagination(searchBookReqDto);
     if (selectResultArr.length === 0) {
-      throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 검색 조건의 책이 없습니다.'));
+      throw new CustomNotFoundException(makeExceptionScript('not found boor'));
     }
 
     const { totalCount } = await this.bookRepository.count(searchBookReqDto);
     const pagination = toPagination(totalCount, searchBookReqDto.pageNo, searchBookReqDto.pageSize);
     const searchBookResDto = selectResultArr.map((selectResult) => {
-      if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+      if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor'));
       const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
 
       return new FindOneByIdResDto(book);
@@ -109,7 +109,7 @@ export class BookService {
   public async removeOne(deleteBookReqDto: DeleteBookReqDto): Promise<DeletedResDto> {
     const findOneByIdReqDto = FindOneByIdReqDto.toDTO(deleteBookReqDto.id);
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findOneByIdReqDto);
-    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor', '해당 ID의 책이 없습니다.'));
+    if (!selectResult) throw new CustomNotFoundException(makeExceptionScript('not found boor'));
 
     const deletedBookMetaResult = await this.bookMetaRepository.removeOne(deleteBookReqDto);
     if (deletedBookMetaResult.affectedRows === 1) {

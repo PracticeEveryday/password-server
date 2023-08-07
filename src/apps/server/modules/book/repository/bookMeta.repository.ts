@@ -24,7 +24,7 @@ export class BookMetaRepository {
 
       return createQueryResult[this.ROW_IDX];
     } catch (error) {
-      throw new CustomUnknownException({ title: 'UnknownException', message: 'bookMeta repo create', raw: error });
+      throw new CustomUnknownException({ title: 'UnknownException', raw: error });
     }
   }
 

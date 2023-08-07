@@ -12,7 +12,7 @@ export class TryCatchInterceptor implements NestInterceptor {
         if (error instanceof BaseException) {
           throw error;
         } else {
-          throw new CustomUnknownException({ title: 'UnknownException', message: error.message, raw: error });
+          throw new CustomUnknownException({ title: 'UnknownException', raw: error });
         }
       }),
     );

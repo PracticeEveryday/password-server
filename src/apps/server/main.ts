@@ -64,7 +64,7 @@ class Server {
       await this.mysql.parallelTransaction(initial);
     } catch (error) {
       this.logService.errorLog('Server', 'precondition error', error);
-      throw new CustomUnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
+      throw new CustomUnknownException({ title: 'sql error', raw: error });
     }
   }
 
@@ -85,7 +85,7 @@ class Server {
       }
     } catch (error) {
       this.logService.errorLog('Server', 'timeValidation error', error);
-      throw new CustomUnknownException({ title: 'sql error', message: '초기 sql에서 나는 에러입니다. 확인해주세요', raw: error });
+      throw new CustomUnknownException({ title: 'sql error', raw: error });
     }
   }
 

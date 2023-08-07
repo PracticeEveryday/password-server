@@ -26,7 +26,6 @@ export class CustomExceptionFilter implements ExceptionFilter {
         return new BaseException({
           statusCode: error.getStatus(),
           title: error.name,
-          message: error.message,
           errorType: ErrorTypeEnum.WARN,
           raw: error,
         });
@@ -34,7 +33,6 @@ export class CustomExceptionFilter implements ExceptionFilter {
 
       return new CustomUnknownException({
         title: error.name,
-        message: error.message,
         raw: error,
       });
     })();

@@ -8,7 +8,6 @@ export class CustomUnknownException extends BaseException {
     super({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       title: properties.title,
-      message: properties.message,
       errorType: ErrorTypeEnum.ERROR,
       raw: properties?.raw,
     });

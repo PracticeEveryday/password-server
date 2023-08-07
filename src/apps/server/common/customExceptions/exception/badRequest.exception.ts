@@ -8,7 +8,6 @@ export class CustomBadRequestException extends BaseException {
     super({
       statusCode: HttpStatus.BAD_REQUEST,
       title: properties.title,
-      message: properties.message,
       errorType: ErrorTypeEnum.WARN,
       raw: properties?.raw,
     });

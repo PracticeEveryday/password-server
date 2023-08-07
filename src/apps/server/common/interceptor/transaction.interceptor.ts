@@ -28,7 +28,7 @@ export class TransactionInterceptor implements NestInterceptor {
           throw error;
         } else {
           console.log(error);
-          throw new CustomUnknownException({ title: 'UnknownException', message: 'TransactionInterceptor', raw: error });
+          throw new CustomUnknownException({ title: 'UnknownException', raw: error });
         }
       }),
       tap(async () => {

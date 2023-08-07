@@ -9,14 +9,14 @@ export class ValidationException extends BaseException {
     super({
       statusCode: HttpStatus.BAD_REQUEST,
       title: '데이터 형식이 잘못되었습니다.',
-      message: errors
-        .map(
-          (error) =>
-            `${error.property} / ${error.value} / ${Object.values(error.constraints)
-              .map((value) => value)
-              .join(',')}`,
-        )
-        .join('\n'),
+      // message: errors
+      //   .map(
+      //     (error) =>
+      //       `${error.property} / ${error.value} / ${Object.values(error.constraints)
+      //         .map((value) => value)
+      //         .join(',')}`,
+      //   )
+      //   .join('\n'),
       raw: new Error(JSON.stringify(errors)),
       errorType: ErrorTypeEnum.WARN,
     });
