@@ -3,6 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { OkPacket } from 'mysql2';
 
 import { AppModule } from '@apps/server/app.module';
+import { ErrorCode } from '@apps/server/common/customExceptions/errorCode';
+import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
 import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
 import { EnvService } from '@libs/env/env.service';
@@ -64,7 +66,12 @@ class Server {
       await this.mysql.parallelTransaction(initial);
     } catch (error) {
       this.logService.errorLog('Server', 'precondition error', error);
-      throw new CustomUnknownException({ title: 'sql error', raw: error });
+      throw new CustomUnknownException({
+        title: 'sql error',
+        errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
+        errorMessage: ErrorMessage.COMMON.COMMON_0500,
+        raw: error,
+      });
     }
   }
 
@@ -85,7 +92,12 @@ class Server {
       }
     } catch (error) {
       this.logService.errorLog('Server', 'timeValidation error', error);
-      throw new CustomUnknownException({ title: 'sql error', raw: error });
+      throw new CustomUnknownException({
+        title: 'sql error',
+        errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
+        errorMessage: ErrorMessage.COMMON.COMMON_0500,
+        raw: error,
+      });
     }
   }
 

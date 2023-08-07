@@ -7,6 +7,8 @@ export class CustomBadRequestException extends BaseException {
   constructor(properties: Pick<BaseException, ExceptionPropertyType>) {
     super({
       statusCode: HttpStatus.BAD_REQUEST,
+      errorCode: properties.errorCode,
+      errorMessage: properties.errorMessage,
       title: properties.title,
       errorType: ErrorTypeEnum.WARN,
       raw: properties?.raw,

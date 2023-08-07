@@ -8,6 +8,8 @@ export class CustomConflictException extends BaseException {
     super({
       statusCode: HttpStatus.CONFLICT,
       title: properties.title,
+      errorCode: properties.errorCode,
+      errorMessage: properties.errorMessage,
       errorType: ErrorTypeEnum.WARN,
       raw: properties?.raw,
     });

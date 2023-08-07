@@ -3,9 +3,12 @@ import * as readline from 'readline';
 
 import { Inject, Injectable } from '@nestjs/common';
 
+import { ErrorCode } from '@apps/server/common/customExceptions/errorCode';
+import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
+import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
+import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
+
 import { FinishScriptAboutProcessAboutResisterQuestions } from './docs/readline.docs';
-import { CustomUnknownException } from '../../apps/server/common/customExceptions/exception/unknown.exception';
-import { ServerStatusEnum } from '../../apps/server/common/enum/serverStatus.enum';
 import { InjectionToken } from '../mysql/repository/injectionToken';
 import { PrequalificationRepository } from '../mysql/repository/prequalification.repository';
 import { ServerInfoRepository } from '../mysql/repository/serverInfo.repository';
@@ -85,6 +88,8 @@ export class ReadlineService {
         console.log(error);
         throw new CustomUnknownException({
           title: 'sql error',
+          errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
+          errorMessage: ErrorMessage.COMMON.COMMON_0500,
           raw: error,
         });
       }

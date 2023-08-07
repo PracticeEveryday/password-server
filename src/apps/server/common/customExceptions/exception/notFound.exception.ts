@@ -8,6 +8,8 @@ export class CustomNotFoundException extends BaseException {
     super({
       statusCode: HttpStatus.NOT_FOUND,
       title: properties.title,
+      errorCode: properties.errorCode,
+      errorMessage: properties.errorMessage,
       errorType: ErrorTypeEnum.WARN,
       raw: properties?.raw,
     });

@@ -1,7 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { ResultSetHeader } from 'mysql2';
 
-import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
 import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBook.req.dto';
 import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBook.req.dto';
@@ -16,16 +15,12 @@ export class BookMetaRepository {
   constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
 
   public async createOne(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
-    try {
-      const query = `INSERT INTO password.book_meta (book_id, author, publisher, page_count, createdAt, updatedAt, deletedAt)
+    const query = `INSERT INTO password.book_meta (book_id, author, publisher, page_count, createdAt, updatedAt, deletedAt)
                      VALUES (${createBookReqDto.bookId}, '${createBookReqDto.author}', '${createBookReqDto.publisher}',
                              ${createBookReqDto.pageCount}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
-      const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
+    const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
 
-      return createQueryResult[this.ROW_IDX];
-    } catch (error) {
-      throw new CustomUnknownException({ title: 'UnknownException', raw: error });
-    }
+    return createQueryResult[this.ROW_IDX];
   }
 
   public async updateOne(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {

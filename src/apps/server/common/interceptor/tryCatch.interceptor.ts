@@ -1,6 +1,8 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
 
+import { ErrorCode } from '@apps/server/common/customExceptions/errorCode';
+import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
 import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 
@@ -12,7 +14,12 @@ export class TryCatchInterceptor implements NestInterceptor {
         if (error instanceof BaseException) {
           throw error;
         } else {
-          throw new CustomUnknownException({ title: 'UnknownException', raw: error });
+          throw new CustomUnknownException({
+            title: 'sql error',
+            errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
+            errorMessage: ErrorMessage.COMMON.COMMON_0500,
+            raw: error,
+          });
         }
       }),
     );
