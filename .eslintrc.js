@@ -44,6 +44,13 @@ module.exports = {
     'object-shorthand': 'error',
     'lines-between-class-members': ['error', 'always'],
     'prefer-template': 'error',
+    'prefer-destructuring': [
+      'error',
+      { object: true, array: true },
+      {
+        enforceForRenamedProperties: false,
+      },
+    ],
     'import/order': [
       'error',
       {
