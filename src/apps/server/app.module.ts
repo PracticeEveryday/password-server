@@ -1,15 +1,15 @@
 import { ClassProvider, ClassSerializerInterceptor, Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
-import { AlcoholModule } from '@apps/server/alcohol/alcohol.module';
 import { AppController } from '@apps/server/app.controller';
 import { AppService } from '@apps/server/app.service';
-import { BookModule } from '@apps/server/book/book.module';
 import { ValidationException } from '@apps/server/common/customExceptions/exception/validation.exception';
 import { CustomExceptionFilter } from '@apps/server/common/filter/httpException.filter';
 import { HttpResponseInterceptor } from '@apps/server/common/interceptor/http.interceptor';
 import { LogInterceptor } from '@apps/server/common/interceptor/logger.interceptor';
-import { PasswordModule } from '@apps/server/password/password.module';
+import { AlcoholModule } from '@apps/server/modules/alcohol/alcohol.module';
+import { BookModule } from '@apps/server/modules/book/book.module';
+import { PasswordModule } from '@apps/server/modules/password/password.module';
 import { EnvModule } from '@libs/env/env.module';
 import { LogModule } from '@libs/log/log.module';
 import { MysqlModule } from '@libs/mysql/mysql.module';
