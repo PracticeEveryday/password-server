@@ -20,6 +20,6 @@ export class LogInterceptor implements NestInterceptor {
       body: req.body,
     });
 
-    return next.handle().pipe(tap((response) => this.logService.info(LogInterceptor.name, `Response`, response)));
+    return next.handle().pipe(tap((response) => this.logService.info(LogInterceptor.name, 'Response', response)));
   }
 }

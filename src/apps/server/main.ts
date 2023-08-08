@@ -1,6 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { OkPacket } from 'mysql2';
+import { WinstonLogger } from 'nest-winston';
+import { Logger } from 'winston';
 
 import { AppModule } from '@apps/server/app.module';
 import { ErrorCode } from '@apps/server/common/customExceptions/errorCode';
@@ -45,7 +47,7 @@ class Server {
       new PrequalificationRepository(new MysqlService(new EnvService(new ConfigService()))),
       new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
     );
-    this.logService = new LogService();
+    this.logService = new LogService(new WinstonLogger(new Logger()));
   }
 
   /**

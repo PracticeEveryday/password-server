@@ -10,7 +10,7 @@ import { ValidateUtilModule } from '@libs/util/validate/validateUtil.module';
 
 @Module({
   controllers: [PasswordController],
-  imports: [PasswordUtilModule, MysqlModule, ValidateUtilModule, LogModule],
+  imports: [PasswordUtilModule, MysqlModule, ValidateUtilModule, LogModule.forRoot()],
   providers: [PasswordService, ...passwordProviders],
 })
 export class PasswordModule {}
