@@ -37,9 +37,9 @@ const winstonOptions = {
         }),
       ),
     }),
-    new winston.transports.DailyRotateFile(dailyOptions('info')),
-    new winston.transports.DailyRotateFile(dailyOptions('error')),
-    new winston.transports.DailyRotateFile(dailyOptions('warn')),
+    // new winston.transports.DailyRotateFile(dailyOptions('info')),
+    // new winston.transports.DailyRotateFile(dailyOptions('error')),
+    // new winston.transports.DailyRotateFile(dailyOptions('warn')),
   ],
 };
 @Module({
