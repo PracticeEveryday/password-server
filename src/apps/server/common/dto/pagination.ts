@@ -11,7 +11,7 @@ export class PaginationQueryDto {
     description: '조회하고자 하는 페이지 (기본값: 1)',
     example: 1,
   })
-  @IsOptionalNumber(0)
+  @IsOptionalNumber('pageNo', 0)
   public pageNo: number;
 
   @Transform(({ value }) => toSize(value, { default: 10 }))
@@ -20,7 +20,7 @@ export class PaginationQueryDto {
     description: '불러올 아이템 갯수 (기본값: 10)',
     example: 10,
   })
-  @IsOptionalNumber(0)
+  @IsOptionalNumber('pageSize', 0)
   public pageSize: number;
 }
 

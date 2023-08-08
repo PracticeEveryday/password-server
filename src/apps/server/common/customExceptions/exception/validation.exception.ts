@@ -10,12 +10,7 @@ export class ValidationException extends BaseException {
       statusCode: 400,
       title: 'error',
       errorCode: ErrorCode.VALIDATION_ERROR,
-      errorMessage: errors.map(
-        (error) =>
-          `property: ${error.property}, value: ${error.value} error: ${Object.values(error.constraints)
-            .map((value) => value)
-            .join(',')}`,
-      ),
+      errorMessage: errors.map((error) => error.constraints),
       raw: new Error(JSON.stringify(errors)),
       errorType: ErrorTypeEnum.WARN,
     });

@@ -29,19 +29,19 @@ export class PasswordResDto {
     this._deletedAt = password.deletedAt;
   }
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('id', 0)
   @ApiProperty({ example: 1, description: '비밀번호 id입니다.' })
   get id(): number {
     return this._id;
   }
 
-  @IsNotEmptyString(100)
+  @IsNotEmptyString('domain', 100)
   @ApiProperty({ example: 'naver', description: '비밀번호 도메인입니다.' })
   get domain(): string {
     return this._domain;
   }
 
-  @IsNotEmptyString(150)
+  @IsNotEmptyString('password', 150)
   @ApiProperty({ example: 'U2FsdGVkX1+U/pJ5iJEzYVXUT4PBEktG7FwpJFHa84Q=', description: '해쉬된 비밀번호입니다.' })
   get password(): string {
     return this._password;

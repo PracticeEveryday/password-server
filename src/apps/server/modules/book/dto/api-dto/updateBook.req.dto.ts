@@ -7,27 +7,27 @@ import { IsOptionalString } from '@apps/server/common/decorator/validation/isCus
 import { BookInterface } from '@apps/server/modules/book/interface/book.interface';
 
 export class UpdateBookReqDto {
-  @IsOptionalString(0, 50)
+  @IsOptionalString('author', 0, 50)
   @ApiProperty({ example: '조영호', description: '책 저자 정보입니다.' })
   author: string;
 
-  @IsOptionalString(0, 50)
+  @IsOptionalString('publisher', 0, 50)
   @ApiProperty({ example: '위키북스', description: '책 출판 정보입니다.' })
   publisher: string;
 
-  @IsOptionalNumber(0)
+  @IsOptionalNumber('pageCount', 0)
   @ApiProperty({ example: 255, description: '전체 페이지 정보입니다.' })
   pageCount: number;
 
-  @IsOptionalString(0, 50)
+  @IsOptionalString('title', 0, 50)
   @ApiProperty({ example: '객체지향의 사실과 오해', description: '책 제목입니다.' })
   title: string;
 
-  @IsOptionalNumber(0)
+  @IsOptionalNumber('price', 0)
   @ApiProperty({ example: 20000, description: '책 가격입니다.' })
   price: number;
 
-  @IsOptionalString(0, 1000)
+  @IsOptionalString('bookReport', 0, 1000)
   @ApiProperty({ example: '객체 지향을 오해하고 있었습니다.', description: '독후감입니다.' })
   bookReport: string | null;
 

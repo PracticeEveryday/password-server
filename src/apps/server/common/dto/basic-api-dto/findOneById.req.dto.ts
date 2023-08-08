@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
 
 export class FindOneByIdReqDto {
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('id', 0)
   @ApiProperty({ example: 1, description: '테이블의 기본키(id) 값입니다.' })
   id: number;
 

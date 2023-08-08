@@ -6,15 +6,15 @@ import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCus
 import { BookDto } from '@apps/server/common/dto/book.dto';
 
 export class CreateBookReqDto extends PickType(BookDto, ['title', 'price']) {
-  @IsNotEmptyString(0, 50)
+  @IsNotEmptyString('author', 0, 50)
   @ApiProperty({ example: '조영호', description: '책 저자 정보입니다.' })
   author: string;
 
-  @IsNotEmptyString(0, 50)
+  @IsNotEmptyString('publisher', 0, 50)
   @ApiProperty({ example: '위키북스', description: '책 출판 정보입니다.' })
   publisher: string;
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('pageCount', 0)
   @ApiProperty({ example: 255, description: '전체 페이지 정보입니다.' })
   pageCount: number;
 

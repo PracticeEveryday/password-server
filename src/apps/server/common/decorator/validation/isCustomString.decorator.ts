@@ -2,19 +2,45 @@ import { applyDecorators } from '@nestjs/common';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
-export function IsOptionalString(min?: number, max?: number) {
+import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
+
+export function IsOptionalString(value: string, min?: number, max?: number) {
   if (min) {
-    return applyDecorators(IsOptional(), IsString(), Expose(), MinLength(min));
+    return applyDecorators(
+      IsOptional(),
+      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
+      Expose(),
+      MinLength(min, {
+        message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', min.toString())}`,
+      }),
+    );
   }
   if (max) {
-    return applyDecorators(IsOptional(), IsString(), Expose(), MaxLength(max));
+    return applyDecorators(
+      IsOptional(),
+      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
+      Expose(),
+      MaxLength(max, {
+        message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', max.toString())}`,
+      }),
+    );
   }
 
   if (max && min) {
-    return applyDecorators(IsOptional(), IsString(), Expose(), MaxLength(max), MinLength(min));
+    return applyDecorators(
+      IsOptional(),
+      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
+      Expose(),
+      MaxLength(max, {
+        message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', max.toString())}`,
+      }),
+      MinLength(min, {
+        message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', min.toString())}`,
+      }),
+    );
   }
 
-  return applyDecorators(IsOptional(), IsString(), Expose());
+  return applyDecorators(IsOptional(), IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }), Expose());
 }
 
 /**
@@ -22,17 +48,45 @@ export function IsOptionalString(min?: number, max?: number) {
  * @param min? 최소 길이
  * @param max? 최대 길이
  */
-export function IsNotEmptyString(min?: number, max?: number) {
+export function IsNotEmptyString(value: string, min?: number, max?: number) {
   if (min) {
-    return applyDecorators(IsNotEmpty(), IsString(), Expose(), MinLength(min));
+    return applyDecorators(
+      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
+      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
+      Expose(),
+      MinLength(min, {
+        message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', min.toString())}`,
+      }),
+    );
   }
   if (max) {
-    return applyDecorators(IsNotEmpty(), IsString(), Expose(), MaxLength(max));
+    return applyDecorators(
+      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
+      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
+      Expose(),
+      MaxLength(max, {
+        message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', max.toString())}`,
+      }),
+    );
   }
 
   if (max && min) {
-    return applyDecorators(IsNotEmpty(), IsString(), Expose(), MaxLength(max), MinLength(min));
+    return applyDecorators(
+      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
+      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
+      Expose(),
+      MaxLength(max, {
+        message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', max.toString())}`,
+      }),
+      MinLength(min, {
+        message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', min.toString())}`,
+      }),
+    );
   }
 
-  return applyDecorators(IsNotEmpty(), IsString(), Expose());
+  return applyDecorators(
+    IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
+    IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
+    Expose(),
+  );
 }

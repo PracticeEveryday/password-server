@@ -4,11 +4,11 @@ import { IsOptionalString } from '@apps/server/common/decorator/validation/isCus
 import { PasswordInterface } from '@libs/mysql/type/password.type';
 
 export class UpdatePasswordReqDto {
-  @IsOptionalString(0, 100)
+  @IsOptionalString('domain', 0, 100)
   @ApiProperty({ example: 'naver', description: '비밀번호 도메인 정보입니다.' })
   domain: string;
 
-  @IsOptionalString(0, 150)
+  @IsOptionalString('password', 0, 150)
   @ApiProperty({ example: '12345678a', description: '비밀번호 도메인 정보입니다.' })
   password: string;
 

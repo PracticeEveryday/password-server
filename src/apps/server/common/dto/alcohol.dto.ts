@@ -5,7 +5,7 @@ import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCus
 import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 
 export class AlcoholDto {
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('id', 0)
   @ApiProperty({ example: 1, description: 'alcohol Id입니다.' })
   id: number;
 
@@ -13,11 +13,11 @@ export class AlcoholDto {
   @ApiProperty({ example: '2023-07-27', description: '술 마신 날짜입니다.' })
   drinkingDate: Date;
 
-  @IsNotEmptyString(0, 50)
+  @IsNotEmptyString('relationship', 0, 50)
   @ApiProperty({ example: '친구', description: '함께 술 마신 사람과의 관계입니다.' })
   relationship: string;
 
-  @IsNotEmptyString(0, 50)
+  @IsNotEmptyString('mood', 0, 50)
   @ApiProperty({ example: '너무 신났다.', description: '술 마신 날의 종합적인 기분입니다.' })
   mood: string;
 

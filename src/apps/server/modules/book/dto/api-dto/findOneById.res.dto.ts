@@ -27,13 +27,13 @@ export class BookMetaResDto {
     return new BookMetaResDto(data);
   }
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('id', 0)
   @ApiProperty({ example: 1, description: '책의 메타데이터 아이디입니다.' })
   get id(): number {
     return this._id;
   }
 
-  @IsNotEmptyString(0)
+  @IsNotEmptyString('author', 0)
   @ApiProperty({ example: '조용호', description: '책의 저자입니다.' })
   get author(): string {
     return this._author;
@@ -44,7 +44,7 @@ export class BookMetaResDto {
     return this._publisher;
   }
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('pageCount', 0)
   @ApiProperty({ example: 255, description: '책의 전체 페이지 수입니다.' })
   get pageCount(): number {
     return this._pageCount;
@@ -76,25 +76,25 @@ export class FindOneByIdResDto {
     this._bookMeta = data.bookMeta;
   }
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('id', 0)
   @ApiProperty({ example: 1, description: '조회된 책의 아이디입니다.' })
   get id(): number {
     return this._id;
   }
 
-  @IsNotEmptyString(0)
+  @IsNotEmptyString('title', 0)
   @ApiProperty({ example: '객체 지향의 사실과 오해', description: '책의 제목입니다.' })
   get title(): string {
     return this._title;
   }
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('price', 0)
   @ApiProperty({ example: 20000, description: '책의 가격입니다.' })
   get price(): number {
     return this._price;
   }
 
-  @IsOptionalString(0)
+  @IsOptionalString('bookReport', 0)
   @ApiProperty({ example: null, description: '책에 대한 독후감입니다.' })
   get bookReport(): string | null {
     return this._bookReport;

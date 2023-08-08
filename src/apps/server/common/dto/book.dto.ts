@@ -5,23 +5,23 @@ import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCus
 import { IsNotEmptyString, IsOptionalString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 
 export class BookMetaDto {
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('id', 0)
   @ApiProperty({ example: 1, description: 'bookMeta ID입니다.' })
   id: number;
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('bookId', 0)
   @ApiProperty({ example: 1, description: '연결된 book의 ID입니다.' })
   bookId: number;
 
-  @IsNotEmptyString(0, 50)
+  @IsNotEmptyString('author', 0, 50)
   @ApiProperty({ example: '조영호', description: '책 저자 정보입니다.' })
   author: string;
 
-  @IsNotEmptyNumber(0, 50)
+  @IsNotEmptyNumber('publisher', 0, 50)
   @ApiProperty({ example: '위키북스', description: '책 출판 정보입니다.' })
   publisher: string;
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('pageCount', 0)
   @ApiProperty({ example: 255, description: '전체 페이지 정보입니다.' })
   pageCount: number;
 
@@ -39,19 +39,19 @@ export class BookMetaDto {
 }
 
 export class BookDto {
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('id', 0)
   @ApiProperty({ example: 1, description: 'book ID입니다.' })
   id: number;
 
-  @IsNotEmptyString(0, 50)
+  @IsNotEmptyString('title', 0, 50)
   @ApiProperty({ example: '객체지향의 사실과 오해', description: '책 제목입니다.' })
   title: string;
 
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('price', 0)
   @ApiProperty({ example: 20000, description: '책 가격입니다.' })
   price: number;
 
-  @IsOptionalString(0, 1000)
+  @IsOptionalString('bookReport', 0, 1000)
   @ApiProperty({ example: '객체 지향을 오해하고 있었습니다.', description: '독후감입니다.' })
   bookReport: string | null;
 

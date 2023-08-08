@@ -5,15 +5,15 @@ import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCus
 import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 
 export class PasswordDto {
-  @IsNotEmptyNumber(0)
+  @IsNotEmptyNumber('id', 0)
   @ApiProperty({ example: 1, description: 'password Id입니다.' })
   id: number;
 
-  @IsNotEmptyString(0, 100)
+  @IsNotEmptyString('domain', 0, 100)
   @ApiProperty({ example: 'naver', description: '비밀번호 도메인 정보입니다.' })
   domain: string;
 
-  @IsNotEmptyString(0, 150)
+  @IsNotEmptyString('password', 0, 150)
   @ApiProperty({ example: '123456789a', description: '비밀번호 도메인 정보입니다.' })
   password: string;
 
