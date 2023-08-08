@@ -32,10 +32,10 @@ export class LogService {
   }
 
   warn(label: string, error: BaseException): void {
-    this.logger.warn(`label: ${label}: ${JSON.stringify(error.getResponse(), null, 2)}`);
+    this.logger.warn(`stack: ${error.stack} \n label: ${label}: ${JSON.stringify(error, null, 2)}`);
   }
 
   error(label: string, error: BaseException): void {
-    this.logger.error(`label: ${label}: ${JSON.stringify(error.getResponse(), null, 2)}`, JSON.stringify(error.raw));
+    this.logger.error(`label: ${label}: ${JSON.stringify(error, null, 2)}`, JSON.stringify(error.raw, null, 2));
   }
 }

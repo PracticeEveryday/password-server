@@ -20,7 +20,7 @@ export class BaseException extends HttpException {
   private readonly _errorCode: ErrorCode;
 
   @Exclude()
-  private readonly _errorMessage: ErrorMessage;
+  private readonly _errorMessage: ErrorMessage | string;
 
   @Exclude()
   private readonly _errorType: ErrorTypeEnum;
