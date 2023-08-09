@@ -71,7 +71,7 @@ class Server {
       throw new CustomUnknownException({
         title: 'sql error',
         errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-        errorMessage: ErrorMessage.COMMON.COMMON_0500,
+        errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });
     }
@@ -97,7 +97,7 @@ class Server {
       throw new CustomUnknownException({
         title: 'sql error',
         errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-        errorMessage: ErrorMessage.COMMON.COMMON_0500,
+        errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });
     }

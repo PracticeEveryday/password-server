@@ -29,7 +29,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
           statusCode: error.getStatus(),
           title: error.name,
           errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-          errorMessage: ErrorMessage.COMMON.COMMON_0500,
+          errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
           errorType: ErrorTypeEnum.WARN,
           raw: error,
         });
@@ -38,7 +38,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
       throw new CustomUnknownException({
         title: error.name,
         errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-        errorMessage: ErrorMessage.COMMON.COMMON_0500,
+        errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });
     })();

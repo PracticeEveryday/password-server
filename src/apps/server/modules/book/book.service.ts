@@ -41,7 +41,7 @@ export class BookService {
   public async createOne(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
     const selectResult = await this.bookRepository.findOneByWhere({ title: createBookReqDto.title });
     if (selectResult)
-      throw new CustomConflictException(makeExceptionScript('already exist', ErrorCode.CONFLICT, ErrorMessage.BOOK.BOOK_4091));
+      throw new CustomConflictException(makeExceptionScript('already exist', ErrorCode.CONFLICT, ErrorMessage.BOOK.BOOK_ALREADY_EXIST));
 
     const createdBookResult = await this.bookRepository.createOne(createBookReqDto);
     createBookReqDto.setBookId = createdBookResult.insertId;
@@ -57,7 +57,7 @@ export class BookService {
   public async updateOne(body: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<UpdatedResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(param);
     if (!selectResult) {
-      throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.BOOK_4041));
+      throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.NOT_FOUND_BOOK_BY_ID));
     }
 
     const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
@@ -80,7 +80,7 @@ export class BookService {
   public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<FindOneByIdResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!selectResult) {
-      throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.BOOK_4041));
+      throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.NOT_FOUND_BOOK_BY_ID));
     }
 
     const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
@@ -94,14 +94,16 @@ export class BookService {
   public async findManyByQueryWithPagination(searchBookReqDto: SearchBookReqDto): Promise<SearchBookPaginationDto> {
     const selectResultArr: RowDataPacket[] = await this.bookRepository.findManyByQueryWithPagination(searchBookReqDto);
     if (selectResultArr.length === 0) {
-      throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.BOOK_4041));
+      throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.NOT_FOUND_BOOK_BY_ID));
     }
 
     const { totalCount } = await this.bookRepository.count(searchBookReqDto);
     const pagination = toPagination(totalCount, searchBookReqDto.pageNo, searchBookReqDto.pageSize);
     const searchBookResDto = selectResultArr.map((selectResult) => {
       if (!selectResult) {
-        throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.BOOK_4041));
+        throw new CustomNotFoundException(
+          makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.NOT_FOUND_BOOK_BY_ID),
+        );
       }
       const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
 
@@ -119,7 +121,7 @@ export class BookService {
     const findOneByIdReqDto = FindOneByIdReqDto.toDTO(deleteBookReqDto.id);
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!selectResult) {
-      throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.BOOK_4041));
+      throw new CustomNotFoundException(makeExceptionScript('not found boor', ErrorCode.NOT_FOUND, ErrorMessage.BOOK.NOT_FOUND_BOOK_BY_ID));
     }
 
     const deletedBookMetaResult = await this.bookMetaRepository.removeOne(deleteBookReqDto);
