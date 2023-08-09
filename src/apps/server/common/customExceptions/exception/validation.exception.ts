@@ -1,6 +1,5 @@
 import { ValidationError } from 'class-validator';
 
-import { ErrorCode } from '@apps/server/common/customExceptions/errorCode';
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
 import { ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
 
@@ -8,9 +7,8 @@ export class ValidationException extends BaseException {
   constructor(errors: ValidationError[]) {
     super({
       statusCode: 400,
-      title: 'error',
-      errorCode: ErrorCode.VALIDATION_ERROR,
-      errorMessage: {
+      errorResponse: {
+        code: 'VALIDATION_ERROR',
         ENG: 'VALIDATION_ERROR',
         KR: errors
           .map((error) => {

@@ -2,14 +2,14 @@ import { applyDecorators } from '@nestjs/common';
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
-import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
+import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 
 const getStringValidation = (value: string, min?: number, max?: number) => {
   return {
-    isNotEmpty: IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-    isString: IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
-    maxLength: MaxLength(max, { message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', String(max))}` }),
-    minLength: MinLength(max, { message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', String(max))}` }),
+    isNotEmpty: IsNotEmpty({ message: `${value}${ErrorResponse.VALIDATION.IS_NOT_EMPTY}` }),
+    isString: IsString({ message: `${value}${ErrorResponse.VALIDATION.IS_STRING} ` }),
+    maxLength: MaxLength(max, { message: `${value}${ErrorResponse.VALIDATION.STRING_LESS_THEN.replace('###value###', String(max))}` }),
+    minLength: MinLength(max, { message: `${value}${ErrorResponse.VALIDATION.STRING_GREATER_THEN.replace('###value###', String(max))}` }),
   };
 };
 

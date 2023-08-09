@@ -7,9 +7,7 @@ export class CustomNotFoundException extends BaseException {
   constructor(properties: Pick<BaseException, ExceptionPropertyType>) {
     super({
       statusCode: HttpStatus.NOT_FOUND,
-      title: properties.title,
-      errorCode: properties.errorCode,
-      errorMessage: properties.errorMessage,
+      errorResponse: properties.errorResponse,
       errorType: ErrorTypeEnum.WARN,
       raw: properties?.raw,
     });

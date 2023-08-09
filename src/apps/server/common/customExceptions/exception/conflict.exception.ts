@@ -7,9 +7,7 @@ export class CustomConflictException extends BaseException {
   constructor(properties: Pick<BaseException, ExceptionPropertyType>) {
     super({
       statusCode: HttpStatus.CONFLICT,
-      title: properties.title,
-      errorCode: properties.errorCode,
-      errorMessage: properties.errorMessage,
+      errorResponse: properties.errorResponse,
       errorType: ErrorTypeEnum.WARN,
       raw: properties?.raw,
     });

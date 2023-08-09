@@ -1,8 +1,7 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable, tap } from 'rxjs';
 
-import { ErrorCode } from '@apps/server/common/customExceptions/errorCode';
-import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
+import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
 import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { MysqlService } from '@libs/mysql/mysql.service';
@@ -31,9 +30,7 @@ export class TransactionInterceptor implements NestInterceptor {
         } else {
           console.log(error);
           throw new CustomUnknownException({
-            title: 'sql error',
-            errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-            errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
+            errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
             raw: error,
           });
         }

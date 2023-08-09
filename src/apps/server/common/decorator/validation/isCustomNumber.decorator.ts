@@ -2,14 +2,14 @@ import { applyDecorators } from '@nestjs/common';
 import { Expose, Type } from 'class-transformer';
 import { IsOptional, IsNumber, IsNotEmpty, Min, Max } from 'class-validator';
 
-import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
+import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 
 const getNumberValidation = (value: string, min?: number, max?: number) => {
   return {
-    isNotEmpty: IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-    isNumber: IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
-    max: Max(max, { message: `${value}${ErrorMessage.VALIDATION.NUMBER_LESS_THEN.replace('###value###', String(max))}` }),
-    min: Min(min, { message: `${value}${ErrorMessage.VALIDATION.NUMBER_GREATER_THEN.replace('###value###', String(min))}` }),
+    isNotEmpty: IsNotEmpty({ message: `${value}${ErrorResponse.VALIDATION.IS_NOT_EMPTY}` }),
+    isNumber: IsNumber({}, { message: `${value}${ErrorResponse.VALIDATION.IS_NUMBER} ` }),
+    max: Max(max, { message: `${value}${ErrorResponse.VALIDATION.NUMBER_LESS_THEN.replace('###value###', String(max))}` }),
+    min: Min(min, { message: `${value}${ErrorResponse.VALIDATION.NUMBER_GREATER_THEN.replace('###value###', String(min))}` }),
   };
 };
 

@@ -7,9 +7,7 @@ export class CustomUnknownException extends BaseException {
   constructor(properties: Pick<BaseException, ExceptionPropertyType>) {
     super({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      title: properties.title,
-      errorCode: properties.errorCode,
-      errorMessage: properties.errorMessage,
+      errorResponse: properties.errorResponse,
       errorType: ErrorTypeEnum.ERROR,
       raw: properties?.raw,
     });

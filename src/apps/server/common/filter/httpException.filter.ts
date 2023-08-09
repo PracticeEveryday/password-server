@@ -1,8 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 
-import { ErrorCode } from '@apps/server/common/customExceptions/errorCode';
-import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
+import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
 import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
@@ -27,18 +26,14 @@ export class CustomExceptionFilter implements ExceptionFilter {
       if (error instanceof HttpException) {
         return new BaseException({
           statusCode: error.getStatus(),
-          title: error.name,
-          errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-          errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
+          errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
           errorType: ErrorTypeEnum.WARN,
           raw: error,
         });
       }
 
       throw new CustomUnknownException({
-        title: error.name,
-        errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-        errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
+        errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });
     })();

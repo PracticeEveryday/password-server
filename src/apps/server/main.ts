@@ -5,8 +5,7 @@ import { WinstonLogger } from 'nest-winston';
 import { Logger } from 'winston';
 
 import { AppModule } from '@apps/server/app.module';
-import { ErrorCode } from '@apps/server/common/customExceptions/errorCode';
-import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
+import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
 import { EnvService } from '@libs/env/env.service';
@@ -69,9 +68,7 @@ class Server {
     } catch (error) {
       this.logService.errorLog('Server', 'precondition error', error);
       throw new CustomUnknownException({
-        title: 'sql error',
-        errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-        errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
+        errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });
     }
@@ -95,9 +92,7 @@ class Server {
     } catch (error) {
       this.logService.errorLog('Server', 'timeValidation error', error);
       throw new CustomUnknownException({
-        title: 'sql error',
-        errorCode: ErrorCode.INTERNAL_SERVER_ERROR,
-        errorMessage: ErrorMessage.COMMON.INTERNAL_SERVER_ERROR,
+        errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });
     }

@@ -1,8 +1,0 @@
-export enum ErrorCode {
-  SUCCESS,
-  TYPE_ERROR,
-  VALIDATION_ERROR,
-  CONFLICT,
-  NOT_FOUND,
-  INTERNAL_SERVER_ERROR,
-}
