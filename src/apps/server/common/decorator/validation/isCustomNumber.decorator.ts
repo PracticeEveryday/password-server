@@ -4,12 +4,23 @@ import { IsOptional, IsNumber, IsNotEmpty, Min, Max } from 'class-validator';
 
 import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
 
+const getNumberValidation = (value: string, min?: number, max?: number) => {
+  return {
+    isNotEmpty: IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
+    isNumber: IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+    max: Max(max, { message: `${value}${ErrorMessage.VALIDATION.NUMBER_LESS_THEN.replace('###value###', String(max))}` }),
+    min: Min(min, { message: `${value}${ErrorMessage.VALIDATION.NUMBER_GREATER_THEN.replace('###value###', String(min))}` }),
+  };
+};
+
 export function IsOptionalNumber(value: string, min?: number, max?: number) {
+  const numberValidation = getNumberValidation(value, min, max);
+
   if (max) {
     return applyDecorators(
       IsOptional(),
-      Max(max, { message: `${value}${ErrorMessage.VALIDATION.NUMBER_LESS_THEN.replace('###value###', max.toString())}` }),
-      IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+      numberValidation.max,
+      numberValidation.isNumber,
       Type(() => Number),
       Expose(),
     );
@@ -17,10 +28,8 @@ export function IsOptionalNumber(value: string, min?: number, max?: number) {
   if (min) {
     return applyDecorators(
       IsOptional(),
-      Min(min, {
-        message: `${value}${ErrorMessage.VALIDATION.NUMBER_GREATER_THEN.replace('###value###', min.toString())}`,
-      }),
-      IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+      numberValidation.min,
+      numberValidation.isNumber,
       Type(() => Number),
       Expose(),
     );
@@ -29,11 +38,9 @@ export function IsOptionalNumber(value: string, min?: number, max?: number) {
   if (min && max) {
     return applyDecorators(
       IsOptional(),
-      Min(min, {
-        message: `${value}${ErrorMessage.VALIDATION.NUMBER_GREATER_THEN.replace('###value###', min.toString())}`,
-      }),
-      Max(max, { message: `${value}${ErrorMessage.VALIDATION.NUMBER_LESS_THEN.replace('###value###', max.toString())}` }),
-      IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+      numberValidation.max,
+      numberValidation.min,
+      numberValidation.isNumber,
       Type(() => Number),
       Expose(),
     );
@@ -41,29 +48,29 @@ export function IsOptionalNumber(value: string, min?: number, max?: number) {
 
   return applyDecorators(
     IsOptional(),
-    IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+    numberValidation.isNumber,
     Type(() => Number),
     Expose(),
   );
 }
 
 export function IsNotEmptyNumber(value: string, min?: number, max?: number) {
+  const numberValidation = getNumberValidation(value, min, max);
+
   if (max) {
     return applyDecorators(
-      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-      Max(max, { message: `${value}${ErrorMessage.VALIDATION.NUMBER_LESS_THEN.replace('###value###', max.toString())}` }),
-      IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+      numberValidation.max,
+      numberValidation.isNumber,
+      numberValidation.isNotEmpty,
       Type(() => Number),
       Expose(),
     );
   }
   if (min) {
     return applyDecorators(
-      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-      Min(min, {
-        message: `${value}${ErrorMessage.VALIDATION.NUMBER_GREATER_THEN.replace('###value###', min.toString())}`,
-      }),
-      IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+      numberValidation.min,
+      numberValidation.isNumber,
+      numberValidation.isNotEmpty,
       Type(() => Number),
       Expose(),
     );
@@ -71,20 +78,18 @@ export function IsNotEmptyNumber(value: string, min?: number, max?: number) {
 
   if (min && max) {
     return applyDecorators(
-      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-      Min(min, {
-        message: `${value}${ErrorMessage.VALIDATION.NUMBER_GREATER_THEN.replace('###value###', min.toString())}`,
-      }),
-      Max(max, { message: `${value}${ErrorMessage.VALIDATION.NUMBER_LESS_THEN.replace('###value###', max.toString())}` }),
-      IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+      numberValidation.max,
+      numberValidation.min,
+      numberValidation.isNumber,
+      numberValidation.isNotEmpty,
       Type(() => Number),
       Expose(),
     );
   }
 
   return applyDecorators(
-    IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-    IsNumber({}, { message: `${value}${ErrorMessage.VALIDATION.IS_NUMBER} ` }),
+    numberValidation.isNumber,
+    numberValidation.isNotEmpty,
     Type(() => Number),
     Expose(),
   );

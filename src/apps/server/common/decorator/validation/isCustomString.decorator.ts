@@ -4,89 +4,51 @@ import { IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-va
 
 import ErrorMessage from '@apps/server/common/customExceptions/errorMessage';
 
+const getStringValidation = (value: string, min?: number, max?: number) => {
+  return {
+    isNotEmpty: IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
+    isString: IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
+    maxLength: MaxLength(max, { message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', String(max))}` }),
+    minLength: MinLength(max, { message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', String(max))}` }),
+  };
+};
+
 export function IsOptionalString(value: string, min?: number, max?: number) {
+  const stringValidation = getStringValidation(value, min, max);
   if (min) {
-    return applyDecorators(
-      IsOptional(),
-      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
-      Expose(),
-      MinLength(min, {
-        message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', min.toString())}`,
-      }),
-    );
+    return applyDecorators(Expose(), IsOptional(), stringValidation.isString, stringValidation.minLength);
   }
+
   if (max) {
-    return applyDecorators(
-      IsOptional(),
-      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
-      Expose(),
-      MaxLength(max, {
-        message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', max.toString())}`,
-      }),
-    );
+    return applyDecorators(Expose(), IsOptional(), stringValidation.isString, stringValidation.maxLength);
   }
 
   if (max && min) {
-    return applyDecorators(
-      IsOptional(),
-      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
-      Expose(),
-      MaxLength(max, {
-        message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', max.toString())}`,
-      }),
-      MinLength(min, {
-        message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', min.toString())}`,
-      }),
-    );
+    return applyDecorators(Expose(), IsOptional(), stringValidation.isString, stringValidation.maxLength, stringValidation.minLength);
   }
 
-  return applyDecorators(IsOptional(), IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }), Expose());
+  return applyDecorators(Expose(), IsOptional(), stringValidation.isString);
 }
 
-/**
- * 무조건 값이 있어야 하는 string validation 입니다.
- * @param min? 최소 길이
- * @param max? 최대 길이
- */
 export function IsNotEmptyString(value: string, min?: number, max?: number) {
+  const stringValidation = getStringValidation(value, min, max);
   if (min) {
-    return applyDecorators(
-      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
-      Expose(),
-      MinLength(min, {
-        message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', min.toString())}`,
-      }),
-    );
+    return applyDecorators(Expose(), stringValidation.isNotEmpty, stringValidation.isString, stringValidation.minLength);
   }
+
   if (max) {
-    return applyDecorators(
-      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
-      Expose(),
-      MaxLength(max, {
-        message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', max.toString())}`,
-      }),
-    );
+    return applyDecorators(Expose(), stringValidation.isNotEmpty, stringValidation.isString, stringValidation.maxLength);
   }
 
   if (max && min) {
     return applyDecorators(
-      IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-      IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
       Expose(),
-      MaxLength(max, {
-        message: `${value}${ErrorMessage.VALIDATION.STRING_LESS_THEN.replace('###value###', max.toString())}`,
-      }),
-      MinLength(min, {
-        message: `${value}${ErrorMessage.VALIDATION.STRING_GREATER_THEN.replace('###value###', min.toString())}`,
-      }),
+      stringValidation.isNotEmpty,
+      stringValidation.isString,
+      stringValidation.maxLength,
+      stringValidation.minLength,
     );
   }
 
-  return applyDecorators(
-    IsNotEmpty({ message: `${value}${ErrorMessage.VALIDATION.IS_NOT_EMPTY}` }),
-    IsString({ message: `${value}${ErrorMessage.VALIDATION.IS_STRING} ` }),
-    Expose(),
-  );
+  return applyDecorators(Expose(), stringValidation.isNotEmpty, stringValidation.isString);
 }

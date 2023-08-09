@@ -50,12 +50,12 @@ export default class ErrorMessage {
   };
 
   public static readonly VALIDATION = {
-    IS_NOT_EMPTY: '은(는) 필수값입니다.',
+    IS_NOT_EMPTY: '은(는) 필수로 들어와야 합니다.',
     IS_NUMBER: '은(는) 숫자여야 합니다.',
     IS_STRING: '은(는) 문자여야 합니다.',
-    NUMBER_LESS_THEN: '은(는) ###value### 보다 작아야합니다.',
-    NUMBER_GREATER_THEN: '은(는) ###value### 보다 커야합니다.',
-    STRING_LESS_THEN: ' 길이는 ###value### 보다 작아야합니다.',
-    STRING_GREATER_THEN: ' 길이는 ###value### 보다 커야합니다.',
+    NUMBER_LESS_THEN: '은(는) ###value### 보다 작아야 합니다.',
+    NUMBER_GREATER_THEN: '은(는) ###value### 보다 커야 합니다.',
+    STRING_LESS_THEN: ' 길이는 ###value### 보다 작아야 합니다.',
+    STRING_GREATER_THEN: ' 길이는 ###value### 보다 커야 합니다.',
   };
 }
