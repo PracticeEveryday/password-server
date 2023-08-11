@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { SqlUtilService } from './sqlUtil.service';
+
 import { StringUtilModule } from '../string/stringUtil.module';
 
 describe('SqlUtilService', () => {

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { SqlUtilService } from './sqlUtil.service';
+
 import { StringUtilModule } from '../string/stringUtil.module';
 
 @Module({
