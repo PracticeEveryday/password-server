@@ -1,11 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { AppService } from '@apps/server/app.service';
-import { ReadlineService } from '@libs/readline/readline.service';
+import { ReadlineStartService } from '@libs/readline/readlineStart.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, private readonly readlineService: ReadlineService) {}
+  constructor(private readonly appService: AppService, private readonly readlineService: ReadlineStartService) {}
 
   @Get()
   getHello(): string {

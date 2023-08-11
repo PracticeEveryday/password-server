@@ -42,7 +42,7 @@ module.exports = {
     'prefer-arrow-callback': 'error',
     // 'implicit-arrow-linebreak': ['error', 'beside'],
     'object-shorthand': 'error',
-    'lines-between-class-members': ['error', 'always'],
+    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
     'prefer-template': 'error',
     'prefer-destructuring': [
       'error',

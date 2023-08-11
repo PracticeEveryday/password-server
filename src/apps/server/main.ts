@@ -24,25 +24,27 @@ import {
   initTablePrequalification,
   initTableRound,
 } from '@libs/mysql/sql/initTablePassword';
-import { ReadlineService } from '@libs/readline/readline.service';
+import { ReadlineEndService } from '@libs/readline/readlineEnd.service';
+import { ReadlineStartService } from '@libs/readline/readlineStart.service';
 import { setupSwagger } from '@libs/swagger/swagger';
 import { DateUtilService } from '@libs/util/date/dateUtil.service';
 
 class Server {
   private readonly ROW_IDX = 0 as const;
-
   private readonly mysql: MysqlService;
-
-  private readonly readlineService: ReadlineService;
-
+  private readonly readlineStartService: ReadlineStartService;
+  private readonly readlineEndService: ReadlineEndService;
   private readonly dateUtilService: DateUtilService;
-
   private readonly logService: LogService;
 
   constructor() {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
     this.dateUtilService = new DateUtilService();
-    this.readlineService = new ReadlineService(
+    this.readlineStartService = new ReadlineStartService(
+      new PrequalificationRepository(new MysqlService(new EnvService(new ConfigService()))),
+      new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
+    );
+    this.readlineEndService = new ReadlineEndService(
       new PrequalificationRepository(new MysqlService(new EnvService(new ConfigService()))),
       new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
     );
@@ -102,7 +104,7 @@ class Server {
    * 서버를 시작하기 위해 질문할 내역과 답변을 입력하는 함수입니다.
    */
   public askQuestions(): void {
-    this.readlineService.processingQuestions();
+    this.readlineStartService.processingQuestions();
   }
 
   /**
@@ -112,7 +114,7 @@ class Server {
     const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.prequalification');
     const prequalificationArr = totalPrequalifications[this.ROW_IDX] as unknown as { id: number; question: string; answer: string }[];
 
-    return await this.readlineService.processingAboutPrequalifications(prequalificationArr);
+    return await this.readlineEndService.processingAboutPrequalifications(prequalificationArr);
   }
 
   /**
