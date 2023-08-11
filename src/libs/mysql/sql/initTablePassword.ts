@@ -21,9 +21,9 @@ CREATE TABLE IF NOT EXISTS server_info (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='서버의 상태를 저장하기 위한 TABLE';
 `;
 
-export const initTablePrequalification = `
-    CREATE TABLE IF NOT EXISTS prequalification (
-    id          INT              AUTO_INCREMENT    PRIMARY KEY COMMENT 'prequalifications의 UniqueId',
+export const initTablePreQualification = `
+    CREATE TABLE IF NOT EXISTS pre_qualification (
+    id          INT              AUTO_INCREMENT    PRIMARY KEY COMMENT 'pre_qualifications의 UniqueId',
     question    VARCHAR(100)     NOT NULL          COMMENT '사전 질문',
     answer      VARCHAR(100)     NOT NULL          COMMENT '사전 질문 답변',
     createdAt     TIMESTAMP      DEFAULT     CURRENT_TIMESTAMP COMMENT '생성된 시간',

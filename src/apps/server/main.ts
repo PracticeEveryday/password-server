@@ -12,7 +12,7 @@ import { EnvService } from '@libs/env/env.service';
 import { EnvEnum } from '@libs/env/envEnum';
 import { LogService } from '@libs/log/log.service';
 import { MysqlService } from '@libs/mysql/mysql.service';
-import { PrequalificationRepository } from '@libs/mysql/repository/prequalification.repository';
+import { PreQualificationRepository } from '@libs/mysql/repository/preQualification.repository';
 import { ServerInfoRepository } from '@libs/mysql/repository/serverInfo.repository';
 import {
   initFirstValue,
@@ -21,7 +21,7 @@ import {
   initTableBookMeta,
   initTableIsFirst,
   initTablePassword,
-  initTablePrequalification,
+  initTablePreQualification,
   initTableRound,
 } from '@libs/mysql/sql/initTablePassword';
 import { ReadlineEndService } from '@libs/readline/readlineEnd.service';
@@ -41,11 +41,11 @@ class Server {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
     this.dateUtilService = new DateUtilService();
     this.readlineStartService = new ReadlineStartService(
-      new PrequalificationRepository(new MysqlService(new EnvService(new ConfigService()))),
+      new PreQualificationRepository(new MysqlService(new EnvService(new ConfigService()))),
       new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
     );
     this.readlineEndService = new ReadlineEndService(
-      new PrequalificationRepository(new MysqlService(new EnvService(new ConfigService()))),
+      new PreQualificationRepository(new MysqlService(new EnvService(new ConfigService()))),
       new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
     );
     this.logService = new LogService(new WinstonLogger(new Logger()));
@@ -59,7 +59,7 @@ class Server {
       const initial = [
         initTablePassword,
         initTableIsFirst,
-        initTablePrequalification,
+        initTablePreQualification,
         initTableBook,
         initTableBookMeta,
         initFirstValue,
@@ -111,7 +111,7 @@ class Server {
    * 서버를 시작하기 위해 질문에 답하는 함수입니다.
    */
   public async confirmAboutPrequalifications(): Promise<boolean> {
-    const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.prequalification');
+    const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.pre_qualification');
     const prequalificationArr = totalPrequalifications[this.ROW_IDX] as unknown as { id: number; question: string; answer: string }[];
 
     return await this.readlineEndService.processingAboutPrequalifications(prequalificationArr);

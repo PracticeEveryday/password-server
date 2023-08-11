@@ -9,13 +9,13 @@ import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
 
 import { FinishScriptAboutProcessAboutResisterQuestions } from './docs/readline.docs';
 import { InjectionToken } from '../mysql/repository/injectionToken';
-import { PrequalificationRepository } from '../mysql/repository/prequalification.repository';
+import { PreQualificationRepository } from '../mysql/repository/preQualification.repository';
 import { ServerInfoRepository } from '../mysql/repository/serverInfo.repository';
 
 @Injectable()
 export class ReadlineStartService {
   constructor(
-    @Inject(InjectionToken.PREQUALIFICATION_REPOSITORY) private readonly prequalificationRepository: PrequalificationRepository,
+    @Inject(InjectionToken.PRE_QUALIFICATION_REPOSITORY) private readonly preQualificationRepository: PreQualificationRepository,
     @Inject(InjectionToken.SERVER_INFO_REPOSITORY) private readonly serverInfoRepository: ServerInfoRepository,
   ) {}
 
@@ -82,7 +82,7 @@ export class ReadlineStartService {
       console.log('-------------------------');
 
       try {
-        this.prequalificationRepository.create(pair.question, pair.answer);
+        this.preQualificationRepository.create(pair.question, pair.answer);
       } catch (error) {
         console.log(error);
         throw new CustomUnknownException({

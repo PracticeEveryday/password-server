@@ -4,13 +4,13 @@ import * as readline from 'readline';
 import { Inject, Injectable } from '@nestjs/common';
 
 import { InjectionToken } from '../mysql/repository/injectionToken';
-import { PrequalificationRepository } from '../mysql/repository/prequalification.repository';
+import { PreQualificationRepository } from '../mysql/repository/preQualification.repository';
 import { ServerInfoRepository } from '../mysql/repository/serverInfo.repository';
 
 @Injectable()
 export class ReadlineEndService {
   constructor(
-    @Inject(InjectionToken.PREQUALIFICATION_REPOSITORY) private readonly prequalificationRepository: PrequalificationRepository,
+    @Inject(InjectionToken.PRE_QUALIFICATION_REPOSITORY) private readonly prequalificationRepository: PreQualificationRepository,
     @Inject(InjectionToken.SERVER_INFO_REPOSITORY) private readonly serverInfoRepository: ServerInfoRepository,
   ) {}
 

@@ -7,7 +7,7 @@ import { InjectionToken } from '@libs/mysql/repository/injectionToken';
 
 @Injectable()
 export class AlcoholService {
-  constructor(@Inject(InjectionToken.ALCOHOL_REPOSIROTY) private readonly alcoholRepository: AlcoholRepositoryInterface) {}
+  constructor(@Inject(InjectionToken.ALCOHOL_REPOSITORY) private readonly alcoholRepository: AlcoholRepositoryInterface) {}
 
   public async create(createAlcoholDto: CreateAlcoholDto) {
     const result = await this.alcoholRepository.create(createAlcoholDto);

@@ -30,7 +30,7 @@ export class BookService {
     private readonly mysqlService: MysqlService,
     private readonly sqlUtilService: SqlUtilService,
     @Inject(InjectionToken.BOOK_REPOSITORY) private readonly bookRepository: BookRepository,
-    @Inject(InjectionToken.BOOKMETA_REPOSITORY) private readonly bookMetaRepository: BookMetaRepository,
+    @Inject(InjectionToken.BOOK_META_REPOSITORY) private readonly bookMetaRepository: BookMetaRepository,
   ) {}
 
   /**
