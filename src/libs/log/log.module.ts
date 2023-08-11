@@ -42,6 +42,7 @@ const winstonOptions = {
     // new winston.transports.DailyRotateFile(dailyOptions('warn')),
   ],
 };
+
 @Module({
   imports: [WinstonModule.forRoot(winstonOptions)],
   providers: [LogService],

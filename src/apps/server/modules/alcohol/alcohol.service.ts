@@ -23,7 +23,7 @@ export class AlcoholService {
     return `This action returns a #${id} alcohol`;
   }
 
-  update(id: number, updateAlcoholDto: UpdateAlcoholDto) {
+  update(id: number, _updateAlcoholDto: UpdateAlcoholDto) {
     return `This action updates a #${id} alcohol`;
   }
 

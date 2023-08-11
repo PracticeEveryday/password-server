@@ -40,7 +40,7 @@ export class AlcoholController {
     description: AlcoholDocs.createAlcoholDescriptionMd,
   })
   @UseInterceptors(TransactionInterceptor)
-  create(@Body() createAlcoholDto: CreateAlcoholDto, @TransactionManager() connectionPool: PoolConnection) {
+  create(@Body() createAlcoholDto: CreateAlcoholDto, @TransactionManager() _connectionPool: PoolConnection) {
     return this.alcoholService.create(createAlcoholDto);
   }
 

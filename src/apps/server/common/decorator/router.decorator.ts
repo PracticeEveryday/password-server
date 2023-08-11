@@ -33,17 +33,15 @@ export type RouteProps<ResponseBody> = {
 export function Route({ summary, description, request, response }: RouteProps<any>) {
   const conditionDecorator: (ClassDecorator | MethodDecorator | PropertyDecorator)[] = [];
 
-  if (request) {
-    if (request.headers) {
-      request.headers.forEach((key) => {
-        conditionDecorator.push(
-          ApiHeader({
-            required: true,
-            name: key,
-          }),
-        );
-      });
-    }
+  if (request && request.headers) {
+    request.headers.forEach((key) => {
+      conditionDecorator.push(
+        ApiHeader({
+          required: true,
+          name: key,
+        }),
+      );
+    });
   }
 
   switch (response.code) {
