@@ -108,7 +108,7 @@ class Server {
     setupSwagger(app);
 
     app.setGlobalPrefix('/api', { exclude: ['/'] });
-    app.enableVersioning({ type: VersioningType.URI, prefix: 'V' });
+    // app.enableVersioning({ type: VersioningType.URI, prefix: 'v' });
 
     const envService = app.get(EnvService);
     const PORT = +envService.get(EnvEnum.PORT) || 3000;

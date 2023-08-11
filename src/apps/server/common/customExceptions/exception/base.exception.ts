@@ -6,20 +6,11 @@ import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { BaseExceptionPropertyType, ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
 
 export class BaseException extends HttpException {
-  @Exclude()
-  private readonly _statusCode: number;
-
-  @Exclude()
-  private readonly _success = false as const;
-
-  @Exclude()
-  private readonly _errorResponse: ErrorResponse;
-
-  @Exclude()
-  private readonly _errorType: ErrorTypeEnum;
-
-  @Exclude()
-  raw?: unknown;
+  @Exclude() private readonly _statusCode: number;
+  @Exclude() private readonly _success = false as const;
+  @Exclude() private readonly _errorResponse: ErrorResponse;
+  @Exclude() private readonly _errorType: ErrorTypeEnum;
+  @Exclude() raw?: unknown;
 
   constructor(properties: Pick<BaseException, BaseExceptionPropertyType>) {
     super('', properties.statusCode);

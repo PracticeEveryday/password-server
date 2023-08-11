@@ -15,7 +15,7 @@ import * as Docs from './docs/password.docs';
 import * as Dtos from './dto';
 
 @RouteTable({
-  path: 'passwords',
+  path: '/passwords',
   version: '1',
   tag: {
     title: '🔭비밀 번호 API',
