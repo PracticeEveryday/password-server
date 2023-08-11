@@ -7,7 +7,6 @@ import { ValidationException } from '@apps/server/common/customExceptions/except
 
 export class ResponseDto<T> {
   @Exclude() private readonly _data: T;
-
   @Exclude() private readonly _message?: string;
 
   constructor(data: T, message?: string) {
@@ -19,8 +18,8 @@ export class ResponseDto<T> {
     if (typeof data !== 'object') {
       throw new CustomBadRequestException({ errorResponse: ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR });
     }
-    const errors = await validate(data);
 
+    const errors = await validate(data);
     if (errors.length > 0) throw new ValidationException(errors);
 
     return new ResponseDto<T>(data, message);

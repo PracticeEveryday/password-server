@@ -14,16 +14,7 @@ import { LogService } from '@libs/log/log.service';
 import { MysqlService } from '@libs/mysql/mysql.service';
 import { PreQualificationRepository } from '@libs/mysql/repository/preQualification.repository';
 import { ServerInfoRepository } from '@libs/mysql/repository/serverInfo.repository';
-import {
-  initFirstValue,
-  initTableAlcohol,
-  initTableBook,
-  initTableBookMeta,
-  initTableIsFirst,
-  initTablePassword,
-  initTablePreQualification,
-  initTableRound,
-} from '@libs/mysql/sql/initTablePassword';
+import { InitTableArr } from '@libs/mysql/sql/initTablePassword';
 import { ReadlineEndService } from '@libs/readline/readlineEnd.service';
 import { ReadlineStartService } from '@libs/readline/readlineStart.service';
 import { setupSwagger } from '@libs/swagger/swagger';
@@ -56,17 +47,7 @@ class Server {
    */
   public async precondition(): Promise<void> {
     try {
-      const initial = [
-        initTablePassword,
-        initTableIsFirst,
-        initTablePreQualification,
-        initTableBook,
-        initTableBookMeta,
-        initFirstValue,
-        initTableAlcohol,
-        initTableRound,
-      ];
-      await this.mysql.parallelTransaction(initial);
+      await this.mysql.parallelTransaction(InitTableArr);
     } catch (error) {
       this.logService.errorLog('Server', 'precondition error', error);
       throw new CustomUnknownException({

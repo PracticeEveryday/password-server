@@ -1,6 +1,6 @@
 import { ServerStatusEnum } from '../../../apps/server/common/enum/serverStatus.enum';
 
-export const initTablePassword = `
+const initTablePassword = `
 CREATE TABLE IF NOT EXISTS password (
     id            INT              AUTO_INCREMENT    PRIMARY KEY    COMMENT 'password의 Unique Id',
     domain        VARCHAR(100)     NOT NULL     COMMENT '비밀번호 도메인',
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS password (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='비밀번호를 저장하기 위한 TABLE';
 `;
 
-export const initTableIsFirst = `
+const initTableIsFirst = `
 CREATE TABLE IF NOT EXISTS server_info (
     id            INT      AUTO_INCREMENT PRIMARY KEY COMMENT 'server_info의 UniqueId',
     server_status ENUM('active', 'inactive', 'pending')  DEFAULT 'inactive'   NOT NULL COMMENT '서버의 상태',
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS server_info (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='서버의 상태를 저장하기 위한 TABLE';
 `;
 
-export const initTablePreQualification = `
+const initTablePreQualification = `
     CREATE TABLE IF NOT EXISTS pre_qualification (
     id          INT              AUTO_INCREMENT    PRIMARY KEY COMMENT 'pre_qualifications의 UniqueId',
     question    VARCHAR(100)     NOT NULL          COMMENT '사전 질문',
@@ -32,7 +32,7 @@ export const initTablePreQualification = `
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='사전 질문을 저장하기 위한 TABLE';
 `;
 
-export const initTableBook = `
+const initTableBook = `
 CREATE TABLE IF NOT EXISTS book (
     id            INT              AUTO_INCREMENT    PRIMARY KEY    COMMENT 'books의 UniqueId',
     title         VARCHAR(100)     UNIQUE            NOT NULL   COMMENT '책 제목',
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS book (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='책 정보를 저장하기 위한 TABLE';
 `;
 
-export const initTableBookMeta = `
+const initTableBookMeta = `
 CREATE TABLE IF NOT EXISTS book_meta (
     id            INT              AUTO_INCREMENT    PRIMARY KEY    COMMENT 'book_meta의 Unique Id',
     book_id       INT         UNIQUE     NOT NULL     COMMENT '연결된 Book의 Id',
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS book_meta (
     FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE CASCADE 
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='책의 메타 정보를 저장하기 위한 TABLE';
 `;
-export const initTableAlcohol = `
+const initTableAlcohol = `
 CREATE TABLE IF NOT EXISTS alcohol (
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT 'alcohols의 UniqueId',
     drinking_date TIMESTAMP DEFAULT (CURRENT_TIMESTAMP) COMMENT '술마신 날짜',
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS alcohol (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci COMMENT='술 마신 정보를 저장하기 위한 TABLE'; 
 `;
 
-export const initTableRound = `
+const initTableRound = `
 CREATE TABLE IF NOT EXISTS round (
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT 'round UniqueId',
     alcohol_id INT NOT NULL COMMENT '연결된 alcohol id',
@@ -88,3 +88,14 @@ export const initFirstValue = `
 INSERT INTO password.server_info (id, server_status, createdAt, updatedAt, deletedAt)
 VALUES(1, '${ServerStatusEnum.INACTIVE}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
 `;
+
+export const InitTableArr = [
+  initTablePassword,
+  initTableIsFirst,
+  initTablePreQualification,
+  initTableBook,
+  initTableBookMeta,
+  initFirstValue,
+  initTableAlcohol,
+  initTableRound,
+];
