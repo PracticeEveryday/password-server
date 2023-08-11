@@ -15,6 +15,7 @@ import * as AlcoholDocs from './docs/alcohol.docs';
 
 @RouteTable({
   path: 'alcohols',
+  version: '1',
   tag: {
     title: '💸 술 API',
     category: 'public',

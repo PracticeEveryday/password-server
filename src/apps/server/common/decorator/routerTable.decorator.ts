@@ -3,18 +3,19 @@ import { ApiTags } from '@nestjs/swagger';
 
 type RouterProps = {
   path?: string;
+  version: string;
   tag: {
     category?: 'public' | 'private' | 'virtual';
     title: string;
   };
 };
 
-export const RouteTable = ({ path = '', tag }: RouterProps) => {
+export const RouteTable = ({ path = '', version, tag }: RouterProps) => {
   const conditionDecorator: (ClassDecorator | MethodDecorator | PropertyDecorator)[] = [];
 
   return applyDecorators(
     ...conditionDecorator,
-    Controller(path),
+    Controller({ path, version }),
     ApiTags(
       `${(() => {
         switch (tag?.category) {

@@ -24,6 +24,7 @@ import * as PasswordDocs from './docs/password.docs';
 
 @RouteTable({
   path: 'passwords',
+  version: '1',
   tag: {
     title: '🔭비밀 번호 API',
     category: 'public',

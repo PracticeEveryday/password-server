@@ -24,6 +24,7 @@ import * as BookDocs from './docs/book.docs';
 
 @RouteTable({
   path: 'books',
+  version: '1',
   tag: {
     title: '📖 책 API',
     category: 'public',

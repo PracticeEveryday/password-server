@@ -1,3 +1,4 @@
+import { VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { OkPacket } from 'mysql2';
@@ -107,6 +108,7 @@ class Server {
     setupSwagger(app);
 
     app.setGlobalPrefix('/api', { exclude: ['/'] });
+    app.enableVersioning({ type: VersioningType.URI, prefix: 'V' });
 
     const envService = app.get(EnvService);
     const PORT = +envService.get(EnvEnum.PORT) || 3000;
