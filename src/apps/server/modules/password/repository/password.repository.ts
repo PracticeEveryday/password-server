@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
-import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
 import { CreatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/createPassword.req.dto';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.req.dto';
+import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 import { PasswordSqlInterface } from '@libs/mysql/interface/password.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
 

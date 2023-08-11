@@ -1,8 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
-import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
 import { BookService } from '@apps/server/modules/book/book.service';
 import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from '@apps/server/modules/book/dto/api-dto/createBook.res.dto';
@@ -10,6 +7,9 @@ import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBo
 import { FindOneByIdResDto } from '@apps/server/modules/book/dto/api-dto/findOneById.res.dto';
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
 import { bookProviders } from '@apps/server/modules/book/provider/book.provider';
+import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
 import { MysqlModule } from '@libs/mysql/mysql.module';
 import { MysqlService } from '@libs/mysql/mysql.service';
 import { SqlUtilModule } from '@libs/util/sql/sqlUtil.module';

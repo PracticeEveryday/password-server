@@ -2,11 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
-import { CustomConflictException } from '@apps/server/common/customExceptions/exception/conflict.exception';
-import { CustomNotFoundException } from '@apps/server/common/customExceptions/exception/notFound.exception';
-import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
-import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
+import { ConflictException } from '@apps/server/common/customExceptions/exception/conflict.exception';
+import { NotFoundException } from '@apps/server/common/customExceptions/exception/notFound.exception';
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
 import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from '@apps/server/modules/book/dto/api-dto/createBook.res.dto';
@@ -18,6 +15,9 @@ import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBo
 import { BookInterface } from '@apps/server/modules/book/interface/book.interface';
 import { BookRepository } from '@apps/server/modules/book/repository/book.repository';
 import { BookMetaRepository } from '@apps/server/modules/book/repository/bookMeta.repository';
+import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
 import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
 import { InjectionToken } from '@libs/mysql/repository/injectionToken';
@@ -38,7 +38,7 @@ export class BookService {
    */
   public async createOne(createBookReqDto: CreateBookReqDto): Promise<CreateBookResDto> {
     const selectResult = await this.bookRepository.findOneByWhere({ title: createBookReqDto.title });
-    if (selectResult) throw new CustomConflictException({ errorResponse: ErrorResponse.BOOK.BOOK_ALREADY_EXIST });
+    if (selectResult) throw new ConflictException({ errorResponse: ErrorResponse.BOOK.BOOK_ALREADY_EXIST });
 
     const createdBookResult = await this.bookRepository.createOne(createBookReqDto);
     createBookReqDto.setBookId = createdBookResult.insertId;
@@ -54,7 +54,7 @@ export class BookService {
   public async updateOne(body: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<UpdatedResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(param);
     if (!selectResult) {
-      throw new CustomNotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+      throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
     }
 
     const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
@@ -77,7 +77,7 @@ export class BookService {
   public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<FindOneByIdResDto> {
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!selectResult) {
-      throw new CustomNotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+      throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
     }
 
     const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
@@ -91,14 +91,14 @@ export class BookService {
   public async findManyByQueryWithPagination(searchBookReqDto: SearchBookReqDto): Promise<SearchBookPaginationDto> {
     const selectResultArr: RowDataPacket[] = await this.bookRepository.findManyByQueryWithPagination(searchBookReqDto);
     if (selectResultArr.length === 0) {
-      throw new CustomNotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+      throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
     }
 
     const { totalCount } = await this.bookRepository.count(searchBookReqDto);
     const pagination = toPagination(totalCount, searchBookReqDto.pageNo, searchBookReqDto.pageSize);
     const searchBookResDto = selectResultArr.map((selectResult) => {
       if (!selectResult) {
-        throw new CustomNotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+        throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
       }
       const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
 
@@ -116,7 +116,7 @@ export class BookService {
     const findOneByIdReqDto = FindOneByIdReqDto.toDTO(deleteBookReqDto.id);
     const selectResult: RowDataPacket = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!selectResult) {
-      throw new CustomNotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+      throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
     }
 
     const deletedBookMetaResult = await this.bookMetaRepository.removeOne(deleteBookReqDto);

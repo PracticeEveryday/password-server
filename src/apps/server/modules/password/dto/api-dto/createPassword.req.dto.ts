@@ -1,6 +1,6 @@
 import { PickType } from '@nestjs/swagger';
 
-import { PasswordDto } from '@apps/server/common/dto/password.dto';
+import { PasswordDto } from '@commons/dto/moduleDto/password.dto';
 
 export class CreatePasswordReqDto extends PickType(PasswordDto, ['password', 'domain']) {
   static toDTO(domain: string, password: string): CreatePasswordReqDto {

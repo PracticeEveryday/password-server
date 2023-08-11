@@ -7,7 +7,7 @@ import { Logger } from 'winston';
 
 import { AppModule } from '@apps/server/app.module';
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
-import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
+import { UnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
 import { EnvService } from '@libs/env/env.service';
 import { EnvEnum } from '@libs/env/envEnum';
@@ -51,7 +51,7 @@ class Server {
       await this.mysql.parallelTransaction(InitTableArr);
     } catch (error) {
       this.logService.errorLog('Server', 'precondition error', error);
-      throw new CustomUnknownException({
+      throw new UnknownException({
         errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });
@@ -75,7 +75,7 @@ class Server {
       }
     } catch (error) {
       this.logService.errorLog('Server', 'timeValidation error', error);
-      throw new CustomUnknownException({
+      throw new UnknownException({
         errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });

@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/validation/isCustomDate.decorator';
-import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
-import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
+import { IsNotEmptyDate, IsOptionalDate } from '@commons/decorator/validation/isCustomDate.decorator';
+import { IsNotEmptyNumber } from '@commons/decorator/validation/isCustomNumber.decorator';
+import { IsNotEmptyString } from '@commons/decorator/validation/isCustomString.decorator';
 
 export class AlcoholDto {
   @IsNotEmptyNumber('id', 0)

@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
-import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
 import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBook.req.dto';
 import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBook.req.dto';
 import { SearchBookReqDto } from '@apps/server/modules/book/dto/api-dto/searchBook.req.dto';
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
+import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 import { MysqlService } from '@libs/mysql/mysql.service';
 import { SqlUtilService } from '@libs/util/sql/sqlUtil.service';
 

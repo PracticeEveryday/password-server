@@ -4,13 +4,10 @@ import { PoolConnection } from 'mysql2/promise';
 import { TransactionManager } from '@apps/server/common/decorator/connectionPool.decorator';
 import { Route } from '@apps/server/common/decorator/router.decorator';
 import { RouteTable } from '@apps/server/common/decorator/routerTable.decorator';
-import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
-import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
-import { ResponseDto } from '@apps/server/common/dto/response.dto';
 import { Method } from '@apps/server/common/enum/method.enum';
 import { TransactionInterceptor } from '@apps/server/common/interceptor/transaction.interceptor';
 import { TryCatchInterceptor } from '@apps/server/common/interceptor/tryCatch.interceptor';
+import { BookService } from '@apps/server/modules/book/book.service';
 import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBook.req.dto';
 import { CreateBookResDto } from '@apps/server/modules/book/dto/api-dto/createBook.res.dto';
 import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBook.req.dto';
@@ -18,8 +15,11 @@ import { FindOneByIdResDto } from '@apps/server/modules/book/dto/api-dto/findOne
 import { SearchBookReqDto } from '@apps/server/modules/book/dto/api-dto/searchBook.req.dto';
 import { SearchBookPaginationDto } from '@apps/server/modules/book/dto/api-dto/searchBook.res.dto';
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
+import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { ResponseDto } from '@commons/dto/basicApiDto/response.dto';
+import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
 
-import { BookService } from './book.service';
 import * as BookDocs from './docs/book.docs';
 
 @RouteTable({

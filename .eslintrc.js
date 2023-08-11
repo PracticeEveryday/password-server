@@ -54,15 +54,20 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', 'internal', ['sibling', 'parent', 'index'], 'type', 'unknown'],
+        groups: ['builtin', 'external', 'internal', 'sibling', 'parent', 'index', 'type', 'unknown'],
         pathGroups: [
           {
             pattern: '@apps/*',
             group: 'unknown',
           },
           {
-            pattern: '@libs/*',
+            pattern: '@commons/*',
             group: 'unknown',
+          },
+          {
+            pattern: '@libs/*',
+            group: 'external',
+            position: 'before',
           },
         ],
         pathGroupsExcludedImportTypes: ['unknown'],

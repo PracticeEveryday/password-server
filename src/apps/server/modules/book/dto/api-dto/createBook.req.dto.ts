@@ -3,7 +3,7 @@ import { PoolConnection } from 'mysql2/promise';
 
 import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
-import { BookDto } from '@apps/server/common/dto/book.dto';
+import { BookDto } from '@commons/dto/moduleDto/book.dto';
 
 export class CreateBookReqDto extends PickType(BookDto, ['title', 'price']) {
   @IsNotEmptyString('author', 0, 50)

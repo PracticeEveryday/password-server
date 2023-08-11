@@ -4,8 +4,8 @@ import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/validation/isCustomDate.decorator';
 import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
-import { PaginationResDto } from '@apps/server/common/dto/pagination';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
+import { PaginationResDto } from '@commons/dto/piginationDto/pagination.res.dto';
 
 export class PasswordResDto {
   @Exclude() _id: number;

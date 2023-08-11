@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
-import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
 import { CreatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/createPassword.req.dto';
 import { CreatePasswordResDto } from '@apps/server/modules/password/dto/api-dto/createPassword.res.dto';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/getDomain.req.dto';
@@ -9,6 +7,8 @@ import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDo
 import { UpdatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/updatePassword.req.dto';
 import { PasswordService } from '@apps/server/modules/password/password.service';
 import { passwordProviders } from '@apps/server/modules/password/provider/password.provider';
+import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
+import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
 import { EnvModule } from '@libs/env/env.module';
 import { LogModule } from '@libs/log/log.module';
 import { MysqlModule } from '@libs/mysql/mysql.module';

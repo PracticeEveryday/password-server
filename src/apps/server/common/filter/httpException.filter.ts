@@ -3,7 +3,7 @@ import { HttpAdapterHost } from '@nestjs/core';
 
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
-import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
+import { UnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
 import { LogService } from '@libs/log/log.service';
 
@@ -32,7 +32,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
         });
       }
 
-      throw new CustomUnknownException({
+      throw new UnknownException({
         errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
         raw: error,
       });

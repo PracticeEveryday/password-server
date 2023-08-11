@@ -4,10 +4,11 @@ import * as readline from 'readline';
 import { Inject, Injectable } from '@nestjs/common';
 
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
-import { CustomUnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
+import { UnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
 
 import { FinishScriptAboutProcessAboutResisterQuestions } from './docs/readline.docs';
+
 import { InjectionToken } from '../mysql/repository/injectionToken';
 import { PreQualificationRepository } from '../mysql/repository/preQualification.repository';
 import { ServerInfoRepository } from '../mysql/repository/serverInfo.repository';
@@ -85,7 +86,7 @@ export class ReadlineStartService {
         this.preQualificationRepository.create(pair.question, pair.answer);
       } catch (error) {
         console.log(error);
-        throw new CustomUnknownException({
+        throw new UnknownException({
           errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
           raw: error,
         });
