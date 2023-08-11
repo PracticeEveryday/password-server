@@ -18,9 +18,9 @@ import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBo
 import { BookInterface } from '@apps/server/modules/book/interface/book.interface';
 import { BookRepository } from '@apps/server/modules/book/repository/book.repository';
 import { BookMetaRepository } from '@apps/server/modules/book/repository/bookMeta.repository';
+import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
 import { InjectionToken } from '@libs/mysql/repository/injectionToken';
-import { BookSqlInterface } from '@libs/mysql/type/book.type';
 import { SqlUtilService } from '@libs/util/sql/sqlUtil.service';
 
 @Injectable()

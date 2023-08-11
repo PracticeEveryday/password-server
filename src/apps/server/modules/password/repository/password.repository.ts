@@ -5,8 +5,8 @@ import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOne
 import { CreatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/createPassword.req.dto';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.req.dto';
+import { PasswordSqlInterface } from '@libs/mysql/interface/password.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
-import { PasswordInterface } from '@libs/mysql/type/password.type';
 
 @Injectable()
 export class PasswordRepository {
@@ -52,7 +52,7 @@ export class PasswordRepository {
    * 비밀번호 정보를 업데이트합니다.
    * @param password PasswordInterface
    */
-  public async updateOne(password: PasswordInterface) {
+  public async updateOne(password: PasswordSqlInterface) {
     const query = `UPDATE password.password SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 

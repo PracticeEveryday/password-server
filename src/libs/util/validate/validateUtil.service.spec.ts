@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { QueryError } from 'mysql2';
 
+import { PasswordSqlInterface } from '@libs/mysql/interface/password.interface';
+
 import { ValidateUtilService } from './validateUtil.service';
-import { PasswordInterface } from '../../mysql/type/password.type';
 
 describe('ValidateUtilService Test', () => {
   let validateUserService: ValidateUtilService;
 
-  const passwordInterface: PasswordInterface = {
+  const passwordInterface: PasswordSqlInterface = {
     constructor: { name: 'RowDataPacket' },
     id: 1,
     domain: 'naver',
@@ -40,15 +41,5 @@ describe('ValidateUtilService Test', () => {
   // service 유무 확인
   it('should be defined', () => {
     expect(validateUserService).toBeDefined();
-  });
-
-  it('PasswordInterface 타입 확인하기', () => {
-    const password = { id: 1 };
-    expect(validateUserService.isPasswordInterfaceType(passwordInterface)).toStrictEqual(true);
-    expect(validateUserService.isPasswordInterfaceType(password)).toStrictEqual(false);
-  });
-
-  it('Query Error 타입 확인하기', () => {
-    expect(validateUserService.isQeuryErrorInterface(queryError)).toStrictEqual(true);
   });
 });

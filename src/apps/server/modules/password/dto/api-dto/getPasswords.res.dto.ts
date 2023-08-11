@@ -5,19 +5,14 @@ import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/va
 import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 import { PaginationResDto } from '@apps/server/common/dto/pagination';
-import { PasswordInterface } from '@libs/mysql/type/password.type';
+import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 
 export class PasswordResDto {
   @Exclude() _id: number;
-
   @Exclude() _domain: string;
-
   @Exclude() _password: string;
-
   @Exclude() _createdAt: Date;
-
   @Exclude() _updatedAt: Date;
-
   @Exclude() _deletedAt: Date | null;
 
   constructor(password: PasswordInterface) {

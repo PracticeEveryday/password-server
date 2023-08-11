@@ -13,6 +13,7 @@ import { EnvModule } from '@libs/env/env.module';
 import { LogModule } from '@libs/log/log.module';
 import { MysqlModule } from '@libs/mysql/mysql.module';
 import { PasswordUtilModule } from '@libs/util/password/passwordUtil.module';
+import { SqlUtilModule } from '@libs/util/sql/sqlUtil.module';
 import { ValidateUtilModule } from '@libs/util/validate/validateUtil.module';
 
 const getDomainResDto = new GetDomainResDto('test1');
@@ -35,7 +36,7 @@ describe('PasswordService Test', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       // 의존성 주입하 Module 넣기
-      imports: [PasswordUtilModule, ValidateUtilModule, LogModule, EnvModule, MysqlModule],
+      imports: [PasswordUtilModule, ValidateUtilModule, LogModule, EnvModule, MysqlModule, SqlUtilModule],
       // 테스트할 모듈 넣기
       providers: [PasswordService, ...passwordProviders],
     }).compile();

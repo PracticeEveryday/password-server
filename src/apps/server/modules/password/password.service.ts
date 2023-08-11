@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
-import { CustomBadRequestException } from '@apps/server/common/customExceptions/exception/badRequest.exception';
 import { CustomConflictException } from '@apps/server/common/customExceptions/exception/conflict.exception';
 import { CustomNotFoundException } from '@apps/server/common/customExceptions/exception/notFound.exception';
 import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
@@ -16,26 +15,28 @@ import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDo
 import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.req.dto';
 import { GetPasswordsResDto, PasswordResDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.res.dto';
 import { UpdatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/updatePassword.req.dto';
+import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { PasswordRepository } from '@apps/server/modules/password/repository/password.repository';
 import { LogService } from '@libs/log/log.service';
+import { PasswordSqlInterface } from '@libs/mysql/interface/password.interface';
 import { InjectionToken } from '@libs/mysql/repository/injectionToken';
-import { PasswordInterface } from '@libs/mysql/type/password.type';
 import { PasswordUtilService } from '@libs/util/password/passwordUtil.service';
+import { SqlUtilService } from '@libs/util/sql/sqlUtil.service';
 import { ValidateUtilService } from '@libs/util/validate/validateUtil.service';
 
 @Injectable()
 export class PasswordService {
   constructor(
-    //service
+    private readonly logService: LogService,
+    private readonly sqlUtilService: SqlUtilService,
     private readonly passwordUtilService: PasswordUtilService,
     private readonly validateUtilService: ValidateUtilService,
-    private readonly logService: LogService,
-    //repository
+
     @Inject(InjectionToken.PASSWORD_REPOSITORY) private readonly passwordRepository: PasswordRepository,
   ) {}
 
   /**
-   * 비밀번호 조회 By id
+   * 비밀번호 삭제 By id
    * @param param FindOneByIdDto
    */
   public async removeOneByDomain(param: GetDomainParamReqDto): Promise<DeletedResDto> {
@@ -59,10 +60,9 @@ export class PasswordService {
     }
 
     const passwords = selectQueryResultArr.map((selectQueryResult: RowDataPacket) => {
-      if (!this.validateUtilService.isPasswordInterfaceType(selectQueryResult)) {
-        throw new CustomBadRequestException({ errorResponse: ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR });
-      }
-      return new PasswordResDto(selectQueryResult);
+      const password = this.sqlUtilService.checkTypeAndConvert<PasswordSqlInterface, PasswordInterface>(selectQueryResult, 'domain');
+
+      return new PasswordResDto(password);
     });
 
     const { totalCount } = await this.passwordRepository.count();
@@ -90,7 +90,7 @@ export class PasswordService {
       const findOneByIdReqDto = FindOneByIdReqDto.toDTO(createResult.insertId);
 
       const rowDataPacket = await this.passwordRepository.findOneById(findOneByIdReqDto);
-      const password = await this.validatePasswordType(rowDataPacket);
+      const password = this.sqlUtilService.checkTypeAndConvert<PasswordSqlInterface, PasswordInterface>(rowDataPacket, 'domain');
 
       return new CreatePasswordResDto(password.domain);
     }
@@ -107,7 +107,7 @@ export class PasswordService {
     if (!selectResult) {
       throw new CustomNotFoundException({ errorResponse: ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN });
     }
-    let password = await this.validatePasswordType(selectResult);
+    let password = await this.sqlUtilService.checkTypeAndConvert<PasswordSqlInterface, PasswordInterface>(selectResult, 'domain');
     password = body.compareValue(password);
     password.password = this.passwordUtilService.hashPassword(password.password);
 
@@ -128,18 +128,5 @@ export class PasswordService {
     }
 
     return new GetDomainResDto(this.passwordUtilService.decodedPassword(selectQueryResult.password));
-  }
-
-  /**
-   * sql에서 select해오면 RowDataPacket 타입으로 넘어온다 이 Object가 PasswordInterface 타입인지 확인해주는 메서드
-   * 이 함수를 통과하면 PasswordInterface이므로 as 캐스팅을 넣어준다.
-   * @param rowDataPacket 비밀번호(RowDataPacket)
-   */
-  private async validatePasswordType(rowDataPacket: RowDataPacket): Promise<PasswordInterface> {
-    if (!this.validateUtilService.isPasswordInterfaceType(rowDataPacket)) {
-      throw new CustomNotFoundException({ errorResponse: ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR });
-    }
-
-    return rowDataPacket as PasswordInterface;
   }
 }
