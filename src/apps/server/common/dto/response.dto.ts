@@ -4,7 +4,6 @@ import { validate } from 'class-validator';
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { CustomBadRequestException } from '@apps/server/common/customExceptions/exception/badRequest.exception';
 import { ValidationException } from '@apps/server/common/customExceptions/exception/validation.exception';
-import { makeExceptionScript } from '@apps/server/common/customExceptions/makeExceptionScript';
 
 export class ResponseDto<T> {
   @Exclude() private readonly _data: T;
@@ -18,7 +17,7 @@ export class ResponseDto<T> {
 
   static async OK_DATA_WITH_OPTIONAL_MESSAGE<T>(data: T, message?: string): Promise<ResponseDto<T>> {
     if (typeof data !== 'object') {
-      throw new CustomBadRequestException(makeExceptionScript('password 타입이 아닙니다.', ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR));
+      throw new CustomBadRequestException({ errorResponse: ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR });
     }
     const errors = await validate(data);
 

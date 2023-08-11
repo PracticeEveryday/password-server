@@ -5,7 +5,6 @@ import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { CustomBadRequestException } from '@apps/server/common/customExceptions/exception/badRequest.exception';
 import { CustomConflictException } from '@apps/server/common/customExceptions/exception/conflict.exception';
 import { CustomNotFoundException } from '@apps/server/common/customExceptions/exception/notFound.exception';
-import { makeExceptionScript } from '@apps/server/common/customExceptions/makeExceptionScript';
 import { DeletedResDto } from '@apps/server/common/dto/basic-api-dto/deleteResult.res.dto';
 import { FindOneByIdReqDto } from '@apps/server/common/dto/basic-api-dto/findOneById.req.dto';
 import { UpdatedResDto } from '@apps/server/common/dto/basic-api-dto/updateResult.res.dto';
@@ -42,7 +41,7 @@ export class PasswordService {
   public async removeOneByDomain(param: GetDomainParamReqDto): Promise<DeletedResDto> {
     const password = await this.passwordRepository.findOneByDomain(param);
     if (!password) {
-      throw new CustomNotFoundException(makeExceptionScript('not found domain', ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN));
+      throw new CustomNotFoundException({ errorResponse: ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN });
     }
 
     const deleteResult = await this.passwordRepository.removeOneByDomain(param);
@@ -56,12 +55,12 @@ export class PasswordService {
   public async findManyWithPagination(getPasswordsReqDto: GetPasswordsQueryReqDto): Promise<GetPasswordsResDto> {
     const selectQueryResultArr = await this.passwordRepository.findManyWithPagination(getPasswordsReqDto);
     if (selectQueryResultArr.length === 0) {
-      throw new CustomNotFoundException(makeExceptionScript('not found domain', ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN));
+      throw new CustomNotFoundException({ errorResponse: ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN });
     }
 
     const passwords = selectQueryResultArr.map((selectQueryResult: RowDataPacket) => {
       if (!this.validateUtilService.isPasswordInterfaceType(selectQueryResult)) {
-        throw new CustomBadRequestException(makeExceptionScript('password 타입이 아닙니다.', ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR));
+        throw new CustomBadRequestException({ errorResponse: ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR });
       }
       return new PasswordResDto(selectQueryResult);
     });
@@ -81,9 +80,7 @@ export class PasswordService {
     const selectQueryResult = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
 
     if (selectQueryResult) {
-      throw new CustomConflictException(
-        makeExceptionScript('해당 도메인의 패스워드 정보가 이미 저장되어 있습니다.', ErrorResponse.PASSWORD.BOOK_ALREADY_EXIST),
-      );
+      throw new CustomConflictException({ errorResponse: ErrorResponse.PASSWORD.BOOK_ALREADY_EXIST });
     }
 
     body.password = this.passwordUtilService.hashPassword(body.password);
@@ -108,7 +105,7 @@ export class PasswordService {
     const selectResult = await this.passwordRepository.findOneByDomain(findOnByDomain);
 
     if (!selectResult) {
-      throw new CustomNotFoundException(makeExceptionScript('not found domain', ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN));
+      throw new CustomNotFoundException({ errorResponse: ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN });
     }
     let password = await this.validatePasswordType(selectResult);
     password = body.compareValue(password);
@@ -127,11 +124,7 @@ export class PasswordService {
     const selectQueryResult = await this.passwordRepository.findOneByDomain(param);
 
     if (!selectQueryResult) {
-      throw new CustomNotFoundException(makeExceptionScript('not found domain', ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN));
-    }
-
-    if (!this.validateUtilService.isPasswordInterfaceType(selectQueryResult)) {
-      makeExceptionScript('password 타입이 아닙니다.', ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR);
+      throw new CustomNotFoundException({ errorResponse: ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN });
     }
 
     return new GetDomainResDto(this.passwordUtilService.decodedPassword(selectQueryResult.password));
@@ -144,7 +137,7 @@ export class PasswordService {
    */
   private async validatePasswordType(rowDataPacket: RowDataPacket): Promise<PasswordInterface> {
     if (!this.validateUtilService.isPasswordInterfaceType(rowDataPacket)) {
-      makeExceptionScript('password 타입이 아닙니다.', ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR);
+      throw new CustomNotFoundException({ errorResponse: ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR });
     }
 
     return rowDataPacket as PasswordInterface;
