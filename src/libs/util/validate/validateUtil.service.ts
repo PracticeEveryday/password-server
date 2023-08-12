@@ -35,7 +35,7 @@ export class ValidateUtilService {
 
   public isStrictNotEmptyWithErrorResponse(val: unknown, errorResponse: ErrorResponse) {
     const emptyCondition = val === '' || val === null || val === undefined || (typeof val === 'object' && !Object.keys(val).length);
-    console.log(emptyCondition, 'condiiton');
+
     if (emptyCondition) {
       throw new ConflictException({ errorResponse });
     }

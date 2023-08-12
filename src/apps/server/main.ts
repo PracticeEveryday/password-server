@@ -91,11 +91,11 @@ class Server {
   /**
    * 서버를 시작하기 위해 질문에 답하는 함수입니다.
    */
-  public async confirmAboutPrequalifications(): Promise<boolean> {
-    const totalPrequalifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.pre_qualification');
-    const prequalificationArr = totalPrequalifications[this.ROW_IDX] as unknown as { id: number; question: string; answer: string }[];
+  public async confirmAboutPreQualifications(): Promise<boolean> {
+    const totalPreQualifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.pre_qualification');
+    const preQualificationArr = totalPreQualifications[this.ROW_IDX] as unknown as { id: number; question: string; answer: string }[];
 
-    return await this.readlineEndService.processingAboutPrequalifications(prequalificationArr);
+    return await this.readlineEndService.processingAboutPreQualifications(preQualificationArr);
   }
 
   /**
@@ -125,7 +125,7 @@ class Server {
 
       if (flag === ServerStatusEnum.PENDING) {
         // pending이라면 질문합니다.
-        const test = await this.confirmAboutPrequalifications();
+        const test = await this.confirmAboutPreQualifications();
 
         if (test) {
           await this.mysql.executeSingleQuery(
@@ -133,7 +133,7 @@ class Server {
           );
           await this.bootstrap();
         }
-      } else if (flag === 'active') {
+      } else if (flag === ServerStatusEnum.ACTIVE) {
         await this.timeValidation();
         // 서버 상태가 active면 서버를 시작합니다.
         await this.bootstrap();

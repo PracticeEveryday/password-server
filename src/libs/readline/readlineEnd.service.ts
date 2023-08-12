@@ -10,7 +10,7 @@ import { ServerInfoRepository } from '../mysql/repository/serverInfo.repository'
 @Injectable()
 export class ReadlineEndService {
   constructor(
-    @Inject(InjectionToken.PRE_QUALIFICATION_REPOSITORY) private readonly prequalificationRepository: PreQualificationRepository,
+    @Inject(InjectionToken.PRE_QUALIFICATION_REPOSITORY) private readonly preQualificationRepository: PreQualificationRepository,
     @Inject(InjectionToken.SERVER_INFO_REPOSITORY) private readonly serverInfoRepository: ServerInfoRepository,
   ) {}
 
@@ -43,27 +43,27 @@ export class ReadlineEndService {
 
   /**
    * 서버를 시작하기 위한 사전 질문 프로세스
-   * @param prequalificationArr 사전 질문지 배열
+   * @param preQualificationArr 사전 질문지 배열
    */
-  async processingAboutPrequalifications(prequalificationArr: { id: number; question: string; answer: string }[]) {
+  async processingAboutPreQualifications(preQualificationArr: { id: number; question: string; answer: string }[]) {
     const rl = this.getReadline();
-    for (let i = 0; i < prequalificationArr.length; i++) {
-      const answer = await this.askPrequalification(rl, prequalificationArr[i].question);
+    for (let i = 0; i < preQualificationArr.length; i++) {
+      const answer = await this.askPrequalification(rl, preQualificationArr[i].question);
 
-      if (answer !== prequalificationArr[i].answer) {
+      if (answer !== preQualificationArr[i].answer) {
         console.log('😠 답변이 틀립니다 다시 시작해주세요.');
         rl.close();
         return false;
       }
 
-      if (i === prequalificationArr.length - 1) {
+      if (i === preQualificationArr.length - 1) {
         console.log('🥳 정답을 모두 맞췄습니다! 5초 후 서버가 시작됩니다!');
         this.sleep(5000);
         rl.close();
         return true;
       }
 
-      console.log(`🤔 계속해서 문제를 풀어주세요 ${prequalificationArr.length - (i + 1)}문제 남았습니다!!\n`);
+      console.log(`🤔 계속해서 문제를 풀어주세요 ${preQualificationArr.length - (i + 1)}문제 남았습니다!!\n`);
     }
   }
 
