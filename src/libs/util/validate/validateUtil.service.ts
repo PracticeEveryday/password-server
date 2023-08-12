@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { z, ZodError } from 'zod';
 
 import ErrorResponse from '@commons/customExceptions/errorResponse';
-import { NotFoundException } from '@commons/customExceptions/exception';
+import { ConflictException, NotFoundException } from '@commons/customExceptions/exception';
 import { ZodValidationException } from '@commons/customExceptions/exception/zodValidation.exception';
 
 @Injectable()
@@ -26,15 +26,18 @@ export class ValidateUtilService {
     }
   }
 
-  public isStrictNotEmpty(param: unknown, errorResponse: ErrorResponse) {
-    if (param) throw new NotFoundException({ errorResponse });
-
-    if (Array.isArray(param) && param.length !== 0) throw new NotFoundException({ errorResponse });
+  public isStrictEmptyWithErrorResponse(val: unknown, errorResponse: ErrorResponse) {
+    const emptyCondition = val === '' || val === null || val === undefined || (typeof val === 'object' && !Object.keys(val).length);
+    if (!emptyCondition) {
+      throw new NotFoundException({ errorResponse });
+    }
   }
 
-  public isStrictEmpty(param: unknown, errorResponse: ErrorResponse) {
-    if (!param) throw new NotFoundException({ errorResponse });
-
-    if (Array.isArray(param) && param.length === 0) throw new NotFoundException({ errorResponse });
+  public isStrictNotEmptyWithErrorResponse(val: unknown, errorResponse: ErrorResponse) {
+    const emptyCondition = val === '' || val === null || val === undefined || (typeof val === 'object' && !Object.keys(val).length);
+    console.log(emptyCondition, 'condiiton');
+    if (emptyCondition) {
+      throw new ConflictException({ errorResponse });
+    }
   }
 }

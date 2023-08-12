@@ -1,4 +1,3 @@
-import { VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { OkPacket } from 'mysql2';

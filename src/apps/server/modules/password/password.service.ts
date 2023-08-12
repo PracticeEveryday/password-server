@@ -18,8 +18,6 @@ import { ValidateUtilService } from '@libs/util/validate/validateUtil.service';
 
 import * as Dtos from './dto';
 
-import * as CustomExceptions from '../../common/customExceptions/exception';
-
 @Injectable()
 export class PasswordService {
   constructor(
@@ -37,7 +35,7 @@ export class PasswordService {
    */
   public async removeOneByDomain(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
     const password = await this.passwordRepository.findOneByDomain(param);
-    this.validateUtilService.isStrictEmpty(password, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
+    this.validateUtilService.isStrictNotEmptyWithErrorResponse(password, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
 
     const deleteResult = await this.passwordRepository.removeOneByDomain(param);
     return deleteResult.affectedRows === 1 ? new DeletedResDto(true) : new DeletedResDto(false);
@@ -49,7 +47,7 @@ export class PasswordService {
    */
   public async findManyWithPagination(getPasswordsReqDto: Dtos.GetPasswordsQueryReqDto): Promise<Dtos.GetPasswordsResDto> {
     const selectQueryResultArr = await this.passwordRepository.findManyWithPagination(getPasswordsReqDto);
-    this.validateUtilService.isStrictEmpty(selectQueryResultArr, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
+    this.validateUtilService.isStrictNotEmptyWithErrorResponse(selectQueryResultArr, ErrorResponse.PASSWORD.NOT_FOUND_PASSWORD);
 
     const passwords = selectQueryResultArr.map((selectQueryResult: RowDataPacket) => {
       const password = this.sqlUtilService.checkTypeAndConvert<PasswordSqlInterface, PasswordInterface>(selectQueryResult, 'domain');
@@ -70,7 +68,8 @@ export class PasswordService {
   public async createOne(body: Dtos.CreatePasswordReqDto): Promise<Dtos.CreatePasswordResDto> {
     const getDomainQueryReqDto = Dtos.GetDomainParamReqDto.toDTO(body.domain);
     const selectQueryResult = await this.passwordRepository.findOneByDomain(getDomainQueryReqDto);
-    this.validateUtilService.isStrictNotEmpty(selectQueryResult, ErrorResponse.PASSWORD.BOOK_ALREADY_EXIST);
+
+    this.validateUtilService.isStrictEmptyWithErrorResponse(selectQueryResult, ErrorResponse.PASSWORD.BOOK_ALREADY_EXIST);
 
     body.password = this.passwordUtilService.hashPassword(body.password);
 
@@ -92,7 +91,7 @@ export class PasswordService {
   public async updateOne(body: Dtos.UpdatePasswordReqDto): Promise<UpdatedResDto> {
     const findOnByDomain = Dtos.GetDomainParamReqDto.toDTO(body.domain);
     const selectResult = await this.passwordRepository.findOneByDomain(findOnByDomain);
-    this.validateUtilService.isStrictEmpty(selectResult, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
+    this.validateUtilService.isStrictNotEmptyWithErrorResponse(selectResult, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
 
     let password = await this.sqlUtilService.checkTypeAndConvert<PasswordSqlInterface, PasswordInterface>(selectResult, 'domain');
     password = body.compareValue(password);
@@ -109,7 +108,7 @@ export class PasswordService {
    */
   public async findOneByDomain(param: Dtos.GetDomainParamReqDto): Promise<GetDomainResDto> {
     const selectQueryResult = await this.passwordRepository.findOneByDomain(param);
-    this.validateUtilService.isStrictEmpty(selectQueryResult, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
+    this.validateUtilService.isStrictNotEmptyWithErrorResponse(selectQueryResult, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
 
     return new GetDomainResDto(this.passwordUtilService.decodedPassword(selectQueryResult.password));
   }

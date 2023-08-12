@@ -12,12 +12,12 @@ export class TryCatchInterceptor implements NestInterceptor {
       catchError((error) => {
         if (error instanceof BaseException) {
           throw error;
-        } else {
-          throw new UnknownException({
-            errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
-            raw: error,
-          });
         }
+
+        throw new UnknownException({
+          errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
+          raw: error,
+        });
       }),
     );
   }

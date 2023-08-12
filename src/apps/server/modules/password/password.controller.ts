@@ -47,6 +47,26 @@ export class PasswordController {
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<Dtos.GetPasswordsResDto>(passwordArr);
   }
 
+  @Route({
+    request: {
+      path: '/recommend',
+      method: Method.GET,
+    },
+    response: {
+      code: HttpStatus.OK,
+      type: Dtos.GetRecommendPasswordResDto,
+      description: Docs.recommendPasswordSuccMd,
+    },
+    summary: Docs.recommendPasswordSummaryMd,
+    description: Docs.recommendPasswordDescriptionMd,
+  })
+  public async recommendPassword(
+    @Query(ValidationPipe) getRecommendPasswordReqQueryDto: Dtos.GetRecommendPasswordReqQueryDto,
+  ): Promise<ResponseDto<Dtos.GetRecommendPasswordResDto>> {
+    const recommended = this.passwordUtilService.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<Dtos.GetRecommendPasswordResDto>(recommended);
+  }
+
   @ApiNotFoundResponse({ type: Dtos.GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
   @Route({
     request: {
@@ -66,26 +86,6 @@ export class PasswordController {
   ): Promise<ResponseDto<Dtos.GetDomainResDto>> {
     const password = await this.passwordService.findOneByDomain(getDomainParamReqDto);
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<Dtos.GetDomainResDto>(password);
-  }
-
-  @Route({
-    request: {
-      path: '/recommend',
-      method: Method.GET,
-    },
-    response: {
-      code: HttpStatus.OK,
-      type: Dtos.GetRecommendPasswordResDto,
-      description: Docs.recommendPasswordSuccMd,
-    },
-    summary: Docs.recommendPasswordSummaryMd,
-    description: Docs.recommendPasswordDescriptionMd,
-  })
-  public async recommendPassword(
-    @Query(ValidationPipe) getRecommendPasswordReqQueryDto: Dtos.GetRecommendPasswordReqQueryDto,
-  ): Promise<ResponseDto<Dtos.GetRecommendPasswordResDto>> {
-    const recommended = this.passwordUtilService.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
-    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<Dtos.GetRecommendPasswordResDto>(recommended);
   }
 
   // --POST
