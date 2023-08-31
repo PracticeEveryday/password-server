@@ -1,10 +1,11 @@
 import { BaseException } from '@commons/customExceptions/exception';
+import { RequestInfoInterface } from '@commons/interface/requestInfo.interface';
 
 export class ErrorLogDto {
   private readonly _exception: BaseException;
-  private readonly _requestInfo: { url: string; method: string; body: string; headers: string };
+  private readonly _requestInfo: RequestInfoInterface;
 
-  constructor(exception: BaseException, requestInfo: { url: string; method: string; body: string; headers: string }) {
+  constructor(exception: BaseException, requestInfo: RequestInfoInterface) {
     this._exception = exception;
     this._requestInfo = requestInfo;
   }
@@ -13,7 +14,7 @@ export class ErrorLogDto {
     return this._exception;
   }
 
-  get requestInfo(): { url: string; method: string; body: string; headers: string } {
+  get requestInfo(): RequestInfoInterface {
     return this._requestInfo;
   }
 }

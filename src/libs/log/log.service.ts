@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER, WinstonLogger } from 'nest-winston';
 
-import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
 import { ErrorLogDto } from '@commons/dto/basicApiDto/errorLog.dto';
 import { WarnLogDto } from '@commons/dto/basicApiDto/warnLog.dto';
 
