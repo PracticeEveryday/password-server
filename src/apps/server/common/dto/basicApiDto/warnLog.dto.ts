@@ -1,6 +1,6 @@
 import { BaseException } from '@commons/customExceptions/exception';
 
-export class FailLogDto {
+export class WarnLogDto {
   private readonly _exception: BaseException;
   private readonly _requestInfo: { url: string; method: string; body: string; headers: string };
 

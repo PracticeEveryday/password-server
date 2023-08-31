@@ -5,7 +5,8 @@ import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
 import { UnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
 import { ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
-import { FailLogDto } from '@commons/dto/basicApiDto/failLog.dto';
+import { ErrorLogDto } from '@commons/dto/basicApiDto/errorLog.dto';
+import { WarnLogDto } from '@commons/dto/basicApiDto/warnLog.dto';
 import { LogService } from '@libs/log/log.service';
 
 @Catch()
@@ -41,7 +42,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
     })();
 
     if (exception.errorType === ErrorTypeEnum.WARN) {
-      const failLogDto = new FailLogDto(exception, {
+      const failLogDto = new WarnLogDto(exception, {
         method: request.method,
         url: request.url,
         body: request.body || null,
@@ -50,7 +51,13 @@ export class CustomExceptionFilter implements ExceptionFilter {
 
       this.logService.warn(failLogDto);
     } else {
-      this.logService.error(CustomExceptionFilter.name, exception);
+      const errorLogDto = new ErrorLogDto(exception, {
+        method: request.method,
+        url: request.url,
+        body: request.body || null,
+        headers: request.headers,
+      });
+      this.logService.error(errorLogDto);
     }
 
     /**

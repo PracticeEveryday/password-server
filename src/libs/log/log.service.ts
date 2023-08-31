@@ -2,7 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER, WinstonLogger } from 'nest-winston';
 
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
-import { FailLogDto } from '@commons/dto/basicApiDto/failLog.dto';
+import { ErrorLogDto } from '@commons/dto/basicApiDto/errorLog.dto';
+import { WarnLogDto } from '@commons/dto/basicApiDto/warnLog.dto';
 
 @Injectable()
 export class LogService {
@@ -63,16 +64,18 @@ export class LogService {
     }
   }
 
-  warn(filaLogDto: FailLogDto): void {
-    this.logger.warn(
-      `요청 정보: ${JSON.stringify(filaLogDto.requestInfo, null, 2)}\n ${this.traceCaller(
-        filaLogDto.exception.stack,
-        0,
-      )},\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim(),
-    );
+  warn(filaLogDto: WarnLogDto): void {
+    this.logger.warn(this.convertWarnAndErrorLog(filaLogDto));
   }
 
-  error(label: string, error: BaseException): void {
-    this.logger.error(`label: ${label}: ${JSON.stringify(error, null, 2)}`, JSON.stringify(error.raw, null, 2));
+  error(errorLogDto: ErrorLogDto): void {
+    this.logger.error(this.convertWarnAndErrorLog(errorLogDto));
+  }
+
+  public convertWarnAndErrorLog(dto: ErrorLogDto | WarnLogDto) {
+    return `📰 요청 정보: ${JSON.stringify(dto.requestInfo, null, 2)}\n ${this.traceCaller(
+      dto.exception.stack,
+      0,
+    )},\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim();
   }
 }
