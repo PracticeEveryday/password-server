@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER, WinstonLogger } from 'nest-winston';
 
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
+import { FailLogDto } from '@commons/dto/basicApiDto/failLog.dto';
 
 @Injectable()
 export class LogService {
@@ -62,10 +63,10 @@ export class LogService {
     }
   }
 
-  warn(error: BaseException, requestInfo): void {
+  warn(filaLogDto: FailLogDto): void {
     this.logger.warn(
-      `요청 정보: ${JSON.stringify(requestInfo, null, 2)}\n ${this.traceCaller(
-        error.stack,
+      `요청 정보: ${JSON.stringify(filaLogDto.requestInfo, null, 2)}\n ${this.traceCaller(
+        filaLogDto.exception.stack,
         0,
       )},\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim(),
     );
