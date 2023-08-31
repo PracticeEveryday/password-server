@@ -18,6 +18,13 @@ export class CustomExceptionFilter implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
 
+    const requestInfo = {
+      method: ctx.getRequest().method,
+      url: ctx.getRequest().url,
+      body: ctx.getRequest().body || null,
+      headers: ctx.getRequest().headers,
+    };
+
     const exception = (() => {
       if (error instanceof BaseException) {
         return error;
@@ -39,7 +46,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
     })();
 
     if (exception.errorType === ErrorTypeEnum.WARN) {
-      this.logService.warn(CustomExceptionFilter.name, exception);
+      this.logService.warn(exception, requestInfo);
     } else {
       this.logService.error(CustomExceptionFilter.name, exception);
     }
