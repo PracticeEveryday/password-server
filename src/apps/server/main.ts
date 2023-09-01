@@ -22,24 +22,26 @@ import { DateUtilService } from '@libs/util/date/dateUtil.service';
 
 class Server {
   private readonly ROW_IDX = 0 as const;
-  private readonly mysql: MysqlService;
-  private readonly readlineStartService: ReadlineStartService;
-  private readonly readlineEndService: ReadlineEndService;
-  private readonly dateUtilService: DateUtilService;
   private readonly logService: LogService;
+  private readonly dateUtilService: DateUtilService;
+
+  private readonly mysql: MysqlService;
+  private readonly readlineEndService: ReadlineEndService;
+  private readonly readlineStartService: ReadlineStartService;
+
+  private readonly serverInfoRepository: ServerInfoRepository;
+  private readonly preQualificationRepository: PreQualificationRepository;
 
   constructor() {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
-    this.dateUtilService = new DateUtilService();
-    this.readlineStartService = new ReadlineStartService(
-      new PreQualificationRepository(new MysqlService(new EnvService(new ConfigService()))),
-      new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
-    );
-    this.readlineEndService = new ReadlineEndService(
-      new PreQualificationRepository(new MysqlService(new EnvService(new ConfigService()))),
-      new ServerInfoRepository(new MysqlService(new EnvService(new ConfigService()))),
-    );
     this.logService = new LogService(new WinstonLogger(new Logger()));
+    this.dateUtilService = new DateUtilService();
+
+    this.readlineEndService = new ReadlineEndService(this.preQualificationRepository, this.serverInfoRepository);
+    this.readlineStartService = new ReadlineStartService(this.preQualificationRepository, this.serverInfoRepository);
+
+    this.serverInfoRepository = new ServerInfoRepository(this.mysql);
+    this.preQualificationRepository = new PreQualificationRepository(this.mysql);
   }
 
   /**
@@ -83,6 +85,7 @@ class Server {
 
   /**
    * 서버를 시작하기 위해 질문할 내역과 답변을 입력하는 함수입니다.
+   *
    */
   public askQuestions(): void {
     this.readlineStartService.processingQuestions();
@@ -90,6 +93,7 @@ class Server {
 
   /**
    * 서버를 시작하기 위해 질문에 답하는 함수입니다.
+   *
    */
   public async confirmAboutPreQualifications(): Promise<boolean> {
     const totalPreQualifications = await this.mysql.executeSingleQuery('SELECT id, question, answer FROM password.pre_qualification');
@@ -100,6 +104,7 @@ class Server {
 
   /**
    * 질문에 대해 올바르게 답변했으면 서버를 시작하는 함수입니다.
+   *
    */
   public async bootstrap(): Promise<void> {
     const app = await NestFactory.create(AppModule);
@@ -107,7 +112,6 @@ class Server {
     setupSwagger(app);
 
     app.setGlobalPrefix('/api', { exclude: ['/'] });
-    // app.enableVersioning({ type: VersioningType.URI, prefix: 'v' });
 
     const envService = app.get(EnvService);
     const PORT = +envService.get(EnvEnum.PORT) || 3000;
@@ -117,29 +121,29 @@ class Server {
 
   /**
    * 최초 서버를 시작하는 메서드입니다.
+   *
    */
   public async init(): Promise<void> {
     try {
-      const rows = await this.mysql.connection.promise().query('SELECT server_status FROM password.server_info WHERE id = 1');
-      const flag = rows[this.ROW_IDX][this.ROW_IDX].server_status;
+      const serverInfo = await this.mysql.connection.promise().query('SELECT server_status FROM password.server_info WHERE id = 1');
+      const flag = serverInfo[this.ROW_IDX][this.ROW_IDX].server_status;
 
-      if (flag === ServerStatusEnum.PENDING) {
-        // pending이라면 질문합니다.
-        const test = await this.confirmAboutPreQualifications();
+      switch (flag) {
+        case ServerStatusEnum.PENDING:
+          await this.confirmAboutPreQualifications();
 
-        if (test) {
-          await this.mysql.executeSingleQuery(
-            `UPDATE password.server_info SET server_status = '${ServerStatusEnum.ACTIVE}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`,
-          );
+          const updateServerInfoQuery = `UPDATE password.server_info SET server_status = '${ServerStatusEnum.ACTIVE}', updatedAt = CURRENT_TIMESTAMP WHERE id = 1`;
+          await this.mysql.executeSingleQuery(updateServerInfoQuery);
+
           await this.bootstrap();
-        }
-      } else if (flag === ServerStatusEnum.ACTIVE) {
-        await this.timeValidation();
-        // 서버 상태가 active면 서버를 시작합니다.
-        await this.bootstrap();
+          break;
+
+        case ServerStatusEnum.ACTIVE:
+          await this.timeValidation();
+          await this.bootstrap();
+          break;
       }
     } catch (error) {
-      // 데이터가 없으면 사전 작업을 진행합니다.
       await this.precondition();
       this.askQuestions();
     }
