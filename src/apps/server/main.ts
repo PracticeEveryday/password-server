@@ -12,22 +12,19 @@ import { InitTableArr } from '@libs/mysql/sql/initTablePassword';
 import { ReadlineEndService } from '@libs/readline/readlineEnd.service';
 import { ReadlineStartService } from '@libs/readline/readlineStart.service';
 import { setupSwagger } from '@libs/swagger/swagger';
-import { DateUtilService } from '@libs/util/date/dateUtil.service';
+import { DateUtil } from '@libs/util/date.util';
 
 class Server {
   private readonly ROW_IDX = 0 as const;
-  private readonly dateUtilService: DateUtilService;
-
   private readonly mysql: MysqlService;
-  private readonly readlineEndService: ReadlineEndService;
-  private readonly readlineStartService: ReadlineStartService;
-
   private readonly serverInfoRepository: ServerInfoRepository;
   private readonly preQualificationRepository: PreQualificationRepository;
 
+  private readonly readlineEndService: ReadlineEndService;
+  private readonly readlineStartService: ReadlineStartService;
+
   constructor() {
     this.mysql = new MysqlService(new EnvService(new ConfigService()));
-    this.dateUtilService = new DateUtilService();
 
     this.serverInfoRepository = new ServerInfoRepository(this.mysql);
     this.preQualificationRepository = new PreQualificationRepository(this.mysql);
@@ -54,7 +51,7 @@ class Server {
     try {
       const selectResult = await this.serverInfoRepository.findById(1);
 
-      const dateDiff = this.dateUtilService.diffDays(selectResult.updatedAt, new Date());
+      const dateDiff = DateUtil.diffDays(selectResult.updatedAt, new Date());
 
       if (dateDiff >= 1) {
         await this.serverInfoRepository.update(ServerStatusEnum.PENDING, 1);

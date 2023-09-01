@@ -1,17 +1,11 @@
-import { Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
-import { StringUtilService } from '../string/stringUtil.service';
-
-@Injectable()
-export class SqlUtilService {
-  constructor(private readonly stringUtilService: StringUtilService) {}
-
+export class SqlUtil {
   /**
    * equal 쿼리를 만들어주는 메서드
    * @param where where 조건으로 걸 제너릭 Object 타입
    */
-  public makeWhereEqualQuery<T extends NonNullable<unknown>>(where: T) {
+  public static makeWhereEqualQuery<T extends NonNullable<unknown>>(where: T) {
     let whereQuery = '';
     let i = 0;
     for (const [key, value] of Object.entries(where)) {
@@ -37,7 +31,7 @@ export class SqlUtilService {
    * Like 쿼리를 만들어주는 메서드
    * @param where 조건으로 걸 제너릭 Object 타입
    */
-  public makeWhereLikeQuery<T extends NonNullable<unknown>>(where: T) {
+  public static makeWhereLikeQuery<T extends NonNullable<unknown>>(where: T) {
     let whereQuery = '';
     for (const [key, value] of Object.entries(where)) {
       typeof key === 'number'
@@ -47,13 +41,13 @@ export class SqlUtilService {
     return whereQuery;
   }
 
-  public checkTypeAndConvert<T extends object, U>(data: RowDataPacket, propertyFlag: keyof T): U {
+  public static checkTypeAndConvert<T extends object, U>(data: RowDataPacket, propertyFlag: keyof T): U {
     if (data.hasOwnProperty(propertyFlag)) {
       return data as U;
     }
   }
 
-  public checkTypeAndConvertObj<T extends object, U>(
+  public static checkTypeAndConvertObj<T extends object, U>(
     data: RowDataPacket,
     joinColumnArr: Array<Extract<keyof T, string>>,
     propertyFlag: keyof T,

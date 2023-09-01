@@ -12,7 +12,6 @@ import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto'
 import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
 import { MysqlModule } from '@libs/mysql/mysql.module';
 import { MysqlService } from '@libs/mysql/mysql.service';
-import { SqlUtilModule } from '@libs/util/sql/sqlUtil.module';
 
 describe('BookService Test', () => {
   let bookService: BookService;
@@ -31,7 +30,7 @@ describe('BookService Test', () => {
       }),
     };
     const module: TestingModule = await Test.createTestingModule({
-      imports: [MysqlModule, SqlUtilModule],
+      imports: [MysqlModule],
       providers: [BookService, ...bookProviders],
     }).compile();
 

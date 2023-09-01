@@ -7,7 +7,7 @@ import { SearchBookReqDto } from '@apps/server/modules/book/dto/api-dto/searchBo
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 import { MysqlService } from '@libs/mysql/mysql.service';
-import { SqlUtilService } from '@libs/util/sql/sqlUtil.service';
+import { SqlUtil } from '@libs/util/sql.util';
 
 import * as Book from '../interface/book.interface';
 
@@ -17,10 +17,7 @@ export class BookRepository {
 
   private FILED_IDX = 1 as const;
 
-  constructor(
-    @Inject(MysqlService) private readonly mysqlService: MysqlService,
-    @Inject(SqlUtilService) private readonly sqlUtilService: SqlUtilService,
-  ) {}
+  constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
 
   public async createOne(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
     const query = `INSERT INTO password.book (title, price, book_report, start_date, end_date, createdAt, updatedAt, deletedAt) VALUES ('${createBookReqDto.title}', ${createBookReqDto.price}, null, CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
@@ -69,7 +66,7 @@ export class BookRepository {
       FROM password.book as book
       LEFT JOIN password.book_meta as bookMeta 
         ON book.id = bookMeta.book_id
-      WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}
+      WHERE ${SqlUtil.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}
       LIMIT ${searchBookReqDto.pageSize} OFFSET ${(searchBookReqDto.pageNo - 1) * searchBookReqDto.pageSize}
     `;
 
@@ -84,7 +81,7 @@ export class BookRepository {
         FROM password.book as book
       LEFT JOIN password.book_meta as bookMeta 
         ON book.id = bookMeta.book_id
-      WHERE ${this.sqlUtilService.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}
+      WHERE ${SqlUtil.makeWhereLikeQuery(searchBookReqDto.makeWhereObj())}
     `;
 
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
@@ -93,7 +90,7 @@ export class BookRepository {
   }
 
   public async findOneByWhere(where: Book.BookWhereInterface) {
-    const query = `SELECT * FROM password.book WHERE ${this.sqlUtilService.makeWhereEqualQuery<Book.BookWhereInterface>(where)}`;
+    const query = `SELECT * FROM password.book WHERE ${SqlUtil.makeWhereEqualQuery<Book.BookWhereInterface>(where)}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];

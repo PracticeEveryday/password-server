@@ -4,7 +4,6 @@ import { ResultSetHeader } from 'mysql2';
 import { AlcoholRepositoryInterface } from '@apps/server/modules/alcohol/interface/alcohol.interface';
 import { AlcoholDto } from '@commons/dto/moduleDto/alcohol.dto';
 import { MysqlService } from '@libs/mysql/mysql.service';
-import { SqlUtilService } from '@libs/util/sql/sqlUtil.service';
 
 @Injectable()
 export class AlcoholRepository implements AlcoholRepositoryInterface {
@@ -12,10 +11,7 @@ export class AlcoholRepository implements AlcoholRepositoryInterface {
 
   private FILED_IDX = 1 as const;
 
-  constructor(
-    @Inject(MysqlService) private readonly mysqlService: MysqlService,
-    @Inject(SqlUtilService) private readonly sqlUtilService: SqlUtilService,
-  ) {}
+  constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
 
   public create = async (creatInfo: Partial<AlcoholDto>): Promise<ResultSetHeader> => {
     const query = `

@@ -21,13 +21,12 @@ import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
 import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
 import { InjectionToken } from '@libs/mysql/repository/injectionToken';
-import { SqlUtilService } from '@libs/util/sql/sqlUtil.service';
+import { SqlUtil } from '@libs/util/sql.util';
 
 @Injectable()
 export class BookService {
   constructor(
     private readonly mysqlService: MysqlService,
-    private readonly sqlUtilService: SqlUtilService,
     @Inject(InjectionToken.BOOK_REPOSITORY) private readonly bookRepository: BookRepository,
     @Inject(InjectionToken.BOOK_META_REPOSITORY) private readonly bookMetaRepository: BookMetaRepository,
   ) {}
@@ -57,7 +56,7 @@ export class BookService {
       throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
     }
 
-    const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
+    const book = SqlUtil.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
     const updateInfo = body.compareValue(book);
 
     const bookUpdateResult = await this.bookRepository.update(updateInfo, param);
@@ -80,7 +79,7 @@ export class BookService {
       throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
     }
 
-    const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
+    const book = SqlUtil.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
     return new FindOneByIdResDto(book);
   }
 
@@ -100,7 +99,7 @@ export class BookService {
       if (!selectResult) {
         throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
       }
-      const book = this.sqlUtilService.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
+      const book = SqlUtil.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
 
       return new FindOneByIdResDto(book);
     });

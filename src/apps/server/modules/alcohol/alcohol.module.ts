@@ -4,10 +4,9 @@ import { AlcoholController } from '@apps/server/modules/alcohol/alcohol.controll
 import { AlcoholService } from '@apps/server/modules/alcohol/alcohol.service';
 import { alcoholProviders } from '@apps/server/modules/alcohol/provider/alcohol.provider';
 import { MysqlModule } from '@libs/mysql/mysql.module';
-import { SqlUtilModule } from '@libs/util/sql/sqlUtil.module';
 
 @Module({
-  imports: [MysqlModule, SqlUtilModule],
+  imports: [MysqlModule],
   controllers: [AlcoholController],
   providers: [AlcoholService, ...alcoholProviders],
 })

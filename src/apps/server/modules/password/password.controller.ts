@@ -9,7 +9,7 @@ import { RouteTable } from '@commons/decorator/routerTable.decorator';
 import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
 import { ResponseDto } from '@commons/dto/basicApiDto/response.dto';
 import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
-import { PasswordUtilService } from '@libs/util/password/passwordUtil.service';
+import { PasswordUtil } from '@libs/util/password.util';
 
 import * as Docs from './docs/password.docs';
 import * as Dtos from './dto';
@@ -24,7 +24,7 @@ import * as Dtos from './dto';
 })
 @UseInterceptors(TryCatchInterceptor)
 export class PasswordController {
-  constructor(readonly passwordService: PasswordService, readonly passwordUtilService: PasswordUtilService) {}
+  constructor(readonly passwordService: PasswordService) {}
 
   // -- GET
   @Route({
@@ -63,7 +63,7 @@ export class PasswordController {
   public async recommendPassword(
     @Query(ValidationPipe) getRecommendPasswordReqQueryDto: Dtos.GetRecommendPasswordReqQueryDto,
   ): Promise<ResponseDto<Dtos.GetRecommendPasswordResDto>> {
-    const recommended = this.passwordUtilService.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
+    const recommended = PasswordUtil.recommendRandomPassword(getRecommendPasswordReqQueryDto.passwordLength);
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<Dtos.GetRecommendPasswordResDto>(recommended);
   }
 
