@@ -78,7 +78,7 @@ export class PasswordService {
     body.password = PasswordUtil.hashPassword(body.password, this.PASSWORD_KEY);
 
     const createResult = await this.passwordRepository.createOne(body);
-    console.log(createResult);
+
     if (createResult.affectedRows === 1) {
       const findOneByIdReqDto = FindOneByIdReqDto.toDTO(createResult.insertId);
 
