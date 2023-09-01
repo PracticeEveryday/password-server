@@ -13,16 +13,16 @@ export class ServerInfoRepository {
 
   constructor(private readonly mysqlService: MysqlService) {}
 
-  public async findById(id: number): Promise<RowDataPacket[]> {
-    const query = `SELECT * FROM password.serverInfos WHERE id = ${id}`;
-    const findQueryResult = this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+  public async findById(id: number): Promise<RowDataPacket> {
+    const query = `SELECT * FROM password.server_info WHERE id = ${id}`;
+    const findQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
     return findQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
   public async update(serverInfo: ServerStatusEnum, id: number) {
     const query = `UPDATE password.server_info SET server_status = '${serverInfo}', updatedAt = CURRENT_TIMESTAMP WHERE id = ${id}`;
-    const updatedQueryResult = this.mysqlService.executeSingleQuery(query);
+    const updatedQueryResult = await this.mysqlService.executeSingleQuery(query);
 
     return updatedQueryResult;
   }

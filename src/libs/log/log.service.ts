@@ -55,14 +55,6 @@ export class LogService {
     }
   }
 
-  errorLog(label: string, message: string, data: unknown = {}): void {
-    if (typeof data === 'object') {
-      this.logger.error({ message, ...data }, label);
-    } else {
-      this.logger.error({ message, data }, label);
-    }
-  }
-
   warn(filaLogDto: WarnLogDto): void {
     this.logger.warn(this.convertWarnAndErrorLog(filaLogDto));
   }

@@ -13,6 +13,10 @@ export class PreQualificationRepository {
 
   constructor(private readonly mysqlService: MysqlService) {}
 
+  public async findAll() {
+    return await this.mysqlService.executeSingleQuery('SELECT id, question, answer FROM password.pre_qualification');
+  }
+
   public async findOneById(id: number): Promise<RowDataPacket> {
     const query = `SELECT * FROM password.pre_qualification WHERE id=${id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
@@ -26,6 +30,7 @@ export class PreQualificationRepository {
         VALUES('${question}', '${answer}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
       `;
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
+
     return createQueryResult[this.ROW_IDX];
   }
 
