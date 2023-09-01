@@ -56,17 +56,19 @@ export class LogService {
   }
 
   warn(filaLogDto: WarnLogDto): void {
-    this.logger.warn(this.convertWarnAndErrorLog(filaLogDto));
+    this.logger.warn(
+      `📰 요청 정보: ${JSON.stringify(filaLogDto.requestInfo, null, 2)}\n ${this.traceCaller(
+        filaLogDto.exception.stack,
+        0,
+      )},\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim(),
+    );
   }
 
   error(errorLogDto: ErrorLogDto): void {
-    this.logger.error(this.convertWarnAndErrorLog(errorLogDto));
-  }
-
-  public convertWarnAndErrorLog(dto: ErrorLogDto | WarnLogDto) {
-    return `📰 요청 정보: ${JSON.stringify(dto.requestInfo, null, 2)}\n ${this.traceCaller(
-      dto.exception.stack,
-      0,
-    )},\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim();
+    this.logger.error(
+      `📰 요청 정보: ${JSON.stringify(errorLogDto.requestInfo, null, 2)}\n ${
+        errorLogDto.exception.stack
+      },\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim(),
+    );
   }
 }
