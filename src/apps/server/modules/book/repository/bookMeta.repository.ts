@@ -4,10 +4,11 @@ import { ResultSetHeader } from 'mysql2';
 import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBook.req.dto';
 import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBook.req.dto';
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
+import { BookMetaRepositoryInterface } from '@apps/server/modules/book/interface/bookMetaRepository';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 import { MysqlService } from '@libs/mysql/mysql.service';
 
-export class BookMetaRepository {
+export class BookMetaRepository implements BookMetaRepositoryInterface {
   private ROW_IDX = 0 as const;
 
   private FILED_IDX = 1 as const;

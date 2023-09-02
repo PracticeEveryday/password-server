@@ -5,14 +5,17 @@ import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBo
 import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBook.req.dto';
 import { SearchBookReqDto } from '@apps/server/modules/book/dto/api-dto/searchBook.req.dto';
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
+import { BookRepositoryInterface } from '@apps/server/modules/book/interface/bookRepository.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
 import { SqlUtil } from '@libs/util/sql.util';
 
 import * as Book from '../interface/book.interface';
+import { BookInterface } from '../interface/book.interface';
 
 @Injectable()
-export class BookRepository {
+export class BookRepository implements BookRepositoryInterface {
   private ROW_IDX = 0 as const;
 
   private FILED_IDX = 1 as const;
@@ -27,7 +30,7 @@ export class BookRepository {
     return createQueryResult[this.ROW_IDX];
   }
 
-  public async findOneById(findOneByIdReqDto: FindOneByIdReqDto) {
+  public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<BookSqlInterface> {
     const query = `
        SELECT 
            book.id as id, 
@@ -45,12 +48,12 @@ export class BookRepository {
        ON book_id=${findOneByIdReqDto.id} 
        WHERE book.id=${findOneByIdReqDto.id}`;
 
-    const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+    const selectQueryResult = await this.mysqlService.executeSingleQuery<BookSqlInterface[]>(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
-  public async findManyByQueryWithPagination(searchBookReqDto: SearchBookReqDto) {
+  public async findManyByQueryWithPagination(searchBookReqDto: SearchBookReqDto): Promise<BookSqlInterface[]> {
     const query = `
       SELECT
         book.id as id,
@@ -70,12 +73,12 @@ export class BookRepository {
       LIMIT ${searchBookReqDto.pageSize} OFFSET ${(searchBookReqDto.pageNo - 1) * searchBookReqDto.pageSize}
     `;
 
-    const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+    const selectQueryResult = await this.mysqlService.executeSingleQuery<BookSqlInterface[]>(query);
 
     return selectQueryResult[this.ROW_IDX];
   }
 
-  public async count(searchBookReqDto: SearchBookReqDto) {
+  public async count(searchBookReqDto: SearchBookReqDto): Promise<RowDataPacket> {
     const query = `
       SELECT COUNT(*) as totalCount
         FROM password.book as book
@@ -89,14 +92,14 @@ export class BookRepository {
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
-  public async findOneByWhere(where: Book.BookWhereInterface) {
+  public async findOneByWhere(where: Book.BookWhereInterface): Promise<BookInterface> {
     const query = `SELECT * FROM password.book WHERE ${SqlUtil.makeWhereEqualQuery<Book.BookWhereInterface>(where)}`;
-    const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+    const selectQueryResult = await this.mysqlService.executeSingleQuery<BookInterface[]>(query);
 
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
-  public async update(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
+  public async updateOne(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
     const query = `
         UPDATE password.book 
         SET title='${updateBookReqDto.title}',

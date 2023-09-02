@@ -1,3 +1,5 @@
+import { RowDataPacket } from 'mysql2';
+
 /**
  * book에서 가능한 조건
  */
@@ -16,7 +18,7 @@ export interface BookWhereInterface {
 /**
  * bookMeta 인터페이스
  */
-export interface BookMetaInterface {
+export interface BookMetaInterface extends RowDataPacket {
   id: number;
   bookId: number;
   author: string;
@@ -30,7 +32,7 @@ export interface BookMetaInterface {
 /**
  * book 인터페이스
  */
-export interface BookInterface {
+export interface BookInterface extends RowDataPacket {
   id: number;
   title: string;
   price: number;

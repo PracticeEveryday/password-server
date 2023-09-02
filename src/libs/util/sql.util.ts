@@ -41,12 +41,6 @@ export class SqlUtil {
     return whereQuery;
   }
 
-  public static checkTypeAndConvert<T extends object, U>(data: RowDataPacket, propertyFlag: keyof T): U {
-    if (data.hasOwnProperty(propertyFlag)) {
-      return data as U;
-    }
-  }
-
   public static checkTypeAndConvertObj<T extends object, U>(
     data: RowDataPacket,
     joinColumnArr: Array<Extract<keyof T, string>>,
