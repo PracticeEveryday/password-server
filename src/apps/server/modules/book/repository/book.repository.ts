@@ -1,18 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
-import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBook.req.dto';
-import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBook.req.dto';
-import { SearchBookReqDto } from '@apps/server/modules/book/dto/api-dto/searchBook.req.dto';
-import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
-import { BookRepositoryInterface } from '@apps/server/modules/book/interface/bookRepository.interface';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
 import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
 import { SqlUtil } from '@libs/util/sql.util';
 
+import * as BookDtos from '../dto';
 import * as Book from '../interface/book.interface';
 import { BookInterface } from '../interface/book.interface';
+import { BookRepositoryInterface } from '../interface/bookRepository.interface';
 
 @Injectable()
 export class BookRepository implements BookRepositoryInterface {
@@ -22,7 +19,7 @@ export class BookRepository implements BookRepositoryInterface {
 
   constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
 
-  public async createOne(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
+  public async createOne(createBookReqDto: BookDtos.CreateBookReqDto): Promise<ResultSetHeader> {
     const query = `INSERT INTO password.book (title, price, book_report, start_date, end_date, createdAt, updatedAt, deletedAt) VALUES ('${createBookReqDto.title}', ${createBookReqDto.price}, null, CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
 
     const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
@@ -53,7 +50,7 @@ export class BookRepository implements BookRepositoryInterface {
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
-  public async findManyByQueryWithPagination(searchBookReqDto: SearchBookReqDto): Promise<BookSqlInterface[]> {
+  public async findManyByQueryWithPagination(searchBookReqDto: BookDtos.SearchBookReqDto): Promise<BookSqlInterface[]> {
     const query = `
       SELECT
         book.id as id,
@@ -78,7 +75,7 @@ export class BookRepository implements BookRepositoryInterface {
     return selectQueryResult[this.ROW_IDX];
   }
 
-  public async count(searchBookReqDto: SearchBookReqDto): Promise<RowDataPacket> {
+  public async count(searchBookReqDto: BookDtos.SearchBookReqDto): Promise<RowDataPacket> {
     const query = `
       SELECT COUNT(*) as totalCount
         FROM password.book as book
@@ -99,7 +96,7 @@ export class BookRepository implements BookRepositoryInterface {
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
   }
 
-  public async updateOne(updateBookReqDto: UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
+  public async updateOne(updateBookReqDto: BookDtos.UpdateBookReqDto, param: FindOneByIdReqDto): Promise<ResultSetHeader> {
     const query = `
         UPDATE password.book 
         SET title='${updateBookReqDto.title}',
@@ -113,7 +110,7 @@ export class BookRepository implements BookRepositoryInterface {
     return updateQueryResult[this.ROW_IDX];
   }
 
-  public async removeOne(deleteBookReqDto: DeleteBookReqDto): Promise<ResultSetHeader> {
+  public async removeOne(deleteBookReqDto: BookDtos.DeleteBookReqDto): Promise<ResultSetHeader> {
     const query = `DELETE FROM password.book WHERE id=${deleteBookReqDto.id}`;
     const deleteQueryResult = await deleteBookReqDto.connectionPool.execute<ResultSetHeader>(query);
 

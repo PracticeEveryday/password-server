@@ -23,7 +23,6 @@
       "@commons/*": ["./src/apps/server/common/*"],
       "@apps/*": ["./src/apps/*"],
       "@libs/*": ["./src/libs/*"],
-
     }
   },
   "include": ["src/**/*", "test/**/*"]

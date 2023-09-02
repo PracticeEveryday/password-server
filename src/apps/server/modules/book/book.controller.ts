@@ -8,19 +8,11 @@ import { Method } from '@apps/server/common/enum/method.enum';
 import { TransactionInterceptor } from '@apps/server/common/interceptor/transaction.interceptor';
 import { TryCatchInterceptor } from '@apps/server/common/interceptor/tryCatch.interceptor';
 import { BookService } from '@apps/server/modules/book/book.service';
-import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBook.req.dto';
-import { CreateBookResDto } from '@apps/server/modules/book/dto/api-dto/createBook.res.dto';
-import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBook.req.dto';
-import { FindOneByIdResDto } from '@apps/server/modules/book/dto/api-dto/findOneById.res.dto';
-import { SearchBookReqDto } from '@apps/server/modules/book/dto/api-dto/searchBook.req.dto';
 import { SearchBookPaginationDto } from '@apps/server/modules/book/dto/api-dto/searchBook.res.dto';
-import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
-import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
-import { ResponseDto } from '@commons/dto/basicApiDto/response.dto';
-import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
+import { ResponseDto, UpdatedResDto, DeletedResDto, FindOneByIdReqDto } from '@commons/dto/basicApiDto';
 
 import * as BookDocs from './docs/book.docs';
+import * as BookDtos from './dto';
 
 @RouteTable({
   path: 'books',
@@ -42,16 +34,16 @@ export class BookController {
     },
     response: {
       code: HttpStatus.OK,
-      type: FindOneByIdResDto,
+      type: BookDtos.FindOneByIdResDto,
       description: BookDocs.findOneByIdSuccMd,
     },
     summary: BookDocs.findOneByIdSummaryMd,
     description: BookDocs.findOneByIdDescriptionMd,
   })
-  public async findOneById(@Param() findOneByIdReqDto: FindOneByIdReqDto): Promise<ResponseDto<FindOneByIdResDto>> {
+  public async findOneById(@Param() findOneByIdReqDto: FindOneByIdReqDto): Promise<ResponseDto<BookDtos.FindOneByIdResDto>> {
     const book = await this.bookService.findOneById(findOneByIdReqDto);
 
-    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<FindOneByIdResDto>(book);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<BookDtos.FindOneByIdResDto>(book);
   }
 
   @Route({
@@ -67,7 +59,9 @@ export class BookController {
     summary: BookDocs.findManyByQueryWithPaginationSummaryMd,
     description: BookDocs.findManyByQueryWithPaginationDescriptionMd,
   })
-  public async findManyByQueryWithPagination(@Query() searchBookReqDto: SearchBookReqDto): Promise<ResponseDto<SearchBookPaginationDto>> {
+  public async findManyByQueryWithPagination(
+    @Query() searchBookReqDto: BookDtos.SearchBookReqDto,
+  ): Promise<ResponseDto<BookDtos.SearchBookPaginationDto>> {
     const book = await this.bookService.findManyByQueryWithPagination(searchBookReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<SearchBookPaginationDto>(book);
@@ -81,7 +75,7 @@ export class BookController {
     },
     response: {
       code: HttpStatus.CREATED,
-      type: CreateBookResDto,
+      type: BookDtos.CreateBookResDto,
       description: BookDocs.createOneSuccMd,
     },
     summary: BookDocs.createOneSummaryMd,
@@ -89,13 +83,13 @@ export class BookController {
   })
   @UseInterceptors(TransactionInterceptor)
   public async createOne(
-    @Body() createBookReqDto: CreateBookReqDto,
+    @Body() createBookReqDto: BookDtos.CreateBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
-  ): Promise<ResponseDto<CreateBookResDto>> {
+  ): Promise<ResponseDto<BookDtos.CreateBookResDto>> {
     createBookReqDto.setConnectionPool = connectionPool;
     const created = await this.bookService.createOne(createBookReqDto);
 
-    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<CreateBookResDto>(created);
+    return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<BookDtos.CreateBookResDto>(created);
   }
 
   // -- PUT
@@ -116,7 +110,7 @@ export class BookController {
   @UseInterceptors(TransactionInterceptor)
   public async updateOne(
     @Param() findOneByIdReqDto: FindOneByIdReqDto,
-    @Body() updateBookReqDto: UpdateBookReqDto,
+    @Body() updateBookReqDto: BookDtos.UpdateBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
   ): Promise<ResponseDto<UpdatedResDto>> {
     updateBookReqDto.setConnectionPool = connectionPool;
@@ -142,7 +136,7 @@ export class BookController {
   })
   @UseInterceptors(TransactionInterceptor)
   public async removeOne(
-    @Param() deleteBookReqDto: DeleteBookReqDto,
+    @Param() deleteBookReqDto: BookDtos.DeleteBookReqDto,
     @TransactionManager() connectionPool: PoolConnection,
   ): Promise<ResponseDto<DeletedResDto>> {
     deleteBookReqDto.setConnectionPool = connectionPool;

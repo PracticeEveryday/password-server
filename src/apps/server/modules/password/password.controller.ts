@@ -5,9 +5,7 @@ import { Method } from '@apps/server/common/enum/method.enum';
 import { TryCatchInterceptor } from '@apps/server/common/interceptor/tryCatch.interceptor';
 import { PasswordService } from '@apps/server/modules/password/password.service';
 import { RouteTable } from '@commons/decorator/routerTable.decorator';
-import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
-import { ResponseDto } from '@commons/dto/basicApiDto/response.dto';
-import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
+import { ResponseDto, UpdatedResDto, DeletedResDto } from '@commons/dto/basicApiDto';
 import { PasswordUtil } from '@libs/util/password.util';
 
 import * as Docs from './docs/password.docs';

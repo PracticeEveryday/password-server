@@ -6,10 +6,9 @@ import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/
 import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.req.dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
 import { PasswordSqlInterface } from '@libs/mysql/interface/password.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
-
 @Injectable()
 export class PasswordRepository implements PasswordRepositoryInterface {
   private ROW_IDX = 0 as const;
