@@ -4,6 +4,7 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { CreatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/createPassword.req.dto';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.req.dto';
+import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 import { PasswordSqlInterface } from '@libs/mysql/interface/password.interface';
@@ -32,9 +33,9 @@ export class PasswordRepository implements PasswordRepositoryInterface {
    * 페이지네이션 옵션만큼 가져옵니다.
    * @param queryDto GetPasswordsQueryReqDto
    */
-  public async findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<RowDataPacket[]> {
+  public async findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordInterface[]> {
     const query = `SELECT * FROM password.password ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
-    const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+    const selectQueryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
 
     return selectQueryResult[this.ROW_IDX];
   }
@@ -75,9 +76,9 @@ export class PasswordRepository implements PasswordRepositoryInterface {
    * 도메인이 일치하는 것을 반환합니다.
    * @param getDomainQueryReqDto 도메인 ex naver, google...
    */
-  public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<RowDataPacket> {
+  public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordInterface> {
     const query = `SELECT * FROM password.password WHERE domain='${getDomainQueryReqDto.domain}'`;
-    const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+    const queryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
 
     return queryResult[this.ROW_IDX][this.ROW_IDX];
   }
@@ -86,9 +87,9 @@ export class PasswordRepository implements PasswordRepositoryInterface {
    * id가 일치하는 것을 반환합니다.
    * @param findOneByIdReqDto id 숫자
    */
-  public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<RowDataPacket> {
+  public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordInterface> {
     const query = `SELECT * FROM password.password WHERE id=${findOneByIdReqDto.id}`;
-    const queryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
+    const queryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
 
     return queryResult[this.ROW_IDX][this.ROW_IDX];
   }
