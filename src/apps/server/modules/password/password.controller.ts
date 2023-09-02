@@ -1,5 +1,4 @@
 import { Body, HttpStatus, Param, Query, UseInterceptors, ValidationPipe } from '@nestjs/common';
-import { ApiNotFoundResponse } from '@nestjs/swagger';
 
 import { Route } from '@apps/server/common/decorator/router.decorator';
 import { Method } from '@apps/server/common/enum/method.enum';
@@ -67,7 +66,6 @@ export class PasswordController {
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<Dtos.GetRecommendPasswordResDto>(recommended);
   }
 
-  @ApiNotFoundResponse({ type: Dtos.GetDomainResDtoNotFoundExceptionResDto, description: '⛔ 해당 도메인의 비밀번호 정보가 없습니다.' })
   @Route({
     request: {
       path: '/:domain',

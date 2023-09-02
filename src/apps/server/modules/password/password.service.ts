@@ -5,7 +5,7 @@ import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
 import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDomain.res.dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
-import { PasswordRepository } from '@apps/server/modules/password/repository/password.repository';
+import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
@@ -28,7 +28,7 @@ export class PasswordService {
     private readonly logService: LogService,
     private readonly envService: EnvService,
 
-    @Inject(InjectionToken.PASSWORD_REPOSITORY) private readonly passwordRepository: PasswordRepository,
+    @Inject(InjectionToken.PASSWORD_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface,
   ) {
     this.PASSWORD_KEY = envService.get(EnvEnum.PASSWORD_KEY);
   }

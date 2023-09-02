@@ -4,12 +4,13 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { CreatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/createPassword.req.dto';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.req.dto';
+import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 import { PasswordSqlInterface } from '@libs/mysql/interface/password.interface';
 import { MysqlService } from '@libs/mysql/mysql.service';
 
 @Injectable()
-export class PasswordRepository {
+export class PasswordRepository implements PasswordRepositoryInterface {
   private ROW_IDX = 0 as const;
 
   private FILED_IDX = 1 as const;
@@ -41,7 +42,7 @@ export class PasswordRepository {
   /**
    * 전체 개수를 반환합니다.
    */
-  public async count() {
+  public async count(): Promise<RowDataPacket> {
     const query = `SELECT COUNT(*) AS totalCount FROM password.password `;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
@@ -52,7 +53,7 @@ export class PasswordRepository {
    * 비밀번호 정보를 업데이트합니다.
    * @param password PasswordInterface
    */
-  public async updateOne(password: PasswordSqlInterface) {
+  public async updateOne(password: PasswordSqlInterface): Promise<ResultSetHeader> {
     const query = `UPDATE password.password SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
