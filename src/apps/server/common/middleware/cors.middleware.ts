@@ -3,11 +3,14 @@ import { NextFunction, Response, Request } from 'express';
 
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {
-  private readonly allowHeaders: string = 'content-type';
+  private readonly allowHeaders: string = '';
   use(req: Request, res: Response, next: NextFunction) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH');
-    res.header('Access-Control-Allow-Headers', this.allowHeaders);
+    const allowedOrigins = ['http://localhost:8080'];
+    if (allowedOrigins.includes(req.header('Origin'))) {
+      res.header('Access-Control-Allow-Origin', req.header('Origin'));
+      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH');
+      res.header('Access-Control-Allow-Headers', this.allowHeaders);
+    }
 
     // preflight 설정
     if ('OPTIONS' == req.method) {
