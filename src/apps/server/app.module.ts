@@ -10,7 +10,6 @@ import { LogInterceptor } from '@apps/server/common/interceptor/logger.intercept
 import { AlcoholModule } from '@apps/server/modules/alcohol/alcohol.module';
 import { BookModule } from '@apps/server/modules/book/book.module';
 import { PasswordModule } from '@apps/server/modules/password/password.module';
-import { OriginMiddleware } from '@commons/middleware/origin.middleware';
 import { EnvModule } from '@libs/env/env.module';
 import { LogModule } from '@libs/log/log.module';
 import { MysqlModule } from '@libs/mysql/mysql.module';

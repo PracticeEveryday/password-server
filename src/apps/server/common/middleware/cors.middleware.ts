@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Response, Request } from 'express';
 
 @Injectable()
-export class OriginMiddleware implements NestMiddleware {
+export class CorsMiddleware implements NestMiddleware {
   private readonly allowHeaders: string = 'content-type';
   use(req: Request, res: Response, next: NextFunction) {
     res.header('Access-Control-Allow-Origin', '*');
