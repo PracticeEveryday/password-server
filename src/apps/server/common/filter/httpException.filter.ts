@@ -8,6 +8,7 @@ import { ErrorTypeEnum } from '@apps/server/common/enum/errorType.enum';
 import { ErrorLogDto } from '@commons/dto/basicApiDto/errorLog.dto';
 import { WarnLogDto } from '@commons/dto/basicApiDto/warnLog.dto';
 import { LogService } from '@libs/log/log.service';
+import { SlackService } from '@libs/slack/slack.service';
 
 @Catch()
 export class CustomExceptionFilter implements ExceptionFilter {
@@ -15,6 +16,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
     // httpAdapter를 context 외부에서 사용하기 위해 주입합니다.
     private readonly httpAdapterHost: HttpAdapterHost,
     private readonly logService: LogService,
+    private readonly slackService: SlackService,
   ) {}
 
   catch(error: Error, host: ArgumentsHost) {
@@ -50,6 +52,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
       });
 
       this.logService.warn(failLogDto);
+      this.slackService.sendWarnToSlack(failLogDto);
     } else {
       const errorLogDto = new ErrorLogDto(exception, {
         method: request.method,
@@ -58,6 +61,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
         headers: request.headers,
       });
       this.logService.error(errorLogDto);
+      this.slackService.sendErrorToSlack(errorLogDto);
     }
 
     /**

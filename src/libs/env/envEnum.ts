@@ -17,4 +17,7 @@ export enum EnvEnum {
 
   //TEST_DB
   TEST_DB,
+
+  //SLACK
+  SLACK_ERROR_LOG_URL,
 }
