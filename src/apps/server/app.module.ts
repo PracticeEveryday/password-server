@@ -1,4 +1,4 @@
-import { ClassProvider, ClassSerializerInterceptor, Module, ValidationPipe } from '@nestjs/common';
+import { ClassProvider, ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { AppController } from '@apps/server/app.controller';
@@ -10,6 +10,7 @@ import { LogInterceptor } from '@apps/server/common/interceptor/logger.intercept
 import { AlcoholModule } from '@apps/server/modules/alcohol/alcohol.module';
 import { BookModule } from '@apps/server/modules/book/book.module';
 import { PasswordModule } from '@apps/server/modules/password/password.module';
+import { OriginMiddleware } from '@commons/middleware/origin.middleware';
 import { EnvModule } from '@libs/env/env.module';
 import { LogModule } from '@libs/log/log.module';
 import { MysqlModule } from '@libs/mysql/mysql.module';
@@ -53,4 +54,8 @@ const pipes = [
   controllers: [AppController],
   providers: [AppService, ...filter, ...interceptors, ...pipes],
 })
-export class AppModule {}
+export class AppModule {
+  // configure(consumer: MiddlewareConsumer) {
+  // consumer.apply(OriginMiddleware).forRoutes('*');
+  // }
+}
