@@ -31,7 +31,7 @@ const winstonOptions = {
         winston.format.timestamp(), // timestamp를 찍을거고
         winston.format.ms(), // ms 단위로 찍을거야
 
-        nestWinstonModuleUtilities.format.nestLike('Integrated Login Server', {
+        nestWinstonModuleUtilities.format.nestLike('My Playground Server', {
           colors: true,
           prettyPrint: true,
         }),

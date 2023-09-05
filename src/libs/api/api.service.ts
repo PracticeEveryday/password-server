@@ -1,29 +1,25 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { isAxiosError, AxiosResponse } from 'axios';
-import { firstValueFrom, Observable } from 'rxjs';
+import { isAxiosError } from 'axios';
+import { firstValueFrom } from 'rxjs';
 
 import { AxiosReqDto } from '@libs/api/dto/axios.req.dto';
+import { LogService } from '@libs/log/log.service';
 
 @Injectable()
 export class ApiService {
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService, private readonly logService: LogService) {}
 
-  public async post(axiosReqDto: AxiosReqDto): Promise<Observable<AxiosResponse>> {
-    const observable = await this.httpService.post(axiosReqDto.url, axiosReqDto.data, axiosReqDto.headers);
-
-    return await this.processAxios(observable);
-  }
-
-  private async processAxios(httpResponse: Observable<AxiosResponse>) {
+  public async post<T>(axiosReqDto: AxiosReqDto): Promise<T> {
     try {
-      const firstResultValue = await firstValueFrom(httpResponse);
+      const observable = await this.httpService.post(axiosReqDto.url, axiosReqDto.data, axiosReqDto.headers);
+
+      const firstResultValue = await firstValueFrom(observable);
 
       return firstResultValue.data;
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        console.log(error.status);
-        console.error(error.response);
+        this.logService.errorMsg('Axios Post Error', `post 요청에 실패가 있습니다. ${error.response.data}`, axiosReqDto.stack);
       } else {
         console.error(error);
       }

@@ -71,4 +71,8 @@ export class LogService {
       },\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim(),
     );
   }
+
+  errorMsg(tag: string, message: string, stack: string): void {
+    this.logger.error(`tag: ${tag}, message: ${message},\n ${this.traceCaller(stack, 0)}`);
+  }
 }
