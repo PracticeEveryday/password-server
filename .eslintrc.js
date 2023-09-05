@@ -20,6 +20,7 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
+    'import/named': 0,
     // interface에 prefix를 두지 않도록 합니다.
     '@typescript-eslint/interface-name-prefix': 'off',
     // Typescript가 유추할 수 있도록 하기에 Off합니다.

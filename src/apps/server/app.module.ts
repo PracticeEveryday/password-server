@@ -11,6 +11,7 @@ import { AlcoholModule } from '@apps/server/modules/alcohol/alcohol.module';
 import { BookModule } from '@apps/server/modules/book/book.module';
 import { PasswordModule } from '@apps/server/modules/password/password.module';
 import { CorsMiddleware } from '@commons/middleware/cors.middleware';
+import { ApiModule } from '@libs/api/api.module';
 import { EnvModule } from '@libs/env/env.module';
 import { LogModule } from '@libs/log/log.module';
 import { MysqlModule } from '@libs/mysql/mysql.module';
@@ -55,6 +56,7 @@ const pipes = [
     EnvModule.forRoot(),
     LogModule.forRoot(),
     SlackModule.forRoot(),
+    ApiModule.forRoot(),
     PasswordModule,
     ReadlineModule,
     MysqlModule,
