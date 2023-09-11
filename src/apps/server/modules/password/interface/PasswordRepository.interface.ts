@@ -1,5 +1,3 @@
-import { RowDataPacket } from 'mysql2';
-
 import { CreatePasswordReqDto, GetDomainParamReqDto, GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
@@ -19,5 +17,5 @@ export interface PasswordRepositoryInterface<T> {
   // delete
   removeOne(param: PasswordInterface): Promise<T>;
 
-  count(): Promise<RowDataPacket>;
+  count(): Promise<number>;
 }

@@ -51,7 +51,7 @@ export class PasswordService {
     const passwordArr = await this.passwordRepository.findManyWithPagination(getPasswordsReqDto);
     const passwordResDtoArr = passwordArr.map((password) => new Dtos.PasswordResDto(password));
 
-    const { totalCount } = await this.passwordRepository.count();
+    const totalCount = await this.passwordRepository.count();
 
     const pagination = toPagination(totalCount, getPasswordsReqDto.pageNo, getPasswordsReqDto.pageSize);
     return new Dtos.GetPasswordsResDto(passwordResDtoArr, pagination);

@@ -43,11 +43,13 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
   /**
    * 전체 개수를 반환합니다.
    */
-  public async count(): Promise<RowDataPacket> {
+  public async count(): Promise<number> {
     const query = `SELECT COUNT(*) AS totalCount FROM password.password `;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
-    return selectQueryResult[this.ROW_IDX][this.ROW_IDX];
+    console.log(selectQueryResult[this.ROW_IDX][this.ROW_IDX]);
+
+    return selectQueryResult[this.ROW_IDX][this.ROW_IDX].totalCount;
   }
 
   /**
