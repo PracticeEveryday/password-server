@@ -4,6 +4,7 @@ import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
 import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDomain.res.dto';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
+import { BadRequestException, NotFoundException } from '@commons/customExceptions/exception';
 import { UpdatedResDto, DeletedResDto, FindOneByIdReqDto } from '@commons/dto/basicApiDto';
 import { EnvService } from '@libs/env/env.service';
 import { EnvEnum } from '@libs/env/envEnum';
@@ -29,6 +30,7 @@ export class PasswordService {
 
   /**
    * 비밀번호 삭제 By id
+   *
    * @param param FindOneByIdDto
    */
   public async removeOneByDomain(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
@@ -36,11 +38,16 @@ export class PasswordService {
     ValidateUtil.isStrictNotEmptyWithErrorResponse(password, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
 
     const deleteResult = await this.passwordRepository.removeOneByDomain(param);
-    return deleteResult.affectedRows === 1 ? new DeletedResDto(true) : new DeletedResDto(false);
+
+    if (deleteResult.affectedRows !== 1) {
+      throw new NotFoundException({ errorResponse: ErrorResponse.AUTH.NOT_FOUND_USER });
+    }
+    return new DeletedResDto(true);
   }
 
   /**
    * 비밀번호 조회 By 페이지네이션
+   *
    * @param getPasswordsReqDto pagination을 상속 받은 dto
    */
   public async findManyWithPagination(getPasswordsReqDto: Dtos.GetPasswordsQueryReqDto): Promise<Dtos.GetPasswordsResDto> {
@@ -57,7 +64,8 @@ export class PasswordService {
 
   /**
    * 비밀번호 생성
-   * @param body CreatePassworeReqDto
+   *
+   * @param body CreatePasswordReqDto
    */
   public async createOne(body: Dtos.CreatePasswordReqDto): Promise<Dtos.CreatePasswordResDto> {
     const getDomainQueryReqDto = Dtos.GetDomainParamReqDto.toDTO(body.domain);
@@ -69,16 +77,19 @@ export class PasswordService {
 
     const createResult = await this.passwordRepository.createOne(body);
 
-    if (createResult.affectedRows === 1) {
-      const findOneByIdReqDto = FindOneByIdReqDto.toDTO(createResult.insertId);
-      const password = await this.passwordRepository.findOneById(findOneByIdReqDto);
-
-      return new Dtos.CreatePasswordResDto(password.domain);
+    if (createResult.affectedRows !== 1) {
+      throw new BadRequestException({ errorResponse: ErrorResponse.AUTH.ALREADY_EXIST_USER });
     }
+
+    const findOneByIdReqDto = FindOneByIdReqDto.toDTO(createResult.insertId);
+    const newPassword = await this.passwordRepository.findOneById(findOneByIdReqDto);
+
+    return new Dtos.CreatePasswordResDto(newPassword.domain);
   }
 
   /**
    * 비밀번호 수정
+   *
    * @param body UpdatePasswordReqDto
    */
   public async updateOne(body: Dtos.UpdatePasswordReqDto): Promise<UpdatedResDto> {
@@ -91,11 +102,16 @@ export class PasswordService {
 
     const updatedResult = await this.passwordRepository.updateOne(updatedInfo);
 
-    return updatedResult.affectedRows === 1 ? new UpdatedResDto(true) : new UpdatedResDto(false);
+    if (updatedResult.affectedRows !== 1) {
+      throw new NotFoundException({ errorResponse: ErrorResponse.AUTH.NOT_FOUND_USER });
+    }
+
+    return new UpdatedResDto(true);
   }
 
   /**
    * 비밀번호 조회 By 도메인
+   *
    * @param param GetDomainReqDto
    */
   public async findOneByDomain(param: Dtos.GetDomainParamReqDto): Promise<GetDomainResDto> {

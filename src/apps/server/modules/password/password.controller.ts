@@ -102,6 +102,7 @@ export class PasswordController {
     @Body(ValidationPipe) createPasswordReqDto: Dtos.CreatePasswordReqDto,
   ): Promise<ResponseDto<Dtos.CreatePasswordResDto>> {
     const created = await this.passwordService.createOne(createPasswordReqDto);
+
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<Dtos.CreatePasswordResDto>(created);
   }
 
@@ -112,14 +113,14 @@ export class PasswordController {
       method: Method.PUT,
     },
     response: {
-      code: HttpStatus.CREATED,
+      code: HttpStatus.OK,
       type: UpdatedResDto,
       description: Docs.updateOnePasswordSuccMd,
     },
     summary: Docs.updateOnePasswordSummaryMd,
     description: Docs.updateOnePasswordDescriptionMd,
   })
-  public async update(@Body(ValidationPipe) updatePasswordReqDto: Dtos.UpdatePasswordReqDto): Promise<ResponseDto<UpdatedResDto>> {
+  public async updateOne(@Body(ValidationPipe) updatePasswordReqDto: Dtos.UpdatePasswordReqDto): Promise<ResponseDto<UpdatedResDto>> {
     const updated = await this.passwordService.updateOne(updatePasswordReqDto);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<UpdatedResDto>(updated, 'success update');

@@ -51,9 +51,10 @@ export class PasswordRepository implements PasswordRepositoryInterface {
 
   /**
    * 비밀번호 정보를 업데이트합니다.
+   *
    * @param password PasswordInterface
    */
-  public async updateOne(password: PasswordSqlInterface): Promise<ResultSetHeader> {
+  public async updateOne(password: PasswordInterface): Promise<ResultSetHeader> {
     const query = `UPDATE password.password SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
@@ -62,6 +63,7 @@ export class PasswordRepository implements PasswordRepositoryInterface {
 
   /**
    * 비밀번호 정보 생성
+   *
    * @param body CreatePassworeReqDto(domain, 해쉬된 password 정보가 들어 있습니다.)
    */
   public async createOne(body: CreatePasswordReqDto): Promise<ResultSetHeader> {
@@ -73,6 +75,7 @@ export class PasswordRepository implements PasswordRepositoryInterface {
 
   /**
    * 도메인이 일치하는 것을 반환합니다.
+   *
    * @param getDomainQueryReqDto 도메인 ex naver, google...
    */
   public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordInterface> {
@@ -84,6 +87,7 @@ export class PasswordRepository implements PasswordRepositoryInterface {
 
   /**
    * id가 일치하는 것을 반환합니다.
+   *
    * @param findOneByIdReqDto id 숫자
    */
   public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordInterface> {
