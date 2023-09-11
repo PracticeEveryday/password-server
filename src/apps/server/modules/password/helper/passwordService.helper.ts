@@ -21,9 +21,9 @@ export class PasswordServiceHelper {
     return password;
   }
 
-  public async validateByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<boolean> {
+  public async checkExistByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<boolean> {
     const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);
 
-    return ValidateUtil.checkEmptyStrictly(password);
+    return ValidateUtil.checkExistStrictly(password);
   }
 }

@@ -63,9 +63,7 @@ export class PasswordService {
    */
   public async createOne(body: Dtos.CreatePasswordReqDto) {
     const getDomainParamReqDto = Dtos.GetDomainParamReqDto.toDTO(body.domain);
-    const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);
-
-    if (password) {
+    if (await this.passwordServiceHelper.checkExistByDomain(getDomainParamReqDto)) {
       throw new ConflictException({ errorResponse: ErrorResponse.AUTH.ALREADY_EXIST_USER });
     }
 
@@ -106,7 +104,7 @@ export class PasswordService {
    * @param param GetDomainParamReqDto
    */
   public async removeOneByDomain(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
-    await this.passwordServiceHelper.validateByDomain(param);
+    await this.passwordServiceHelper.checkExistByDomain(param);
 
     const deleteResult = await this.passwordRepository.removeOneByDomain(param);
 
