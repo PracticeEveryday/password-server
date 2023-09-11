@@ -18,10 +18,11 @@ export class PasswordRepository implements PasswordRepositoryInterface {
 
   /**
    * 도메인과 일치하는 것을 삭제합니다.
-   * @param param GetDomainParamReqDto
+   *
+   * @param param PasswordInterface
    */
-  public async removeOneByDomain(param: GetDomainParamReqDto): Promise<ResultSetHeader> {
-    const query = `DELETE FROM password.password WHERE domain = '${param.domain}'`;
+  public async removeOne(param: PasswordInterface): Promise<ResultSetHeader> {
+    const query = `DELETE FROM password.password WHERE id = ${param.id}`;
     const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
     return deleteQueryResult[this.ROW_IDX];
@@ -29,6 +30,7 @@ export class PasswordRepository implements PasswordRepositoryInterface {
 
   /**
    * 페이지네이션 옵션만큼 가져옵니다.
+   *
    * @param queryDto GetPasswordsQueryReqDto
    */
   public async findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordInterface[]> {

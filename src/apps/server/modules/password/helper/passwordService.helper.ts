@@ -26,4 +26,10 @@ export class PasswordServiceHelper {
 
     return ValidateUtil.checkExistStrictly(password);
   }
+
+  public async checkEmptyByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<boolean> {
+    const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);
+
+    return ValidateUtil.checkEmptyStrictly(password);
+  }
 }

@@ -139,7 +139,7 @@ export class PasswordController {
     description: Docs.removeOneByDomainDescriptionMd,
   })
   public async removeOneByDomain(@Param() param: Dtos.GetDomainParamReqDto): Promise<ResponseDto<DeletedResDto>> {
-    const deleted = await this.passwordService.removeOneByDomain(param);
+    const deleted = await this.passwordService.removeOne(param);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE(deleted, 'success delete');
   }

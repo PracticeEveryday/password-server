@@ -63,7 +63,8 @@ export class PasswordService {
    */
   public async createOne(body: Dtos.CreatePasswordReqDto) {
     const getDomainParamReqDto = Dtos.GetDomainParamReqDto.toDTO(body.domain);
-    if (await this.passwordServiceHelper.checkExistByDomain(getDomainParamReqDto)) {
+    const isExist = await this.passwordServiceHelper.checkExistByDomain(getDomainParamReqDto);
+    if (isExist) {
       throw new ConflictException({ errorResponse: ErrorResponse.AUTH.ALREADY_EXIST_USER });
     }
 
@@ -103,10 +104,10 @@ export class PasswordService {
    *
    * @param param GetDomainParamReqDto
    */
-  public async removeOneByDomain(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
-    await this.passwordServiceHelper.checkExistByDomain(param);
+  public async removeOne(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
+    const password = await this.passwordServiceHelper.getPasswordByDomain(param);
 
-    const deleteResult = await this.passwordRepository.removeOneByDomain(param);
+    const deleteResult = await this.passwordRepository.removeOne(password);
 
     if (deleteResult.affectedRows !== 1) {
       throw new NotFoundException({ errorResponse: ErrorResponse.AUTH.NOT_FOUND_USER });

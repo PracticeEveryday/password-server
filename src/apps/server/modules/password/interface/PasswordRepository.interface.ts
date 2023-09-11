@@ -17,7 +17,7 @@ export interface PasswordRepositoryInterface {
   updateOne(password: PasswordInterface): Promise<ResultSetHeader>;
 
   // delete
-  removeOneByDomain(param: GetDomainParamReqDto): Promise<ResultSetHeader>;
+  removeOne(param: PasswordInterface): Promise<ResultSetHeader>;
 
   count(): Promise<RowDataPacket>;
 }
