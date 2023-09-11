@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-import { BaseEntity } from '@libs/typeorm/entity/base.entity';
+import { BaseEntity } from '@libs/adapter/db/typeorm/entity/base.entity';
 
 @Entity('password')
 export class PasswordEntity extends BaseEntity {

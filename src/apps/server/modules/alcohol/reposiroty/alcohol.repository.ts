@@ -3,7 +3,7 @@ import { ResultSetHeader } from 'mysql2';
 
 import { AlcoholRepositoryInterface } from '@apps/server/modules/alcohol/interface/alcohol.interface';
 import { AlcoholDto } from '@commons/dto/moduleDto/alcohol.dto';
-import { MysqlService } from '@libs/mysql/mysql.service';
+import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 
 @Injectable()
 export class AlcoholRepository implements AlcoholRepositoryInterface {

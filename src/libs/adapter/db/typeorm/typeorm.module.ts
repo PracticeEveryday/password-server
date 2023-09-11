@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { MysqlConfigProvider } from '@libs/typeorm/mysqlConfig';
+import { MysqlConfigProvider } from '@libs/adapter/db/typeorm/mysqlConfig';
 
 @Module({
   imports: [

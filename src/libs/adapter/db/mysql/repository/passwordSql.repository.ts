@@ -7,7 +7,7 @@ import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-d
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
-import { MysqlService } from '@libs/mysql/mysql.service';
+import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 @Injectable()
 export class PasswordSqlRepository implements PasswordRepositoryInterface<ResultSetHeader> {
   private ROW_IDX = 0 as const;

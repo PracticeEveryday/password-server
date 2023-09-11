@@ -6,7 +6,7 @@ import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBo
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
 import { BookMetaRepositoryInterface } from '@apps/server/modules/book/interface/bookMetaRepository';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
-import { MysqlService } from '@libs/mysql/mysql.service';
+import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 
 export class BookMetaRepository implements BookMetaRepositoryInterface {
   private ROW_IDX = 0 as const;

@@ -10,8 +10,8 @@ import { bookProviders } from '@apps/server/modules/book/provider/book.provider'
 import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
-import { MysqlModule } from '@libs/mysql/mysql.module';
-import { MysqlService } from '@libs/mysql/mysql.service';
+import { MysqlModule } from '@libs/adapter/db/mysql/mysql.module';
+import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 
 describe('BookService Test', () => {
   let bookService: BookService;

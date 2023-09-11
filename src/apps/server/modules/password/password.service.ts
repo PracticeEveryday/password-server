@@ -9,10 +9,10 @@ import { PasswordRepositoryInterface } from '@apps/server/modules/password/inter
 import { BadRequestException, ConflictException, NotFoundException } from '@commons/customExceptions/exception';
 import { UpdatedResDto, DeletedResDto } from '@commons/dto/basicApiDto';
 import { CreateResDto } from '@commons/dto/basicApiDto/createResult.res.dto';
+import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
 import { EnvService } from '@libs/env/env.service';
 import { EnvEnum } from '@libs/env/envEnum';
 import { LogService } from '@libs/log/log.service';
-import { InjectionToken } from '@libs/mysql/repository/injectionToken';
 import { PasswordUtil } from '@libs/util/password.util';
 
 import * as Dtos from './dto';

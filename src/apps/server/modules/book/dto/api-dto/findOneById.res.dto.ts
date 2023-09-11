@@ -5,7 +5,7 @@ import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/va
 import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString, IsOptionalString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 import { BookInterface, BookMetaInterface } from '@apps/server/modules/book/interface/book.interface';
-import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
+import { BookSqlInterface } from '@libs/adapter/db/mysql/interface/book.interface';
 
 export class BookMetaResDto {
   @Exclude() private readonly _id: number;

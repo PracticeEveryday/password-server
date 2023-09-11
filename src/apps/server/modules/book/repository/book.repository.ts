@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
-import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
-import { MysqlService } from '@libs/mysql/mysql.service';
+import { BookSqlInterface } from '@libs/adapter/db/mysql/interface/book.interface';
+import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 import { SqlUtil } from '@libs/util/sql.util';
 
 import * as BookDtos from '../dto';

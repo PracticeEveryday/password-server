@@ -3,12 +3,12 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from '@apps/server/app.module';
 import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
+import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
+import { PreQualificationRepository } from '@libs/adapter/db/mysql/repository/preQualification.repository';
+import { ServerInfoRepository } from '@libs/adapter/db/mysql/repository/serverInfo.repository';
+import { InitTableArr } from '@libs/adapter/db/mysql/sql/initTablePassword';
 import { EnvService } from '@libs/env/env.service';
 import { EnvEnum } from '@libs/env/envEnum';
-import { MysqlService } from '@libs/mysql/mysql.service';
-import { PreQualificationRepository } from '@libs/mysql/repository/preQualification.repository';
-import { ServerInfoRepository } from '@libs/mysql/repository/serverInfo.repository';
-import { InitTableArr } from '@libs/mysql/sql/initTablePassword';
 import { ReadlineEndService } from '@libs/readline/readlineEnd.service';
 import { ReadlineStartService } from '@libs/readline/readlineStart.service';
 import { setupSwagger } from '@libs/swagger/swagger';

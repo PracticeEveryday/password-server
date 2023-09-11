@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateAlcoholDto } from '@apps/server/modules/alcohol/dto/createAlcohol.dto';
 import { UpdateAlcoholDto } from '@apps/server/modules/alcohol/dto/updateAlcohol.dto';
 import { AlcoholRepositoryInterface } from '@apps/server/modules/alcohol/interface/alcohol.interface';
-import { InjectionToken } from '@libs/mysql/repository/injectionToken';
+import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
 
 @Injectable()
 export class AlcoholService {

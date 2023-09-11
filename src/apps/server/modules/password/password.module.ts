@@ -3,9 +3,9 @@ import { Module } from '@nestjs/common';
 import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordController } from '@apps/server/modules/password/password.controller';
 import { PasswordService } from '@apps/server/modules/password/password.service';
+import { MysqlModule } from '@libs/adapter/db/mysql/mysql.module';
+import { passwordProviders } from '@libs/adapter/db/mysql/provider/password.provider';
 import { LogModule } from '@libs/log/log.module';
-import { MysqlModule } from '@libs/mysql/mysql.module';
-import { passwordProviders } from '@libs/mysql/provider/password.provider';
 
 const databaseModule = MysqlModule;
 @Module({

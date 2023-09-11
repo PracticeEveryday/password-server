@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
+import { PasswordEntity } from '@libs/adapter/db/typeorm/entity/password.entity';
 import { EnvService } from '@libs/env/env.service';
 import { EnvEnum } from '@libs/env/envEnum';
-import { PasswordEntity } from '@libs/typeorm/entity/password.entity';
 
 @Injectable()
 export class MysqlConfigProvider implements TypeOrmOptionsFactory {

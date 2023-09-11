@@ -6,7 +6,7 @@ import { PasswordInterface } from '@apps/server/modules/password/interface/passw
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import ErrorResponse from '@commons/customExceptions/errorResponse';
 import { NotFoundException } from '@commons/customExceptions/exception';
-import { InjectionToken } from '@libs/mysql/repository/injectionToken';
+import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
 import { ValidateUtil } from '@libs/util/validate.util';
 
 @Injectable()

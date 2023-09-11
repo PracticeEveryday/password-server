@@ -1,13 +1,13 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { ResultSetHeader } from 'mysql2';
 import { Repository } from 'typeorm';
 
 import { CreatePasswordReqDto, GetDomainParamReqDto, GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
+import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
-import { PasswordEntity } from '@libs/typeorm/entity/password.entity';
+import { PasswordEntity } from '@libs/adapter/db/typeorm/entity/password.entity';
 
-export class PasswordTypeOrmRepository {
+export class PasswordTypeOrmRepository implements PasswordRepositoryInterface<PasswordEntity> {
   constructor(
     @InjectRepository(PasswordEntity)
     private userRepository: Repository<PasswordEntity>,
@@ -25,23 +25,23 @@ export class PasswordTypeOrmRepository {
     return this.userRepository.save(password);
   }
 
-  findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordInterface[]> {
+  findManyWithPagination(_queryDto: GetPasswordsQueryReqDto): Promise<PasswordInterface[]> {
     return Promise.resolve([]);
   }
 
-  findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordInterface> {
+  findOneByDomain(_getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordInterface> {
     return Promise.resolve(undefined);
   }
 
-  findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordInterface> {
+  findOneById(_findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordInterface> {
     return Promise.resolve(undefined);
   }
 
-  removeOne(param: PasswordInterface): Promise<ResultSetHeader> {
+  removeOne(_param: PasswordInterface): Promise<PasswordEntity> {
     return Promise.resolve(undefined);
   }
 
-  updateOne(password: PasswordInterface): Promise<ResultSetHeader> {
+  updateOne(_password: PasswordInterface): Promise<PasswordEntity> {
     return Promise.resolve(undefined);
   }
 }

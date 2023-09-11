@@ -5,9 +5,9 @@ import { ConflictException } from '@apps/server/common/customExceptions/exceptio
 import { NotFoundException } from '@apps/server/common/customExceptions/exception/notFound.exception';
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
 import { UpdatedResDto, DeletedResDto, FindOneByIdReqDto } from '@commons/dto/basicApiDto';
-import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
-import { MysqlService } from '@libs/mysql/mysql.service';
-import { InjectionToken } from '@libs/mysql/repository/injectionToken';
+import { BookSqlInterface } from '@libs/adapter/db/mysql/interface/book.interface';
+import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
+import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
 import { SqlUtil } from '@libs/util/sql.util';
 
 import * as BookDtos from './dto';

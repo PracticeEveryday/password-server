@@ -1,4 +1,4 @@
-import { ServerStatusEnum } from '../../../apps/server/common/enum/serverStatus.enum';
+import { ServerStatusEnum } from '@commons/enum/serverStatus.enum';
 
 const initTablePassword = `
 CREATE TABLE IF NOT EXISTS password (

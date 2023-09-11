@@ -7,7 +7,7 @@ import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBo
 import * as Book from '@apps/server/modules/book/interface/book.interface';
 import { BookInterface } from '@apps/server/modules/book/interface/book.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
-import { BookSqlInterface } from '@libs/mysql/interface/book.interface';
+import { BookSqlInterface } from '@libs/adapter/db/mysql/interface/book.interface';
 
 export interface BookRepositoryInterface {
   // post

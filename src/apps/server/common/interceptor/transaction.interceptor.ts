@@ -4,7 +4,7 @@ import { catchError, Observable, tap } from 'rxjs';
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { BaseException } from '@apps/server/common/customExceptions/exception/base.exception';
 import { UnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
-import { MysqlService } from '@libs/mysql/mysql.service';
+import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 
 /**
  * 트랜젝션을 위한 인터셉터입니다.

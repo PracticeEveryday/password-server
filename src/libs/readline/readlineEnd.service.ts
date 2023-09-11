@@ -3,9 +3,9 @@ import * as readline from 'readline';
 
 import { Inject, Injectable } from '@nestjs/common';
 
-import { InjectionToken } from '../mysql/repository/injectionToken';
-import { PreQualificationRepository } from '../mysql/repository/preQualification.repository';
-import { ServerInfoRepository } from '../mysql/repository/serverInfo.repository';
+import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
+import { PreQualificationRepository } from '@libs/adapter/db/mysql/repository/preQualification.repository';
+import { ServerInfoRepository } from '@libs/adapter/db/mysql/repository/serverInfo.repository';
 
 @Injectable()
 export class ReadlineEndService {
