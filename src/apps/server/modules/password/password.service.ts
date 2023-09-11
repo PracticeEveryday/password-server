@@ -106,12 +106,12 @@ export class PasswordService {
    */
   public async removeOne(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
     const password = await this.passwordServiceHelper.getPasswordByDomain(param);
-
     const deleteResult = await this.passwordRepository.removeOne(password);
 
     if (deleteResult.affectedRows !== 1) {
       throw new NotFoundException({ errorResponse: ErrorResponse.AUTH.NOT_FOUND_USER });
     }
+
     return new DeletedResDto(true);
   }
 }
