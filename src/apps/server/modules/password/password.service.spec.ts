@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { CreatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/createPassword.req.dto';
-import { CreatePasswordResDto } from '@apps/server/modules/password/dto/api-dto/createPassword.res.dto';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDomain.res.dto';
 import { UpdatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/updatePassword.req.dto';
+import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordService } from '@apps/server/modules/password/password.service';
 import { passwordProviders } from '@apps/server/modules/password/provider/password.provider';
+import { CreateResDto } from '@commons/dto/basicApiDto/createResult.res.dto';
 import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
 import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
 import { EnvModule } from '@libs/env/env.module';
@@ -22,8 +23,8 @@ describe('PasswordService Test', () => {
   beforeEach(async () => {
     mockPasswordService = {
       findOneByDomain: jest.fn().mockReturnValue(getDomainResDto),
-      createOne: jest.fn().mockImplementation(async (_body: CreatePasswordReqDto): Promise<CreatePasswordResDto> => {
-        return new CreatePasswordResDto('test');
+      createOne: jest.fn().mockImplementation(async (_body: CreatePasswordReqDto): Promise<CreateResDto> => {
+        return new CreateResDto(true);
       }),
       updateOne: jest.fn().mockImplementation(async (_body: UpdatedResDto): Promise<UpdatedResDto> => {
         return new UpdatedResDto(true);
@@ -35,7 +36,7 @@ describe('PasswordService Test', () => {
       // 의존성 주입하 Module 넣기
       imports: [LogModule, EnvModule, MysqlModule],
       // 테스트할 모듈 넣기
-      providers: [PasswordService, ...passwordProviders],
+      providers: [PasswordService, PasswordServiceHelper, ...passwordProviders],
     }).compile();
 
     passwordService = module.get<PasswordService>(PasswordService);
@@ -49,12 +50,12 @@ describe('PasswordService Test', () => {
   it('password 생성하기', async () => {
     const createPasswordReqDto = CreatePasswordReqDto.toDTO('test', 'test1');
     const newPassword = await passwordService.createOne(createPasswordReqDto);
-    const createPasswordResDto = new CreatePasswordResDto('test');
+    const createResDto = new CreateResDto(true);
     const result = await mockPasswordService.createOne(createPasswordReqDto);
 
     // 생성하는 것도 같음.
     expect(result).toStrictEqual(newPassword);
-    expect(result).toStrictEqual(createPasswordResDto);
+    expect(result).toStrictEqual(createResDto);
   });
 
   it('Domain에 따른 비밀번호 가져오기', async () => {

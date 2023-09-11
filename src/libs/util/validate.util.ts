@@ -15,5 +15,7 @@ export class ValidateUtil {
     if (emptyCondition) {
       throw new ConflictException({ errorResponse });
     }
+
+    return true;
   }
 }
