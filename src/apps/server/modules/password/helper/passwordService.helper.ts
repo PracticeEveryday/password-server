@@ -4,6 +4,7 @@ import { GetDomainParamReqDto } from '@apps/server/modules/password/dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import ErrorResponse from '@commons/customExceptions/errorResponse';
+import { NotFoundException } from '@commons/customExceptions/exception';
 import { InjectionToken } from '@libs/mysql/repository/injectionToken';
 import { ValidateUtil } from '@libs/util/validate.util';
 
@@ -13,15 +14,16 @@ export class PasswordServiceHelper {
 
   public async getPasswordByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<PasswordInterface> {
     const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);
-    ValidateUtil.isStrictNotEmptyWithErrorResponse(password, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
+    const isEmpty = ValidateUtil.checkEmptyStrictly(password);
+
+    if (isEmpty) throw new NotFoundException({ errorResponse: ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN });
 
     return password;
   }
 
   public async validateByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<boolean> {
     const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);
-    ValidateUtil.isStrictNotEmptyWithErrorResponse(password, ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN);
 
-    return true;
+    return ValidateUtil.checkEmptyStrictly(password);
   }
 }
