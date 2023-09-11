@@ -7,7 +7,7 @@ import { PasswordInterface } from '@apps/server/modules/password/interface/passw
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
 import { PasswordEntity } from '@libs/typeorm/entity/password.entity';
 
-export class PasswordRepository {
+export class PasswordTypeOrmRepository {
   constructor(
     @InjectRepository(PasswordEntity)
     private userRepository: Repository<PasswordEntity>,
