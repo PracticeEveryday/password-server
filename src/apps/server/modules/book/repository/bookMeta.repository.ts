@@ -16,7 +16,7 @@ export class BookMetaRepository implements BookMetaRepositoryInterface {
   constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
 
   public async createOne(createBookReqDto: CreateBookReqDto): Promise<ResultSetHeader> {
-    const query = `INSERT INTO password.book_meta (book_id, author, publisher, page_count, createdAt, updatedAt, deletedAt)
+    const query = `INSERT INTO password.book_meta (book_id, author, publisher, page_count, created_at, updated_at, deleted_at)
                      VALUES (${createBookReqDto.bookId}, '${createBookReqDto.author}', '${createBookReqDto.publisher}',
                              ${createBookReqDto.pageCount}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
     const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);

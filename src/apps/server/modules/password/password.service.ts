@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ResultSetHeader } from 'mysql2';
 
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
@@ -25,7 +26,7 @@ export class PasswordService {
     private readonly envService: EnvService,
     private readonly passwordServiceHelper: PasswordServiceHelper,
 
-    @Inject(InjectionToken.PASSWORD_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface,
+    @Inject(InjectionToken.PASSWORD_SQL_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface<ResultSetHeader>,
   ) {
     this.PASSWORD_KEY = envService.get(EnvEnum.PASSWORD_KEY);
   }

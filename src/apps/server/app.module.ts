@@ -17,6 +17,7 @@ import { LogModule } from '@libs/log/log.module';
 import { MysqlModule } from '@libs/mysql/mysql.module';
 import { ReadlineModule } from '@libs/readline/readline.module';
 import { SlackModule } from '@libs/slack/slack.module';
+import { TypeOrmDatabaseModule } from '@libs/typeorm/typeorm.module';
 
 const filter: ClassProvider[] = [
   {
@@ -60,6 +61,8 @@ const pipes = [
     PasswordModule,
     ReadlineModule,
     MysqlModule,
+    //typeorm
+    TypeOrmDatabaseModule,
     BookModule,
     AlcoholModule,
   ],

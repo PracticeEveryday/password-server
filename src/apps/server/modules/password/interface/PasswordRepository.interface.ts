@@ -1,12 +1,12 @@
-import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import { RowDataPacket } from 'mysql2';
 
 import { CreatePasswordReqDto, GetDomainParamReqDto, GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 
-export interface PasswordRepositoryInterface {
+export interface PasswordRepositoryInterface<T> {
   //create
-  createOne(body: CreatePasswordReqDto): Promise<ResultSetHeader>;
+  createOne(body: CreatePasswordReqDto): Promise<T>;
 
   //get
   findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordInterface>;
@@ -14,10 +14,10 @@ export interface PasswordRepositoryInterface {
   findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordInterface[]>;
 
   //update
-  updateOne(password: PasswordInterface): Promise<ResultSetHeader>;
+  updateOne(password: PasswordInterface): Promise<T>;
 
   // delete
-  removeOne(param: PasswordInterface): Promise<ResultSetHeader>;
+  removeOne(param: PasswordInterface): Promise<T>;
 
   count(): Promise<RowDataPacket>;
 }

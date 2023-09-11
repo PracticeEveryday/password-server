@@ -15,7 +15,7 @@ export class AlcoholRepository implements AlcoholRepositoryInterface {
 
   public create = async (creatInfo: Partial<AlcoholDto>): Promise<ResultSetHeader> => {
     const query = `
-      INSERT INTO password.alcohol (drinking_date, relationship, mood, createdAt, updatedAt, deletedAt)
+      INSERT INTO password.alcohol (drinking_date, relationship, mood, created_at, updated_at, deleted_at)
       VALUES ('${creatInfo.drinkingDate.toISOString().slice(0, 19)}', '${creatInfo.relationship}', '${
       creatInfo.mood
     }', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)

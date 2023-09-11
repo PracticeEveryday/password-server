@@ -21,7 +21,7 @@ export class ServerInfoRepository {
   }
 
   public async update(serverInfo: ServerStatusEnum, id: number) {
-    const query = `UPDATE password.server_info SET server_status = '${serverInfo}', updatedAt = CURRENT_TIMESTAMP WHERE id = ${id}`;
+    const query = `UPDATE password.server_info SET server_status = '${serverInfo}', updated_at = CURRENT_TIMESTAMP WHERE id = ${id}`;
     const updatedQueryResult = await this.mysqlService.executeSingleQuery(query);
 
     return updatedQueryResult;

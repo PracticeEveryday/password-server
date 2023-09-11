@@ -26,7 +26,7 @@ export class PreQualificationRepository {
 
   public async create(question: string, answer: string) {
     const query = `
-        INSERT INTO password.pre_qualification  (question, answer, createdAt, updatedAt, deletedAt)
+        INSERT INTO password.pre_qualification  (question, answer, created_at, updated_at, deleted_at)
         VALUES('${question}', '${answer}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null);
       `;
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);

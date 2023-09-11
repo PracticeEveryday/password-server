@@ -6,13 +6,13 @@ import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDo
 import { UpdatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/updatePassword.req.dto';
 import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordService } from '@apps/server/modules/password/password.service';
-import { passwordProviders } from '@apps/server/modules/password/provider/password.provider';
 import { CreateResDto } from '@commons/dto/basicApiDto/createResult.res.dto';
 import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
 import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
 import { EnvModule } from '@libs/env/env.module';
 import { LogModule } from '@libs/log/log.module';
 import { MysqlModule } from '@libs/mysql/mysql.module';
+import { passwordProviders } from '@libs/mysql/provider/password.provider';
 
 const getDomainResDto = new GetDomainResDto('test1');
 

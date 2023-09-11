@@ -9,7 +9,7 @@ import { PasswordRepositoryInterface } from '@apps/server/modules/password/inter
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
 import { MysqlService } from '@libs/mysql/mysql.service';
 @Injectable()
-export class PasswordRepository implements PasswordRepositoryInterface {
+export class PasswordSqlRepository implements PasswordRepositoryInterface<ResultSetHeader> {
   private ROW_IDX = 0 as const;
 
   private FILED_IDX = 1 as const;
@@ -67,9 +67,11 @@ export class PasswordRepository implements PasswordRepositoryInterface {
    *
    * @param body CreatePassworeReqDto(domain, 해쉬된 password 정보가 들어 있습니다.)
    */
-  public async createOne(body: CreatePasswordReqDto): Promise<ResultSetHeader> {
-    const query = `INSERT INTO password.password (domain, password, createdAt, updatedAt, deletedAt) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
+  public async createOne(body: CreatePasswordReqDto) {
+    const query = `INSERT INTO password.password (domain, password, created_at, updated_at, deleted_at) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
+    console.log(body);
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
+    console.log(createQueryResult);
 
     return createQueryResult[this.ROW_IDX];
   }

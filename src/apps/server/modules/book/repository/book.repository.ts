@@ -20,7 +20,7 @@ export class BookRepository implements BookRepositoryInterface {
   constructor(@Inject(MysqlService) private readonly mysqlService: MysqlService) {}
 
   public async createOne(createBookReqDto: BookDtos.CreateBookReqDto): Promise<ResultSetHeader> {
-    const query = `INSERT INTO password.book (title, price, book_report, start_date, end_date, createdAt, updatedAt, deletedAt) VALUES ('${createBookReqDto.title}', ${createBookReqDto.price}, null, CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
+    const query = `INSERT INTO password.book (title, price, book_report, start_date, end_date, created_at, updated_at, deleted_at) VALUES ('${createBookReqDto.title}', ${createBookReqDto.price}, null, CURRENT_TIMESTAMP, null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null )`;
 
     const createQueryResult = await createBookReqDto.connectionPool.execute<ResultSetHeader>(query);
 
