@@ -11,7 +11,7 @@ export class AlcoholService {
 
   public async create(createAlcoholDto: CreateAlcoholDto) {
     const result = await this.alcoholRepository.create(createAlcoholDto);
-    console.log(result);
+
     return result;
   }
 

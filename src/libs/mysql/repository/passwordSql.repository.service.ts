@@ -69,9 +69,8 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    */
   public async createOne(body: CreatePasswordReqDto) {
     const query = `INSERT INTO password.password (domain, password, created_at, updated_at, deleted_at) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
-    console.log(body);
+
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
-    console.log(createQueryResult);
 
     return createQueryResult[this.ROW_IDX];
   }
