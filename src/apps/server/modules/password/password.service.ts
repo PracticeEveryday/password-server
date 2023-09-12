@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ResultSetHeader } from 'mysql2';
 
 import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
 import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDomain.res.dto';
 import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
-import { BadRequestException, ConflictException, NotFoundException } from '@commons/customExceptions/exception';
+import { ConflictException } from '@commons/customExceptions/exception';
 import { UpdatedResDto, DeletedResDto } from '@commons/dto/basicApiDto';
 import { CreateResDto } from '@commons/dto/basicApiDto/createResult.res.dto';
 import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
@@ -26,7 +25,7 @@ export class PasswordService {
     private readonly envService: EnvService,
     private readonly passwordServiceHelper: PasswordServiceHelper,
 
-    @Inject(InjectionToken.PASSWORD_SQL_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface<ResultSetHeader>,
+    @Inject(InjectionToken.PASSWORD_SQL_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface,
   ) {
     this.PASSWORD_KEY = envService.get(EnvEnum.PASSWORD_KEY);
   }
@@ -71,11 +70,7 @@ export class PasswordService {
     }
 
     body.password = PasswordUtil.hashPassword(body.password, this.PASSWORD_KEY);
-    const createResult = await this.passwordRepository.createOne(body);
-
-    if (createResult.affectedRows !== 1) {
-      throw new BadRequestException({ errorResponse: ErrorResponse.AUTH.ALREADY_EXIST_USER });
-    }
+    await this.passwordRepository.createOne(body);
 
     return new CreateResDto(true);
   }
@@ -92,11 +87,8 @@ export class PasswordService {
     const updatedInfo = body.compareValue(password);
     updatedInfo.password = PasswordUtil.hashPassword(updatedInfo.password, this.PASSWORD_KEY);
 
-    const updatedResult = await this.passwordRepository.updateOne(updatedInfo);
-
-    if (updatedResult.affectedRows !== 1) {
-      throw new NotFoundException({ errorResponse: ErrorResponse.AUTH.NOT_FOUND_USER });
-    }
+    // 유효성 검사를 하한 뒤에 무조건 존재하기에 수정
+    await this.passwordRepository.updateOne(updatedInfo);
 
     return new UpdatedResDto(true);
   }
@@ -108,11 +100,9 @@ export class PasswordService {
    */
   public async removeOne(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
     const password = await this.passwordServiceHelper.getPasswordByDomain(param);
-    const deleteResult = await this.passwordRepository.removeOne(password);
 
-    if (deleteResult.affectedRows !== 1) {
-      throw new NotFoundException({ errorResponse: ErrorResponse.AUTH.NOT_FOUND_USER });
-    }
+    // 유효성 검사를 하한 뒤에 무조건 존재하기에 삭제한다
+    await this.passwordRepository.removeOne(password);
 
     return new DeletedResDto(true);
   }

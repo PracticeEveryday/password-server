@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ResultSetHeader } from 'mysql2';
 
 import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto';
@@ -11,9 +10,7 @@ import { ValidateUtil } from '@libs/util/validate.util';
 
 @Injectable()
 export class PasswordServiceHelper {
-  constructor(
-    @Inject(InjectionToken.PASSWORD_SQL_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface<ResultSetHeader>,
-  ) {}
+  constructor(@Inject(InjectionToken.PASSWORD_SQL_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface) {}
 
   public async getPasswordByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<PasswordDomain> {
     const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);

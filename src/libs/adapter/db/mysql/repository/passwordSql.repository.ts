@@ -12,7 +12,7 @@ import PasswordMapper from '@libs/adapter/db/mysql/mapper/password.mapper';
 import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 
 @Injectable()
-export class PasswordSqlRepository implements PasswordRepositoryInterface<ResultSetHeader> {
+export class PasswordSqlRepository implements PasswordRepositoryInterface {
   private ROW_IDX = 0 as const;
 
   private FILED_IDX = 1 as const;
@@ -24,11 +24,11 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    *
    * @param param PasswordInterface
    */
-  public async removeOne(param: PasswordDomain): Promise<ResultSetHeader> {
+  public async removeOne(param: PasswordDomain): Promise<number> {
     const query = `DELETE FROM password.password WHERE id = ${param.id}`;
     const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
-    return deleteQueryResult[this.ROW_IDX];
+    return deleteQueryResult[this.ROW_IDX].affectedRows;
   }
 
   /**
@@ -58,11 +58,11 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    *
    * @param password PasswordInterface
    */
-  public async updateOne(password: PasswordDomain): Promise<ResultSetHeader> {
+  public async updateOne(password: PasswordDomain): Promise<number> {
     const query = `UPDATE password.password SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
-    return selectQueryResult[this.ROW_IDX];
+    return selectQueryResult[this.ROW_IDX].affectedRows;
   }
 
   /**
@@ -70,12 +70,11 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    *
    * @param body CreatePassworeReqDto(domain, 해쉬된 password 정보가 들어 있습니다.)
    */
-  public async createOne(body: CreatePasswordReqDto) {
+  public async createOne(body: CreatePasswordReqDto): Promise<number> {
     const query = `INSERT INTO password.password (domain, password, created_at, updated_at, deleted_at) VALUES ('${body.domain}', '${body.password}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null)`;
-
     const createQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
-    return createQueryResult[this.ROW_IDX];
+    return createQueryResult[this.ROW_IDX].affectedRows;
   }
 
   /**
