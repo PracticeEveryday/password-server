@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 
+import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
 import { CreatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/createPassword.req.dto';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/getDomain.req.dto';
 import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.req.dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
+import PasswordMapper from '@libs/adapter/db/mysql/mapper/password.mapper';
 import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
+
 @Injectable()
 export class PasswordSqlRepository implements PasswordRepositoryInterface<ResultSetHeader> {
   private ROW_IDX = 0 as const;
@@ -21,7 +24,7 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    *
    * @param param PasswordInterface
    */
-  public async removeOne(param: PasswordInterface): Promise<ResultSetHeader> {
+  public async removeOne(param: PasswordDomain): Promise<ResultSetHeader> {
     const query = `DELETE FROM password.password WHERE id = ${param.id}`;
     const deleteQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
@@ -33,11 +36,11 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    *
    * @param queryDto GetPasswordsQueryReqDto
    */
-  public async findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordInterface[]> {
+  public async findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordDomain[]> {
     const query = `SELECT * FROM password.password ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
 
-    return selectQueryResult[this.ROW_IDX];
+    return PasswordMapper.toDomains(selectQueryResult[this.ROW_IDX]);
   }
 
   /**
@@ -47,8 +50,6 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
     const query = `SELECT COUNT(*) AS totalCount FROM password.password `;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<RowDataPacket[]>(query);
 
-    console.log(selectQueryResult[this.ROW_IDX][this.ROW_IDX]);
-
     return selectQueryResult[this.ROW_IDX][this.ROW_IDX].totalCount;
   }
 
@@ -57,7 +58,7 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    *
    * @param password PasswordInterface
    */
-  public async updateOne(password: PasswordInterface): Promise<ResultSetHeader> {
+  public async updateOne(password: PasswordDomain): Promise<ResultSetHeader> {
     const query = `UPDATE password.password SET password='${password.password}', domain='${password.domain}' WHERE id=${password.id}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<ResultSetHeader>(query);
 
@@ -82,11 +83,12 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    *
    * @param getDomainQueryReqDto 도메인 ex naver, google...
    */
-  public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordInterface> {
-    const query = `SELECT * FROM password.password WHERE domain='${getDomainQueryReqDto.domain}'`;
+  public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordDomain> {
+    const query = `SELECT id, domain, password, created_at AS createdAt, updated_at AS updatedAt, deleted_at AS deletedAt
+                                FROM password.password WHERE domain='${getDomainQueryReqDto.domain}'`;
     const queryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
 
-    return queryResult[this.ROW_IDX][this.ROW_IDX];
+    return PasswordMapper.toRequiredDomain(queryResult[this.ROW_IDX][this.ROW_IDX]);
   }
 
   /**
@@ -94,10 +96,10 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface<Result
    *
    * @param findOneByIdReqDto id 숫자
    */
-  public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordInterface> {
+  public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordDomain> {
     const query = `SELECT * FROM password.password WHERE id=${findOneByIdReqDto.id}`;
     const queryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
 
-    return queryResult[this.ROW_IDX][this.ROW_IDX];
+    return PasswordMapper.toRequiredDomain(queryResult[this.ROW_IDX][this.ROW_IDX]);
   }
 }

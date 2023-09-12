@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ResultSetHeader } from 'mysql2/index';
+import { ResultSetHeader } from 'mysql2';
 
+import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto';
-import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import ErrorResponse from '@commons/customExceptions/errorResponse';
 import { NotFoundException } from '@commons/customExceptions/exception';
@@ -15,8 +15,9 @@ export class PasswordServiceHelper {
     @Inject(InjectionToken.PASSWORD_SQL_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface<ResultSetHeader>,
   ) {}
 
-  public async getPasswordByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<PasswordInterface> {
+  public async getPasswordByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<PasswordDomain> {
     const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);
+
     const isEmpty = ValidateUtil.checkEmptyStrictly(password);
 
     if (isEmpty) throw new NotFoundException({ errorResponse: ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN });

@@ -3,11 +3,10 @@ import { Repository } from 'typeorm';
 
 import { CreatePasswordReqDto, GetDomainParamReqDto, GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
-import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
 import { PasswordEntity } from '@libs/adapter/db/typeorm/entity/password.entity';
 
-export class PasswordTypeOrmRepository implements PasswordRepositoryInterface<PasswordEntity> {
+export class PasswordTypeOrmRepository {
   constructor(
     @InjectRepository(PasswordEntity)
     private userRepository: Repository<PasswordEntity>,

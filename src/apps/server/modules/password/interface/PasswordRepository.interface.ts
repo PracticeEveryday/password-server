@@ -1,5 +1,5 @@
+import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
 import { CreatePasswordReqDto, GetDomainParamReqDto, GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto';
-import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
 
 export interface PasswordRepositoryInterface<T> {
@@ -7,15 +7,15 @@ export interface PasswordRepositoryInterface<T> {
   createOne(body: CreatePasswordReqDto): Promise<T>;
 
   //get
-  findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordInterface>;
-  findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordInterface>;
-  findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordInterface[]>;
+  findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordDomain>;
+  findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordDomain>;
+  findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordDomain[]>;
 
   //update
-  updateOne(password: PasswordInterface): Promise<T>;
+  updateOne(password: PasswordDomain): Promise<T>;
 
   // delete
-  removeOne(param: PasswordInterface): Promise<T>;
+  removeOne(param: PasswordDomain): Promise<T>;
 
   count(): Promise<number>;
 }

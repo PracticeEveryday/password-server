@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { IsOptionalString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
-import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
+import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
 
 export class UpdatePasswordReqDto {
   @IsOptionalString('domain', 0, 100)
@@ -12,7 +12,7 @@ export class UpdatePasswordReqDto {
   @ApiProperty({ example: '12345678a', description: '비밀번호 도메인 정보입니다.' })
   password: string;
 
-  public compareValue(password: PasswordInterface): PasswordInterface {
+  public compareValue(password: PasswordDomain): PasswordDomain {
     if (this.domain) password.domain = this.domain;
     if (this.password) password.password = this.password;
 

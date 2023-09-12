@@ -4,7 +4,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/validation/isCustomDate.decorator';
 import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
 import { IsNotEmptyString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
-import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
+import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
 import { PaginationResDto } from '@commons/dto/piginationDto/pagination.res.dto';
 
 export class PasswordResDto {
@@ -15,7 +15,7 @@ export class PasswordResDto {
   @Exclude() _updatedAt: Date;
   @Exclude() _deletedAt: Date | null;
 
-  constructor(password: PasswordInterface) {
+  constructor(password: PasswordDomain) {
     this._id = password.id;
     this._domain = password.domain;
     this._password = password.password;
