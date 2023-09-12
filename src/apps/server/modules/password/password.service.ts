@@ -65,7 +65,7 @@ export class PasswordService {
   public async createOne(body: Dtos.CreatePasswordReqDto) {
     const getDomainParamReqDto = Dtos.GetDomainParamReqDto.toDTO(body.domain);
     const isExist = await this.passwordServiceHelper.checkExistByDomain(getDomainParamReqDto);
-    console.log(isExist);
+
     if (isExist) {
       throw new ConflictException({ errorResponse: ErrorResponse.AUTH.ALREADY_EXIST_USER });
     }
