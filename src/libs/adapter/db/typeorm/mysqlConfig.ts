@@ -15,7 +15,7 @@ export class MysqlConfigProvider implements TypeOrmOptionsFactory {
   private readonly database: string;
 
   constructor(private envService: EnvService) {
-    this.port = 3306;
+    this.port = envService.get(EnvEnum.DATABASE_PORT);
     this.host = envService.get(EnvEnum.DATABASE_HOST);
     this.username = envService.get(EnvEnum.DATABASE_USER);
     this.password = envService.get(EnvEnum.DATABASE_PASSWORD);

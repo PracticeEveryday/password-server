@@ -14,6 +14,7 @@ export enum EnvEnum {
   DATABASE_USER,
   DATABASE_DB,
   DATABASE_PASSWORD,
+  DATABASE_PORT,
 
   //TEST_DB
   TEST_DB,

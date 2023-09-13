@@ -10,13 +10,7 @@ export type passwordOptionalProps = Partial<{
   readonly deletedAt: Date | null;
 }>;
 
-export type passwordProps = passwordRequiredProps & Required<passwordOptionalProps>;
-
-export interface PasswordInterface {
-  properties: () => passwordProps;
-}
-
-export class PasswordDomain implements PasswordInterface {
+export class PasswordDomain {
   private _id: number;
   private _domain: string;
   private _password: string;
