@@ -70,7 +70,11 @@ export class PasswordService {
     }
 
     body.password = PasswordUtil.hashPassword(body.password, this.PASSWORD_KEY);
-    await this.passwordRepository.createOne(body);
+    const affectedNum = await this.passwordRepository.createOne(body);
+
+    if (affectedNum !== 1) {
+      throw new ConflictException({ errorResponse: ErrorResponse.DATABASE.CREATE_ONE_FAIL });
+    }
 
     return new CreateResDto(true);
   }
@@ -87,8 +91,10 @@ export class PasswordService {
     const updatedInfo = body.compareValue(password);
     updatedInfo.password = PasswordUtil.hashPassword(updatedInfo.password, this.PASSWORD_KEY);
 
-    // 유효성 검사를 하한 뒤에 무조건 존재하기에 수정
-    await this.passwordRepository.updateOne(updatedInfo);
+    const affectedNum = await this.passwordRepository.updateOne(updatedInfo);
+    if (affectedNum !== 1) {
+      throw new ConflictException({ errorResponse: ErrorResponse.DATABASE.CREATE_ONE_FAIL });
+    }
 
     return new UpdatedResDto(true);
   }
@@ -101,9 +107,10 @@ export class PasswordService {
   public async removeOne(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
     const password = await this.passwordServiceHelper.findOneOrThrowByDomain(param);
 
-    // 유효성 검사를 하한 뒤에 무조건 존재하기에 삭제한다
-    await this.passwordRepository.removeOne(password);
-
+    const affectedNum = await this.passwordRepository.removeOne(password);
+    if (affectedNum !== 1) {
+      throw new ConflictException({ errorResponse: ErrorResponse.DATABASE.CREATE_ONE_FAIL });
+    }
     return new DeletedResDto(true);
   }
 }

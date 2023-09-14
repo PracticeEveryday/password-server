@@ -19,7 +19,7 @@ export class ValidateUtil {
     return val !== '' && val !== null && val !== undefined && typeof val === 'object' && Object.keys(val).length !== 0;
   }
 
-  public static checkOne(value: 1): boolean {
-    return value === 1;
+  public static checkEqualNum(examinee: number, num: number): boolean {
+    return examinee === num;
   }
 }

@@ -76,4 +76,24 @@ export default class ErrorResponse {
     STRING_LESS_THEN: ' 길이는 ###value### 보다 작아야 합니다.',
     STRING_GREATER_THEN: ' 길이는 ###value### 보다 커야 합니다.',
   };
+
+  public static readonly DATABASE = {
+    CREATE_ONE_FAIL: {
+      CODE: 'CREATE_ONE_FAIL',
+      ENG: 'Data creation failed. This may be a DB error',
+      KR: '데이터 생성에 실패하였습니다. DB 에러일 수 있습니다.',
+    },
+
+    UPDATE_ONE_FAIL: {
+      CODE: 'UPDATE_ONE_FAIL',
+      ENG: 'Data modification failed. This may be a DB error.',
+      KR: '데이터 수정에 실패하였습니다. DB 에러일 수 있습니다.',
+    },
+
+    DELETE_ONE_FAIL: {
+      CODE: 'DELETE_ONE_FAIL',
+      ENG: 'Data deletion failed. This may be a DB error.',
+      KR: '데이터 삭제에 실패하였습니다. DB 에러일 수 있습니다.',
+    },
+  };
 }
