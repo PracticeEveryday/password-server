@@ -1,4 +1,6 @@
 import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
+import ErrorResponse from '@commons/customExceptions/errorResponse';
+import { NotFoundException } from '@commons/customExceptions/exception';
 import { PasswordSqlInterface } from '@libs/adapter/db/mysql/interface/password.interface';
 
 export default class PasswordMapper {
@@ -13,6 +15,9 @@ export default class PasswordMapper {
   }
 
   public static toRequiredDomain(passwordSql: PasswordSqlInterface): PasswordDomain {
+    if (!passwordSql) {
+      throw new NotFoundException({ errorResponse: ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN });
+    }
     const passwordDomain = new PasswordDomain(passwordSql);
 
     return passwordDomain;

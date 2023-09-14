@@ -82,12 +82,25 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface {
    *
    * @param getDomainQueryReqDto 도메인 ex naver, google...
    */
-  public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordDomain> {
+  public async findOneOrThrowByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordDomain> {
     const query = `SELECT id, domain, password, created_at AS createdAt, updated_at AS updatedAt, deleted_at AS deletedAt
                                 FROM password.password WHERE domain='${getDomainQueryReqDto.domain}'`;
     const queryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
 
     return PasswordMapper.toRequiredDomain(queryResult[this.ROW_IDX][this.ROW_IDX]);
+  }
+
+  /**
+   * 도메인이 일치하는 것을 반환합니다.
+   *
+   * @param getDomainQueryReqDto 도메인 ex naver, google...
+   */
+  public async findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordDomain> {
+    const query = `SELECT id, domain, password, created_at AS createdAt, updated_at AS updatedAt, deleted_at AS deletedAt
+                                FROM password.password WHERE domain='${getDomainQueryReqDto.domain}'`;
+    const queryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
+
+    return PasswordMapper.toOptionalDomain(queryResult[this.ROW_IDX][this.ROW_IDX]);
   }
 
   /**

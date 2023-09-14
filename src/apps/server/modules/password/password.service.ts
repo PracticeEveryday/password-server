@@ -13,6 +13,7 @@ import { EnvService } from '@libs/env/env.service';
 import { EnvEnum } from '@libs/env/envEnum';
 import { LogService } from '@libs/log/log.service';
 import { PasswordUtil } from '@libs/util/password.util';
+import { ValidateUtil } from '@libs/util/validate.util';
 
 import * as Dtos from './dto';
 
@@ -36,7 +37,7 @@ export class PasswordService {
    * @param param GetDomainReqDto
    */
   public async getPasswordByDomain(param: Dtos.GetDomainParamReqDto): Promise<GetDomainResDto> {
-    const password = await this.passwordServiceHelper.findOneOrThrowByDomain(param);
+    const password = await this.passwordRepository.findOneOrThrowByDomain(param);
 
     return new GetDomainResDto(PasswordUtil.decodedPassword(password.password, this.PASSWORD_KEY));
   }
@@ -63,7 +64,9 @@ export class PasswordService {
    */
   public async createOne(body: Dtos.CreatePasswordReqDto) {
     const getDomainParamReqDto = Dtos.GetDomainParamReqDto.toDTO(body.domain);
-    const isExist = await this.passwordServiceHelper.checkExistByDomain(getDomainParamReqDto);
+    const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);
+
+    const isExist = ValidateUtil.checkExistStrictly(password);
 
     if (isExist) {
       throw new ConflictException({ errorResponse: ErrorResponse.AUTH.ALREADY_EXIST_USER });
@@ -86,7 +89,7 @@ export class PasswordService {
    */
   public async updateOne(body: Dtos.UpdatePasswordReqDto): Promise<UpdatedResDto> {
     const getDomainParamReqDto = Dtos.GetDomainParamReqDto.toDTO(body.domain);
-    const password = await this.passwordServiceHelper.findOneOrThrowByDomain(getDomainParamReqDto);
+    const password = await this.passwordRepository.findOneOrThrowByDomain(getDomainParamReqDto);
 
     const updatedInfo = body.compareValue(password);
     updatedInfo.password = PasswordUtil.hashPassword(updatedInfo.password, this.PASSWORD_KEY);
@@ -105,7 +108,7 @@ export class PasswordService {
    * @param param GetDomainParamReqDto
    */
   public async removeOne(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
-    const password = await this.passwordServiceHelper.findOneOrThrowByDomain(param);
+    const password = await this.passwordRepository.findOneOrThrowByDomain(param);
 
     const affectedNum = await this.passwordRepository.removeOne(password);
     if (affectedNum !== 1) {

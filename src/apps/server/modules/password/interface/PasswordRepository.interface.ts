@@ -8,7 +8,8 @@ export interface PasswordRepositoryInterface {
 
   //get
   findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<PasswordDomain>;
-  findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordDomain>;
+  findOneOrThrowByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordDomain>;
+  findOneByDomain(getDomainQueryReqDto: GetDomainParamReqDto): Promise<PasswordDomain | null>;
   findManyWithPagination(queryDto: GetPasswordsQueryReqDto): Promise<PasswordDomain[]>;
 
   //update
