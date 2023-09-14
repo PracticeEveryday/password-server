@@ -35,8 +35,8 @@ export class PasswordService {
    *
    * @param param GetDomainReqDto
    */
-  public async findOneByDomain(param: Dtos.GetDomainParamReqDto): Promise<GetDomainResDto> {
-    const password = await this.passwordServiceHelper.getPasswordByDomain(param);
+  public async getPasswordByDomain(param: Dtos.GetDomainParamReqDto): Promise<GetDomainResDto> {
+    const password = await this.passwordServiceHelper.findOneOrThrowByDomain(param);
 
     return new GetDomainResDto(PasswordUtil.decodedPassword(password.password, this.PASSWORD_KEY));
   }
@@ -82,7 +82,7 @@ export class PasswordService {
    */
   public async updateOne(body: Dtos.UpdatePasswordReqDto): Promise<UpdatedResDto> {
     const getDomainParamReqDto = Dtos.GetDomainParamReqDto.toDTO(body.domain);
-    const password = await this.passwordServiceHelper.getPasswordByDomain(getDomainParamReqDto);
+    const password = await this.passwordServiceHelper.findOneOrThrowByDomain(getDomainParamReqDto);
 
     const updatedInfo = body.compareValue(password);
     updatedInfo.password = PasswordUtil.hashPassword(updatedInfo.password, this.PASSWORD_KEY);
@@ -99,7 +99,7 @@ export class PasswordService {
    * @param param GetDomainParamReqDto
    */
   public async removeOne(param: Dtos.GetDomainParamReqDto): Promise<DeletedResDto> {
-    const password = await this.passwordServiceHelper.getPasswordByDomain(param);
+    const password = await this.passwordServiceHelper.findOneOrThrowByDomain(param);
 
     // 유효성 검사를 하한 뒤에 무조건 존재하기에 삭제한다
     await this.passwordRepository.removeOne(password);

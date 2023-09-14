@@ -12,7 +12,7 @@ import { ValidateUtil } from '@libs/util/validate.util';
 export class PasswordServiceHelper {
   constructor(@Inject(InjectionToken.PASSWORD_SQL_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface) {}
 
-  public async getPasswordByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<PasswordDomain> {
+  public async findOneOrThrowByDomain(getDomainParamReqDto: GetDomainParamReqDto): Promise<PasswordDomain> {
     const password = await this.passwordRepository.findOneByDomain(getDomainParamReqDto);
 
     const isEmpty = ValidateUtil.checkEmptyStrictly(password);

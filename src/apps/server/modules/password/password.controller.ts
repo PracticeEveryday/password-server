@@ -79,7 +79,7 @@ export class PasswordController {
     description: Docs.findOneByDomainDescriptionMd,
   })
   public async findOneByDomain(@Param() param: Dtos.GetDomainParamReqDto): Promise<ResponseDto<Dtos.GetDomainResDto>> {
-    const password = await this.passwordService.findOneByDomain(param);
+    const password = await this.passwordService.getPasswordByDomain(param);
 
     return await ResponseDto.OK_DATA_WITH_OPTIONAL_MESSAGE<Dtos.GetDomainResDto>(password);
   }

@@ -22,7 +22,7 @@ describe('PasswordService Test', () => {
 
   beforeEach(async () => {
     mockPasswordService = {
-      findOneByDomain: jest.fn().mockReturnValue(getDomainResDto),
+      getPasswordByDomain: jest.fn().mockReturnValue(getDomainResDto),
       createOne: jest.fn().mockImplementation(async (_body: CreatePasswordReqDto): Promise<CreateResDto> => {
         return new CreateResDto(true);
       }),
@@ -60,9 +60,9 @@ describe('PasswordService Test', () => {
 
   it('Domain에 따른 비밀번호 가져오기', async () => {
     const getDomainBodyReqDto = GetDomainParamReqDto.toDTO('test');
-    const password = await passwordService.findOneByDomain(getDomainBodyReqDto);
+    const password = await passwordService.getPasswordByDomain(getDomainBodyReqDto);
 
-    const mockResult = await mockPasswordService.findOneByDomain(getDomainBodyReqDto);
+    const mockResult = await mockPasswordService.getPasswordByDomain(getDomainBodyReqDto);
     // 있는 거는 같음.
     expect(mockResult).toStrictEqual(password);
   });
@@ -90,7 +90,7 @@ describe('PasswordService Test', () => {
     it('Domain의 비밀번호가 존재하지 않을 때', async () => {
       // 없으면 에러 던짐
       const notFoundDto = GetDomainParamReqDto.toDTO('없는거');
-      await expect(async () => await passwordService.findOneByDomain(notFoundDto)).rejects.toThrow();
+      await expect(async () => await passwordService.getPasswordByDomain(notFoundDto)).rejects.toThrow();
     });
 
     it('Domain의 비밀번호가 존재하지 않을 때', async () => {
