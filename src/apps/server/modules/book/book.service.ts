@@ -45,7 +45,7 @@ export class BookService {
   public async updateOne(body: BookDtos.UpdateBookReqDto, param: FindOneByIdReqDto): Promise<UpdatedResDto> {
     const selectResult = await this.bookRepository.findOneById(param);
     if (!selectResult) {
-      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID);
+      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID(param.id));
     }
 
     const book = SqlUtil.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
@@ -68,7 +68,7 @@ export class BookService {
   public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<BookDtos.FindOneByIdResDto> {
     const selectResult = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!selectResult) {
-      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID);
+      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID(findOneByIdReqDto.id));
     }
 
     const book = SqlUtil.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
@@ -81,9 +81,6 @@ export class BookService {
    */
   public async findManyByQueryWithPagination(searchBookReqDto: BookDtos.SearchBookReqDto): Promise<BookDtos.SearchBookPaginationDto> {
     const bookArr = await this.bookRepository.findManyByQueryWithPagination(searchBookReqDto);
-    if (bookArr.length === 0) {
-      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID);
-    }
 
     const { totalCount } = await this.bookRepository.count(searchBookReqDto);
     const pagination = toPagination(totalCount, searchBookReqDto.pageNo, searchBookReqDto.pageSize);
@@ -104,7 +101,7 @@ export class BookService {
     const findOneByIdReqDto = FindOneByIdReqDto.toDTO(deleteBookReqDto.id);
     const bookSql = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!bookSql) {
-      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID);
+      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID(deleteBookReqDto.id));
     }
 
     const deletedBookMetaResult = await this.bookMetaRepository.removeOne(deleteBookReqDto);

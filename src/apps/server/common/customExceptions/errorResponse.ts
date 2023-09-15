@@ -8,13 +8,6 @@ export default class ErrorResponse {
   };
 
   public static readonly AUTH = {
-    //400
-    ALREADY_EXIST_USER: {
-      CODE: 'ALREADY_EXIST_USER',
-      ENG: 'The user already exists.',
-      KR: '이미 유저가 존재합니다.',
-    },
-
     // 404
     NOT_FOUND_USER: {
       CODE: 'NOT_FOUND_USER',
@@ -24,46 +17,51 @@ export default class ErrorResponse {
   };
 
   public static readonly PASSWORD = {
-    // 400
-    PASSWORD_TYPE_ERROR: {
-      CODE: 'PASSWORD_TYPE_ERROR',
-      ENG: 'The password is the wrong type.',
-      KR: '비밀번호의 타입이 틀립니다.',
+    ALREADY_EXIST_PASSWORD: (value: string) => {
+      return {
+        CODE: 'ALREADY_EXIST_PASSWORD',
+        ENG: `The password of ${value} already exists.`,
+        KR: `이미 도메인 ${value}의 비밀번호가 존재합니다.`,
+      };
     },
 
+    NOT_FOUND_DOMAIN: (domain: string) => {
+      return {
+        CODE: 'NOT_FOUND_DOMAIN',
+        ENG: `No information was found for that ${domain}.`,
+        KR: `해당 ${domain}의 정보를 찾을 수 없습니다.`,
+      };
+    },
+  };
+
+  public static readonly TYPE = {
     // 404
-    NOT_FOUND_DOMAIN: {
-      CODE: 'NOT_FOUND_DOMAIN',
-      ENG: 'No information was found for that domain.',
-      KR: '해당 도메인의 정보를 찾을 수 없습니다.',
-    },
-    NOT_FOUND_PASSWORD: {
-      CODE: 'NOT_FOUND_PASSWORD',
-      ENG: 'The corresponding password information was not found.',
-      KR: '해당 비밀 번호 정보를 찾을 수 없습니다.',
-    },
-
-    //409
-    BOOK_ALREADY_EXIST: {
-      CODE: 'BOOK_ALREADY_EXIST',
-      ENG: 'The information for that password already exists.',
-      KR: '해당 비밀 번호의 정보가 이미 존재합니다.',
+    TYPE_ERROR_MUST_BE_OBJECT: <T>(data: T) => {
+      return {
+        CODE: 'TYPE_ERROR_MUST_BE_OBJECT',
+        ENG: `${data} is not object type.`,
+        KR: `${data}는 object 타입이 아닙니다.`,
+      };
     },
   };
 
   public static readonly BOOK = {
     //404
-    NOT_FOUND_BOOK_BY_ID: {
-      CODE: 'NOT_FOUND_BOOK_BY_ID',
-      ENG: 'No book information exists for that ID.',
-      KR: '해당 아이디의 책 정보가 존재하지 않습니다.',
+    NOT_FOUND_BOOK_BY_ID: (id: number) => {
+      return {
+        CODE: 'NOT_FOUND_BOOK_BY_ID',
+        ENG: `No book information exists for that ${id}.`,
+        KR: `해당 ${id}의 책 정보가 존재하지 않습니다.`,
+      };
     },
 
     //409
-    BOOK_ALREADY_EXIST: {
-      CODE: 'BOOK_ALREADY_EXIST',
-      ENG: 'Book information for that title already exists.',
-      KR: '해당 타이틀의 책 정보가 이미 존재합니다.',
+    BOOK_ALREADY_EXIST: (title: string) => {
+      return {
+        CODE: 'BOOK_ALREADY_EXIST',
+        ENG: `Book information for that title, ${title} already exists.`,
+        KR: `해당 ${title}의 책 정보가 이미 존재합니다.`,
+      };
     },
   };
 
@@ -86,18 +84,20 @@ export default class ErrorResponse {
       };
     },
 
-    UPDATE_ONE_FAIL: () => {
+    UPDATE_ONE_FAIL: (value: string) => {
       return {
         CODE: 'UPDATE_ONE_FAIL',
-        ENG: 'Data modification failed. This may be a DB error.',
-        KR: '데이터 수정에 실패하였습니다. DB 에러일 수 있습니다.',
+        ENG: `value: ${value} data modification failed. This may be a DB error.`,
+        KR: `값: ${value} 데이터 수정에 실패하였습니다. DB 에러일 수 있습니다.`,
       };
     },
 
-    DELETE_ONE_FAIL: {
-      CODE: 'DELETE_ONE_FAIL',
-      ENG: 'Data deletion failed. This may be a DB error.',
-      KR: '데이터 삭제에 실패하였습니다. DB 에러일 수 있습니다.',
+    DELETE_ONE_FAIL: (value: string) => {
+      return {
+        CODE: 'DELETE_ONE_FAIL',
+        ENG: `value: ${value} data deletion failed. This may be a DB error.`,
+        KR: `값: ${value} 데이터 삭제에 실패하였습니다. DB 에러일 수 있습니다.`,
+      };
     },
   };
 }

@@ -69,7 +69,7 @@ export class PasswordService {
     const isExist = ValidateUtil.checkExistStrictly(password);
 
     if (isExist) {
-      throw new ConflictException(ErrorResponse.AUTH.ALREADY_EXIST_USER);
+      throw new ConflictException(ErrorResponse.PASSWORD.ALREADY_EXIST_PASSWORD(body.domain));
     }
 
     body.password = PasswordUtil.hashPassword(body.password, this.PASSWORD_KEY);
@@ -96,7 +96,7 @@ export class PasswordService {
 
     const affectedNum = await this.passwordRepository.updateOne(updatedInfo);
     if (affectedNum !== 1) {
-      throw new ConflictException(ErrorResponse.DATABASE.UPDATE_ONE_FAIL);
+      throw new ConflictException(ErrorResponse.DATABASE.UPDATE_ONE_FAIL(body.domain));
     }
 
     return new UpdatedResDto(true);
@@ -112,7 +112,7 @@ export class PasswordService {
 
     const affectedNum = await this.passwordRepository.removeOne(password);
     if (affectedNum !== 1) {
-      throw new ConflictException(ErrorResponse.DATABASE.DELETE_ONE_FAIL);
+      throw new ConflictException(ErrorResponse.DATABASE.DELETE_ONE_FAIL(param.domain));
     }
     return new DeletedResDto(true);
   }
