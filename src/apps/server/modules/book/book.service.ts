@@ -29,7 +29,7 @@ export class BookService {
    */
   public async createOne(createBookReqDto: BookDtos.CreateBookReqDto): Promise<BookDtos.CreateBookResDto> {
     const book = await this.bookRepository.findOneByWhere({ title: createBookReqDto.title });
-    if (book) throw new ConflictException({ errorResponse: ErrorResponse.BOOK.BOOK_ALREADY_EXIST });
+    if (book) throw new ConflictException(ErrorResponse.BOOK.BOOK_ALREADY_EXIST);
 
     const createdBookResult = await this.bookRepository.createOne(createBookReqDto);
     createBookReqDto.setBookId = createdBookResult.insertId;
@@ -45,7 +45,7 @@ export class BookService {
   public async updateOne(body: BookDtos.UpdateBookReqDto, param: FindOneByIdReqDto): Promise<UpdatedResDto> {
     const selectResult = await this.bookRepository.findOneById(param);
     if (!selectResult) {
-      throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID);
     }
 
     const book = SqlUtil.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
@@ -68,7 +68,7 @@ export class BookService {
   public async findOneById(findOneByIdReqDto: FindOneByIdReqDto): Promise<BookDtos.FindOneByIdResDto> {
     const selectResult = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!selectResult) {
-      throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID);
     }
 
     const book = SqlUtil.checkTypeAndConvertObj<BookSqlInterface, BookInterface>(selectResult, ['bookMeta'], 'title');
@@ -82,7 +82,7 @@ export class BookService {
   public async findManyByQueryWithPagination(searchBookReqDto: BookDtos.SearchBookReqDto): Promise<BookDtos.SearchBookPaginationDto> {
     const bookArr = await this.bookRepository.findManyByQueryWithPagination(searchBookReqDto);
     if (bookArr.length === 0) {
-      throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID);
     }
 
     const { totalCount } = await this.bookRepository.count(searchBookReqDto);
@@ -104,7 +104,7 @@ export class BookService {
     const findOneByIdReqDto = FindOneByIdReqDto.toDTO(deleteBookReqDto.id);
     const bookSql = await this.bookRepository.findOneById(findOneByIdReqDto);
     if (!bookSql) {
-      throw new NotFoundException({ errorResponse: ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID });
+      throw new NotFoundException(ErrorResponse.BOOK.NOT_FOUND_BOOK_BY_ID);
     }
 
     const deletedBookMetaResult = await this.bookMetaRepository.removeOne(deleteBookReqDto);

@@ -78,16 +78,20 @@ export default class ErrorResponse {
   };
 
   public static readonly DATABASE = {
-    CREATE_ONE_FAIL: {
-      CODE: 'CREATE_ONE_FAIL',
-      ENG: 'Data creation failed. This may be a DB error',
-      KR: '데이터 생성에 실패하였습니다. DB 에러일 수 있습니다.',
+    CREATE_ONE_FAIL: (value: string) => {
+      return {
+        CODE: 'CREATE_ONE_FAIL',
+        ENG: `value: ${value} data creation failed. This may be a DB error`,
+        KR: `값: ${value} 데이터 생성에 실패하였습니다. DB 에러일 수 있습니다.`,
+      };
     },
 
-    UPDATE_ONE_FAIL: {
-      CODE: 'UPDATE_ONE_FAIL',
-      ENG: 'Data modification failed. This may be a DB error.',
-      KR: '데이터 수정에 실패하였습니다. DB 에러일 수 있습니다.',
+    UPDATE_ONE_FAIL: () => {
+      return {
+        CODE: 'UPDATE_ONE_FAIL',
+        ENG: 'Data modification failed. This may be a DB error.',
+        KR: '데이터 수정에 실패하였습니다. DB 에러일 수 있습니다.',
+      };
     },
 
     DELETE_ONE_FAIL: {

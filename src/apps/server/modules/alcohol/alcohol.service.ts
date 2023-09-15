@@ -2,17 +2,17 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { CreateAlcoholDto } from '@apps/server/modules/alcohol/dto/createAlcohol.dto';
 import { UpdateAlcoholDto } from '@apps/server/modules/alcohol/dto/updateAlcohol.dto';
-import { AlcoholRepositoryInterface } from '@apps/server/modules/alcohol/interface/alcohol.interface';
+import { AlcoholRepositoryInterface } from '@apps/server/modules/alcohol/interface/alcoholRepository.interface';
 import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
 
 @Injectable()
 export class AlcoholService {
   constructor(@Inject(InjectionToken.ALCOHOL_REPOSITORY) private readonly alcoholRepository: AlcoholRepositoryInterface) {}
 
-  public async create(createAlcoholDto: CreateAlcoholDto) {
-    const result = await this.alcoholRepository.create(createAlcoholDto);
-
-    return result;
+  public async create(_createAlcoholDto: CreateAlcoholDto) {
+    // const result = await this.alcoholRepository.create(createAlcoholDto);
+    //
+    // return result;
   }
 
   findAll() {

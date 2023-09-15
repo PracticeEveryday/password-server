@@ -16,7 +16,7 @@ export class ResponseDto<T> {
 
   static async OK_DATA_WITH_OPTIONAL_MESSAGE<T>(data: T, message?: string): Promise<ResponseDto<T>> {
     if (typeof data !== 'object') {
-      throw new BadRequestException({ errorResponse: ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR });
+      throw new BadRequestException(ErrorResponse.PASSWORD.PASSWORD_TYPE_ERROR);
     }
 
     const errors = await validate(data);

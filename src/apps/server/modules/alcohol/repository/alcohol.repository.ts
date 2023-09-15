@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ResultSetHeader } from 'mysql2';
 
-import { AlcoholRepositoryInterface } from '@apps/server/modules/alcohol/interface/alcohol.interface';
+import { AlcoholRepositoryInterface } from '@apps/server/modules/alcohol/interface/alcoholRepository.interface';
 import { AlcoholDto } from '@commons/dto/moduleDto/alcohol.dto';
 import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 

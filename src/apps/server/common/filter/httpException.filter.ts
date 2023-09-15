@@ -37,10 +37,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
         });
       }
 
-      throw new UnknownException({
-        errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
-        raw: error,
-      });
+      throw new UnknownException(ErrorResponse.COMMON.INTERNAL_SERVER_ERROR, error);
     })();
 
     if (exception.errorType === ErrorTypeEnum.WARN) {
