@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from '@apps/server/app.module';
-import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
+import { ServerStatusEnum } from '@commons/variable/enum/serverStatus.enum';
 import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 import { PreQualificationRepository } from '@libs/adapter/db/mysql/repository/preQualification.repository';
 import { ServerInfoRepository } from '@libs/adapter/db/mysql/repository/serverInfo.repository';

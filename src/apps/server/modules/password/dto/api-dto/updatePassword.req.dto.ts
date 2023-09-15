@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsOptionalString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
+import { IsOptionalString } from '@commons/framework/decorator/validation/isCustomString.decorator';
 
 export class UpdatePasswordReqDto {
   @IsOptionalString('domain', 0, 100)

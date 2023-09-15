@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
 import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDomain.res.dto';
 import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
-import { ConflictException } from '@commons/customExceptions/exception';
-import { UpdatedResDto, DeletedResDto } from '@commons/dto/basicApiDto';
-import { CreateResDto } from '@commons/dto/basicApiDto/createResult.res.dto';
+import ErrorResponse from '@commons/exception/errorResponse';
+import { ConflictException } from '@commons/exception/exception';
+import { UpdatedResDto, DeletedResDto } from '@commons/type/dto/basicApiDto';
+import { CreateResDto } from '@commons/type/dto/basicApiDto/createResult.res.dto';
 import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
 import { EnvService } from '@libs/env/env.service';
 import { EnvEnum } from '@libs/env/envEnum';

@@ -6,9 +6,9 @@ import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDo
 import { UpdatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/updatePassword.req.dto';
 import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordService } from '@apps/server/modules/password/password.service';
-import { CreateResDto } from '@commons/dto/basicApiDto/createResult.res.dto';
-import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
-import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
+import { CreateResDto } from '@commons/type/dto/basicApiDto/createResult.res.dto';
+import { DeletedResDto } from '@commons/type/dto/basicApiDto/deleteResult.res.dto';
+import { UpdatedResDto } from '@commons/type/dto/basicApiDto/updateResult.res.dto';
 import { MysqlModule } from '@libs/adapter/db/mysql/mysql.module';
 import { passwordProviders } from '@libs/adapter/db/mysql/provider/password.provider';
 import { EnvModule } from '@libs/env/env.module';

@@ -7,9 +7,9 @@ import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBo
 import { FindOneByIdResDto } from '@apps/server/modules/book/dto/api-dto/findOneById.res.dto';
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
 import { bookProviders } from '@apps/server/modules/book/provider/book.provider';
-import { DeletedResDto } from '@commons/dto/basicApiDto/deleteResult.res.dto';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
-import { UpdatedResDto } from '@commons/dto/basicApiDto/updateResult.res.dto';
+import { DeletedResDto } from '@commons/type/dto/basicApiDto/deleteResult.res.dto';
+import { FindOneByIdReqDto } from '@commons/type/dto/basicApiDto/findOneById.req.dto';
+import { UpdatedResDto } from '@commons/type/dto/basicApiDto/updateResult.res.dto';
 import { MysqlModule } from '@libs/adapter/db/mysql/mysql.module';
 import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 

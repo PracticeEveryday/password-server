@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 
 import { CreatePasswordReqDto, GetDomainParamReqDto, GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
+import { FindOneByIdReqDto } from '@commons/type/dto/basicApiDto';
 import { PasswordEntity } from '@libs/adapter/db/typeorm/entity/password.entity';
 
 export class PasswordTypeOrmRepository {

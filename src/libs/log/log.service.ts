@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER, WinstonLogger } from 'nest-winston';
 
-import { ErrorLogDto } from '@commons/dto/basicApiDto/errorLog.dto';
-import { WarnLogDto } from '@commons/dto/basicApiDto/warnLog.dto';
+import { ErrorLogDto } from '@commons/type/dto/basicApiDto/errorLog.dto';
+import { WarnLogDto } from '@commons/type/dto/basicApiDto/warnLog.dto';
 
 @Injectable()
 export class LogService {

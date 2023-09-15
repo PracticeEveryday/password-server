@@ -6,7 +6,7 @@ import { SearchBookReqDto } from '@apps/server/modules/book/dto/api-dto/searchBo
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
 import * as Book from '@apps/server/modules/book/interface/book.interface';
 import { BookInterface } from '@apps/server/modules/book/interface/book.interface';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { FindOneByIdReqDto } from '@commons/type/dto/basicApiDto/findOneById.req.dto';
 import { BookSqlInterface } from '@libs/adapter/db/mysql/interface/book.interface';
 
 export interface BookRepositoryInterface {

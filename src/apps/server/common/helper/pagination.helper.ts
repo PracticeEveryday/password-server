@@ -1,4 +1,4 @@
-import { PaginationResDto } from '@commons/dto/piginationDto/pagination.res.dto';
+import { PaginationResDto } from '@commons/type/dto/piginationDto/pagination.res.dto';
 
 interface PaginationOptions {
   default: number;

@@ -1,6 +1,6 @@
 import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
-import ErrorResponse from '@commons/customExceptions/errorResponse';
-import { NotFoundException } from '@commons/customExceptions/exception';
+import ErrorResponse from '@commons/exception/errorResponse';
+import { NotFoundException } from '@commons/exception/exception';
 import { PasswordSqlInterface } from '@libs/adapter/db/mysql/interface/password.interface';
 
 export default class PasswordMapper {

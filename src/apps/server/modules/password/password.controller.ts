@@ -1,12 +1,12 @@
 import { Body, HttpStatus, Param, Query, UseInterceptors } from '@nestjs/common';
 
-import { Route } from '@apps/server/common/decorator/router.decorator';
-import { Method } from '@apps/server/common/enum/method.enum';
-import { TryCatchInterceptor } from '@apps/server/common/interceptor/tryCatch.interceptor';
 import { PasswordService } from '@apps/server/modules/password/password.service';
-import { RouteTable } from '@commons/decorator/routerTable.decorator';
-import { ResponseDto, UpdatedResDto, DeletedResDto } from '@commons/dto/basicApiDto';
-import { CreateResDto } from '@commons/dto/basicApiDto/createResult.res.dto';
+import { Route } from '@commons/framework/decorator/router.decorator';
+import { RouteTable } from '@commons/framework/decorator/routerTable.decorator';
+import { TryCatchInterceptor } from '@commons/framework/interceptor/tryCatch.interceptor';
+import { ResponseDto, UpdatedResDto, DeletedResDto } from '@commons/type/dto/basicApiDto';
+import { CreateResDto } from '@commons/type/dto/basicApiDto/createResult.res.dto';
+import { Method } from '@commons/variable/enum/method.enum';
 import { PasswordUtil } from '@libs/util/password.util';
 
 import * as Docs from './docs/password.docs';

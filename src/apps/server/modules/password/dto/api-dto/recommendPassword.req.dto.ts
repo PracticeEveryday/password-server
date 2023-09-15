@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
+import { IsNotEmptyNumber } from '@commons/framework/decorator/validation/isCustomNumber.decorator';
 
 export class GetRecommendPasswordQueryReqDto {
   @IsNotEmptyNumber('passwordLength', 0, 30)

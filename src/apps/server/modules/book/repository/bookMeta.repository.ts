@@ -5,7 +5,7 @@ import { CreateBookReqDto } from '@apps/server/modules/book/dto/api-dto/createBo
 import { DeleteBookReqDto } from '@apps/server/modules/book/dto/api-dto/deleteBook.req.dto';
 import { UpdateBookReqDto } from '@apps/server/modules/book/dto/api-dto/updateBook.req.dto';
 import { BookMetaRepositoryInterface } from '@apps/server/modules/book/interface/bookMetaRepository';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { FindOneByIdReqDto } from '@commons/type/dto/basicApiDto/findOneById.req.dto';
 import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 
 export class BookMetaRepository implements BookMetaRepositoryInterface {

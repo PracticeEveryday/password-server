@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
-import { ConflictException } from '@apps/server/common/customExceptions/exception/conflict.exception';
-import { NotFoundException } from '@apps/server/common/customExceptions/exception/notFound.exception';
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
-import { UpdatedResDto, DeletedResDto, FindOneByIdReqDto } from '@commons/dto/basicApiDto';
+import ErrorResponse from '@commons/exception/errorResponse';
+import { ConflictException } from '@commons/exception/exception/conflict.exception';
+import { NotFoundException } from '@commons/exception/exception/notFound.exception';
+import { UpdatedResDto, DeletedResDto, FindOneByIdReqDto } from '@commons/type/dto/basicApiDto';
 import { BookSqlInterface } from '@libs/adapter/db/mysql/interface/book.interface';
 import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';

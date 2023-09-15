@@ -1,7 +1,7 @@
 import { PickType } from '@nestjs/swagger';
 import { PoolConnection } from 'mysql2/promise';
 
-import { BookDto } from '@commons/dto/moduleDto/book.dto';
+import { BookDto } from '@commons/type/dto/moduleDto/book.dto';
 
 export class DeleteBookReqDto extends PickType(BookDto, ['id']) {
   // 로직을 진행하다가 추가되는 프로퍼티들

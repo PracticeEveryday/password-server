@@ -1,15 +1,15 @@
 import { Body, HttpStatus, Param, Query, UseInterceptors } from '@nestjs/common';
 import { PoolConnection } from 'mysql2/promise';
 
-import { TransactionManager } from '@apps/server/common/decorator/connectionPool.decorator';
-import { Route } from '@apps/server/common/decorator/router.decorator';
-import { RouteTable } from '@apps/server/common/decorator/routerTable.decorator';
-import { Method } from '@apps/server/common/enum/method.enum';
-import { TransactionInterceptor } from '@apps/server/common/interceptor/transaction.interceptor';
-import { TryCatchInterceptor } from '@apps/server/common/interceptor/tryCatch.interceptor';
 import { BookService } from '@apps/server/modules/book/book.service';
 import { SearchBookPaginationDto } from '@apps/server/modules/book/dto/api-dto/searchBook.res.dto';
-import { ResponseDto, UpdatedResDto, DeletedResDto, FindOneByIdReqDto } from '@commons/dto/basicApiDto';
+import { TransactionManager } from '@commons/framework/decorator/connectionPool.decorator';
+import { Route } from '@commons/framework/decorator/router.decorator';
+import { RouteTable } from '@commons/framework/decorator/routerTable.decorator';
+import { TransactionInterceptor } from '@commons/framework/interceptor/transaction.interceptor';
+import { TryCatchInterceptor } from '@commons/framework/interceptor/tryCatch.interceptor';
+import { ResponseDto, UpdatedResDto, DeletedResDto, FindOneByIdReqDto } from '@commons/type/dto/basicApiDto';
+import { Method } from '@commons/variable/enum/method.enum';
 
 import * as BookDocs from './docs/book.docs';
 import * as BookDtos from './dto';

@@ -1,6 +1,6 @@
 import { PasswordDomain } from '@apps/server/modules/password/domain/password.domain';
 import { CreatePasswordReqDto, GetDomainParamReqDto, GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto/findOneById.req.dto';
+import { FindOneByIdReqDto } from '@commons/type/dto/basicApiDto/findOneById.req.dto';
 
 export interface PasswordRepositoryInterface {
   //create

@@ -7,7 +7,7 @@ import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/
 import { GetPasswordsQueryReqDto } from '@apps/server/modules/password/dto/api-dto/getPasswords.req.dto';
 import { PasswordInterface } from '@apps/server/modules/password/interface/password.interface';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
-import { FindOneByIdReqDto } from '@commons/dto/basicApiDto';
+import { FindOneByIdReqDto } from '@commons/type/dto/basicApiDto';
 import PasswordMapper from '@libs/adapter/db/mysql/mapper/password.mapper';
 import { MysqlService } from '@libs/adapter/db/mysql/mysql.service';
 

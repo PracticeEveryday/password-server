@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ErrorLogDto, WarnLogDto } from '@commons/dto/basicApiDto';
+import { ErrorLogDto, WarnLogDto } from '@commons/type/dto/basicApiDto';
 import { ApiService } from '@libs/api/api.service';
 import { AxiosReqDto } from '@libs/api/dto/axios.req.dto';
 import { EnvService } from '@libs/env/env.service';

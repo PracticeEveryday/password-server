@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
-import { IsNotEmptyDate, IsOptionalDate } from '@apps/server/common/decorator/validation/isCustomDate.decorator';
-import { IsNotEmptyNumber } from '@apps/server/common/decorator/validation/isCustomNumber.decorator';
-import { IsNotEmptyString, IsOptionalString } from '@apps/server/common/decorator/validation/isCustomString.decorator';
 import { BookInterface, BookMetaInterface } from '@apps/server/modules/book/interface/book.interface';
+import { IsNotEmptyDate, IsOptionalDate } from '@commons/framework/decorator/validation/isCustomDate.decorator';
+import { IsNotEmptyNumber } from '@commons/framework/decorator/validation/isCustomNumber.decorator';
+import { IsNotEmptyString, IsOptionalString } from '@commons/framework/decorator/validation/isCustomString.decorator';
 import { BookSqlInterface } from '@libs/adapter/db/mysql/interface/book.interface';
 
 export class BookMetaResDto {

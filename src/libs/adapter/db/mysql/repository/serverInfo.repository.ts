@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2';
 
-import { ServerStatusEnum } from '@commons/enum/serverStatus.enum';
+import { ServerStatusEnum } from '@commons/variable/enum/serverStatus.enum';
 
 import { MysqlService } from '../mysql.service';
 

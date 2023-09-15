@@ -3,9 +3,9 @@ import * as readline from 'readline';
 
 import { Inject, Injectable } from '@nestjs/common';
 
-import ErrorResponse from '@apps/server/common/customExceptions/errorResponse';
-import { UnknownException } from '@apps/server/common/customExceptions/exception/unknown.exception';
-import { ServerStatusEnum } from '@apps/server/common/enum/serverStatus.enum';
+import ErrorResponse from '@commons/exception/errorResponse';
+import { UnknownException } from '@commons/exception/exception/unknown.exception';
+import { ServerStatusEnum } from '@commons/variable/enum/serverStatus.enum';
 import { InjectionToken } from '@libs/adapter/db/mysql/repository/injectionToken';
 import { PreQualificationRepository } from '@libs/adapter/db/mysql/repository/preQualification.repository';
 import { ServerInfoRepository } from '@libs/adapter/db/mysql/repository/serverInfo.repository';
