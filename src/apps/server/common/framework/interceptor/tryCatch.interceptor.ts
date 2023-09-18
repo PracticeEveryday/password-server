@@ -11,6 +11,7 @@ export class TryCatchInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     return next.handle().pipe(
       catchError((error) => {
+        console.log(error);
         if (error instanceof BaseException) {
           throw error;
         }

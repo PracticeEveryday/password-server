@@ -1,8 +1,9 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, NotFoundException } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 
 import ErrorResponse from '@commons/exception/errorResponse';
 import { BaseException } from '@commons/exception/exception/base.exception';
+import { NotFoundException as CustomNotFoundException } from '@commons/exception/exception/notFound.exception';
 import { UnknownException } from '@commons/exception/exception/unknown.exception';
 import { ErrorLogDto } from '@commons/type/dto/basicApiDto/errorLog.dto';
 import { WarnLogDto } from '@commons/type/dto/basicApiDto/warnLog.dto';
@@ -22,8 +23,12 @@ export class CustomExceptionFilter implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
-
+    console.log(error);
     const exception = (() => {
+      if (error instanceof NotFoundException) {
+        return new CustomNotFoundException(ErrorResponse.COMMON.NOT_FOUND_URL, error.stack);
+      }
+
       if (error instanceof BaseException) {
         return error;
       }

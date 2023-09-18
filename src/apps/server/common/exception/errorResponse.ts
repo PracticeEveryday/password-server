@@ -1,5 +1,11 @@
 export default class ErrorResponse {
   public static readonly COMMON = {
+    NOT_FOUND_URL: {
+      CODE: 'NOT_FOUND_URL',
+      ENG: 'The path endpoint does not exist.',
+      KR: '존재하지 않는 경로입니다.',
+    },
+
     INTERNAL_SERVER_ERROR: {
       CODE: 'INTERNAL_SERVER_ERROR',
       ENG: 'This is a server error.',
