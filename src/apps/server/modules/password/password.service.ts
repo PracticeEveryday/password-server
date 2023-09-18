@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { toPagination } from '@apps/server/common/helper/pagination.helper';
 import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDomain.res.dto';
-import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordRepositoryInterface } from '@apps/server/modules/password/interface/PasswordRepository.interface';
 import ErrorResponse from '@commons/exception/errorResponse';
 import { ConflictException } from '@commons/exception/exception';
@@ -24,7 +23,6 @@ export class PasswordService {
   constructor(
     private readonly logService: LogService,
     private readonly envService: EnvService,
-    private readonly passwordServiceHelper: PasswordServiceHelper,
 
     @Inject(InjectionToken.PASSWORD_SQL_REPOSITORY) private readonly passwordRepository: PasswordRepositoryInterface,
   ) {

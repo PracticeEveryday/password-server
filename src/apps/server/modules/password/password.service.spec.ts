@@ -4,7 +4,6 @@ import { CreatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/
 import { GetDomainParamReqDto } from '@apps/server/modules/password/dto/api-dto/getDomain.req.dto';
 import { GetDomainResDto } from '@apps/server/modules/password/dto/api-dto/getDomain.res.dto';
 import { UpdatePasswordReqDto } from '@apps/server/modules/password/dto/api-dto/updatePassword.req.dto';
-import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordService } from '@apps/server/modules/password/password.service';
 import { CreateResDto } from '@commons/type/dto/basicApiDto/createResult.res.dto';
 import { DeletedResDto } from '@commons/type/dto/basicApiDto/deleteResult.res.dto';
@@ -36,7 +35,7 @@ describe('PasswordService Test', () => {
       // 의존성 주입하 Module 넣기
       imports: [LogModule, EnvModule, MysqlModule],
       // 테스트할 모듈 넣기
-      providers: [PasswordService, PasswordServiceHelper, ...passwordProviders],
+      providers: [PasswordService, ...passwordProviders],
     }).compile();
 
     passwordService = module.get<PasswordService>(PasswordService);

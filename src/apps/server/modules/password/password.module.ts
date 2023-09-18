@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { PasswordServiceHelper } from '@apps/server/modules/password/helper/passwordService.helper';
 import { PasswordController } from '@apps/server/modules/password/password.controller';
 import { PasswordService } from '@apps/server/modules/password/password.service';
 import { MysqlModule } from '@libs/adapter/db/mysql/mysql.module';
@@ -11,6 +10,6 @@ const databaseModule = MysqlModule;
 @Module({
   controllers: [PasswordController],
   imports: [LogModule.forRoot(), databaseModule],
-  providers: [PasswordService, PasswordServiceHelper, ...passwordProviders],
+  providers: [PasswordService, ...passwordProviders],
 })
 export class PasswordModule {}
