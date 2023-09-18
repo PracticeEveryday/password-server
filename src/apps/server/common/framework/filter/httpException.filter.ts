@@ -30,14 +30,15 @@ export class CustomExceptionFilter implements ExceptionFilter {
 
       if (error instanceof HttpException) {
         return new BaseException({
+          message: error.message,
           statusCode: error.getStatus(),
           errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
-          errorType: ErrorTypeEnum.WARN,
-          raw: error,
+          errorType: ErrorTypeEnum.ERROR,
+          raw: error.stack,
         });
       }
 
-      throw new UnknownException(ErrorResponse.COMMON.INTERNAL_SERVER_ERROR, error);
+      throw new UnknownException(ErrorResponse.COMMON.INTERNAL_SERVER_ERROR, error.stack, error.message);
     })();
 
     if (exception.errorType === ErrorTypeEnum.WARN) {
@@ -57,6 +58,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
         body: request.body || null,
         headers: request.headers,
       });
+
       this.logService.error(errorLogDto);
       this.slackService.sendErrorToSlack(errorLogDto);
     }

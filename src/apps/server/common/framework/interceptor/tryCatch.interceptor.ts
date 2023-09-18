@@ -2,6 +2,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nes
 import { catchError, Observable } from 'rxjs';
 
 import ErrorResponse from '@commons/exception/errorResponse';
+import { BadRequestException } from '@commons/exception/exception';
 import { BaseException } from '@commons/exception/exception/base.exception';
 import { UnknownException } from '@commons/exception/exception/unknown.exception';
 
@@ -13,11 +14,10 @@ export class TryCatchInterceptor implements NestInterceptor {
         if (error instanceof BaseException) {
           throw error;
         }
-
-        throw new UnknownException({
-          errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
-          raw: error,
-        });
+        if (error instanceof TypeError) {
+          throw new BadRequestException(ErrorResponse.TYPE.TYPE_ERROR(error.message), error.stack);
+        }
+        throw new UnknownException(ErrorResponse.COMMON.INTERNAL_SERVER_ERROR, error.stack, error.message);
       }),
     );
   }

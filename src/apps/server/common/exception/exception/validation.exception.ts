@@ -6,6 +6,7 @@ import { ErrorTypeEnum } from '@commons/variable/enum/errorType.enum';
 export class ValidationException extends BaseException {
   constructor(errors: ValidationError[]) {
     super({
+      message: 'Validation Error',
       statusCode: 400,
       errorResponse: {
         code: 'VALIDATION_ERROR',
@@ -34,7 +35,7 @@ export class ValidationException extends BaseException {
           })
           .join(' '),
       },
-      raw: new Error(JSON.stringify(errors)),
+      raw: new Error(JSON.stringify(errors)).stack,
       errorType: ErrorTypeEnum.WARN,
     });
   }

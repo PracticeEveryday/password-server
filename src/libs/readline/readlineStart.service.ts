@@ -83,12 +83,11 @@ export class ReadlineStartService {
 
       try {
         this.preQualificationRepository.create(pair.question, pair.answer);
-      } catch (error) {
+      } catch (error: unknown) {
         console.log(error);
-        throw new UnknownException({
-          errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
-          raw: error,
-        });
+        if (error instanceof Error) {
+          throw new UnknownException(ErrorResponse.COMMON.INTERNAL_SERVER_ERROR, error.stack);
+        }
       }
       i++;
     }

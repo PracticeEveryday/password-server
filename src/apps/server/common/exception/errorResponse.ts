@@ -7,15 +7,6 @@ export default class ErrorResponse {
     },
   };
 
-  public static readonly AUTH = {
-    // 404
-    NOT_FOUND_USER: {
-      CODE: 'NOT_FOUND_USER',
-      ENG: 'The user was not found.',
-      KR: '유저를 찾을 수 없습니다.',
-    },
-  };
-
   public static readonly PASSWORD = {
     ALREADY_EXIST_PASSWORD: (value: string) => {
       return {
@@ -41,6 +32,15 @@ export default class ErrorResponse {
         CODE: 'TYPE_ERROR_MUST_BE_OBJECT',
         ENG: `${data} is not object type.`,
         KR: `${data}는 object 타입이 아닙니다.`,
+      };
+    },
+
+    // 400
+    TYPE_ERROR: (data: string) => {
+      return {
+        CODE: 'TYPE_ERROR',
+        ENG: data,
+        KR: `타입에러입니다.`,
       };
     },
   };

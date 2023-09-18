@@ -16,7 +16,7 @@ export default class PasswordMapper {
 
   public static toRequiredDomain(passwordSql: PasswordSqlInterface | undefined): PasswordDomain {
     if (!passwordSql) {
-      throw new NotFoundException(ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN(passwordSql?.domain));
+      throw new NotFoundException(ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN(passwordSql.domain));
     }
     const passwordDomain = new PasswordDomain(passwordSql);
 

@@ -29,10 +29,7 @@ export class TransactionInterceptor implements NestInterceptor {
           throw error;
         } else {
           console.log(error);
-          throw new UnknownException({
-            errorResponse: ErrorResponse.COMMON.INTERNAL_SERVER_ERROR,
-            raw: error,
-          });
+          throw new UnknownException(ErrorResponse.COMMON.INTERNAL_SERVER_ERROR, error.stack, error.message);
         }
       }),
       tap(async () => {

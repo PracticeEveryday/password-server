@@ -1,6 +1,6 @@
-export type BaseExceptionPropertyType = 'statusCode' | 'errorType' | 'raw' | 'errorResponse';
+export type BaseExceptionPropertyType = 'statusCode' | 'errorType' | 'raw' | 'errorResponse' | 'message';
 
-export type ExceptionPropertyType = 'raw' | 'errorResponse';
+export type ExceptionPropertyType = 'errorResponse' | 'raw';
 
 export enum ErrorTypeEnum {
   WARN = 'warn',

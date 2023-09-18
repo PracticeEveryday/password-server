@@ -55,10 +55,10 @@ export class LogService {
     }
   }
 
-  warn(filaLogDto: WarnLogDto): void {
+  warn(failLogDto: WarnLogDto): void {
     this.logger.warn(
-      `📰 요청 정보: ${JSON.stringify(filaLogDto.requestInfo, null, 2)}\n ${this.traceCaller(
-        filaLogDto.exception.stack,
+      `📰 요청 정보: ${JSON.stringify(failLogDto.requestInfo, null, 2)}\n ${this.traceCaller(
+        failLogDto.exception.stack,
         0,
       )},\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim(),
     );
@@ -66,9 +66,10 @@ export class LogService {
 
   error(errorLogDto: ErrorLogDto): void {
     this.logger.error(
-      `📰 요청 정보: ${JSON.stringify(errorLogDto.requestInfo, null, 2)}\n ${
-        errorLogDto.exception.stack
-      },\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim(),
+      `📰 요청 정보: ${JSON.stringify(errorLogDto.requestInfo, null, 2)}\n ${this.traceCaller(
+        errorLogDto.exception.raw,
+        0,
+      )},\n ⌛ 실패시간: ${new Date().toISOString()}, `.trim(),
     );
   }
 
