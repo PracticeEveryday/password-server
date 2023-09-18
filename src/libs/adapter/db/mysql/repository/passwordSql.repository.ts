@@ -40,7 +40,7 @@ export class PasswordSqlRepository implements PasswordRepositoryInterface {
     const query = `SELECT * FROM password.password ORDERS LIMIT ${queryDto.pageSize} OFFSET ${(queryDto.pageNo - 1) * queryDto.pageSize}`;
     const selectQueryResult = await this.mysqlService.executeSingleQuery<PasswordInterface[]>(query);
 
-    return PasswordMapper.toDomains(selectQueryResult[this.ROW_IDX]);
+    return PasswordMapper.toRequiredDomains(selectQueryResult[this.ROW_IDX]);
   }
 
   /**

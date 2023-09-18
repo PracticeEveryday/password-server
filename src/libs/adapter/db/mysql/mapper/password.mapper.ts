@@ -4,7 +4,7 @@ import { NotFoundException } from '@commons/exception/exception';
 import { PasswordSqlInterface } from '@libs/adapter/db/mysql/interface/password.interface';
 
 export default class PasswordMapper {
-  public static toOptionalDomain(passwordSql: PasswordSqlInterface | null): PasswordDomain | null {
+  public static toOptionalDomain(passwordSql: PasswordSqlInterface | undefined): PasswordDomain | null {
     if (!passwordSql) {
       return null;
     }
@@ -14,16 +14,16 @@ export default class PasswordMapper {
     return passwordDomain;
   }
 
-  public static toRequiredDomain(passwordSql: PasswordSqlInterface): PasswordDomain {
+  public static toRequiredDomain(passwordSql: PasswordSqlInterface | undefined): PasswordDomain {
     if (!passwordSql) {
-      throw new NotFoundException(ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN(passwordSql.domain));
+      throw new NotFoundException(ErrorResponse.PASSWORD.NOT_FOUND_DOMAIN(passwordSql?.domain));
     }
     const passwordDomain = new PasswordDomain(passwordSql);
 
     return passwordDomain;
   }
 
-  public static toDomains(passwords: PasswordSqlInterface[]): PasswordDomain[] {
+  public static toRequiredDomains(passwords: PasswordSqlInterface[]): PasswordDomain[] {
     const passwordDomains = new Array<PasswordDomain>();
     passwords.forEach((password) => {
       const product = this.toRequiredDomain(password);

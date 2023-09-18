@@ -25,11 +25,11 @@ export default class ErrorResponse {
       };
     },
 
-    NOT_FOUND_DOMAIN: (domain: string) => {
+    NOT_FOUND_DOMAIN: (domain: string | undefined) => {
       return {
         CODE: 'NOT_FOUND_DOMAIN',
-        ENG: `No information was found for that ${domain}.`,
-        KR: `해당 ${domain}의 정보를 찾을 수 없습니다.`,
+        ENG: `No information was found for that ${domain || 'domain'}.`,
+        KR: `해당 ${domain || '도메인'}의 정보를 찾을 수 없습니다.`,
       };
     },
   };
