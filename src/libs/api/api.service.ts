@@ -10,6 +10,13 @@ import { LogService } from '@libs/log/log.service';
 export class ApiService {
   constructor(private httpService: HttpService, private readonly logService: LogService) {}
 
+  public justPost(axiosReqDto: AxiosReqDto): void {
+    const observable = this.httpService.post(axiosReqDto.url, axiosReqDto.data, axiosReqDto.headers);
+    firstValueFrom(observable).catch((error) => {
+      this.logService.errorMsg('Axios Post Error', `post 요청에 실패 했습니다. ${error.response}`, axiosReqDto.stack);
+    });
+  }
+
   public async post<T>(axiosReqDto: AxiosReqDto): Promise<T> {
     try {
       const observable = await this.httpService.post(axiosReqDto.url, axiosReqDto.data, axiosReqDto.headers);
@@ -18,7 +25,7 @@ export class ApiService {
       return firstResultValue.data;
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        this.logService.errorMsg('Axios Post Error', `post 요청에 실패가 있습니다. ${error.response}`, axiosReqDto.stack);
+        this.logService.errorMsg('Axios Post Error', `post 요청에 실패 했습니다. ${error.response}`, axiosReqDto.stack);
       } else {
         console.error(error);
       }

@@ -13,7 +13,7 @@ export class SlackService {
     this.SLACK_ERROR_LOG_URL = envService.get(EnvEnum.SLACK_ERROR_LOG_URL);
   }
 
-  public async sendWarnToSlack(error: WarnLogDto): Promise<void> {
+  public sendWarnToSlack(error: WarnLogDto): void {
     const attachment = {
       pretext: '⚠️ 요청이 실패했습니다.',
       color: '#ff7f00',
@@ -25,10 +25,10 @@ export class SlackService {
     const { stack } = new Error();
 
     const axiosReqDto = new AxiosReqDto({ url: this.SLACK_ERROR_LOG_URL, data: attachment, headers, stack });
-    await this.apiService.post<string>(axiosReqDto);
+    this.apiService.justPost(axiosReqDto);
   }
 
-  public async sendErrorToSlack(error: ErrorLogDto): Promise<void> {
+  public sendErrorToSlack(error: ErrorLogDto): void {
     const attachment = {
       pretext: '⚠️ 서버 에러 입니다.',
       color: '#FF0000',
@@ -40,6 +40,6 @@ export class SlackService {
     const { stack } = new Error();
 
     const axiosReqDto = new AxiosReqDto({ url: this.SLACK_ERROR_LOG_URL, data: attachment, headers, stack });
-    await this.apiService.post<string>(axiosReqDto);
+    this.apiService.justPost(axiosReqDto);
   }
 }
