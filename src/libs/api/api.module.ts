@@ -1,12 +1,12 @@
-import { HttpModule } from '@nestjs/axios';
 import { DynamicModule, Module } from '@nestjs/common';
 
+import { HttpModule } from '@libs/api/http.module';
 import { LogModule } from '@libs/log/log.module';
 
 import { ApiService } from './api.service';
 
 @Module({
-  imports: [HttpModule.register({}), LogModule],
+  imports: [HttpModule, LogModule],
   providers: [ApiService],
   exports: [ApiService],
 })

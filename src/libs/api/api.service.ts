@@ -13,13 +13,12 @@ export class ApiService {
   public async post<T>(axiosReqDto: AxiosReqDto): Promise<T> {
     try {
       const observable = await this.httpService.post(axiosReqDto.url, axiosReqDto.data, axiosReqDto.headers);
-
       const firstResultValue = await firstValueFrom(observable);
 
       return firstResultValue.data;
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        this.logService.errorMsg('Axios Post Error', `post 요청에 실패가 있습니다. ${error.response.data}`, axiosReqDto.stack);
+        this.logService.errorMsg('Axios Post Error', `post 요청에 실패가 있습니다. ${error.response}`, axiosReqDto.stack);
       } else {
         console.error(error);
       }

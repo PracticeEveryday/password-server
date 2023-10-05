@@ -23,7 +23,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
-    console.log(error);
+
     const exception = (() => {
       if (error instanceof NotFoundException) {
         return new CustomNotFoundException(ErrorResponse.COMMON.NOT_FOUND_URL, error.stack);
