@@ -30,7 +30,7 @@ export class HttpModule implements OnModuleInit {
         config['metadata'] = { ...config['metadata'], endDate: new Date() };
         const duration = config['metadata'].endDate.getTime() - config['metadata'].startDate.getTime();
 
-        this.logService.info('Axios', 'Axios Success', `${config.method.toUpperCase()} ${config.url} ${duration}ms`);
+        this.logService.info('Axios Success', `${config.method.toUpperCase()} ${config.url} ${duration}ms`);
 
         return response;
       },

@@ -7,20 +7,12 @@ import { RequestInfoInterface } from '@commons/type/interface/requestInfo.interf
 export class LogService {
   constructor(@Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: WinstonLogger) {}
 
-  public info(label: string, message: string, data: unknown = {}): void {
+  public info(message: string, data: unknown = {}): void {
     if (typeof data === 'object') {
-      this.logger.log(`label: ${label}, message: ${message}: ${JSON.stringify({ message, ...data }, null, 2)}`);
+      this.logger.log(`message: ${message}: ${JSON.stringify({ message, ...data }, null, 2)}`);
     } else {
-      this.logger.log(`label: ${label}, message: ${message}: ${JSON.stringify({ message, data }, null, 2)}`);
+      this.logger.log(`message: ${message}: ${JSON.stringify({ message, data }, null, 2)}`);
     }
-  }
-
-  public warn(requestInfo: RequestInfoInterface, raw: string): void {
-    this.logger.warn(`${this.formatRequestInformation(requestInfo)} ${this.traceCaller(raw, 0)},\n ${this.getFailTime()}, `.trim());
-  }
-
-  public error(requestInfo: RequestInfoInterface, raw: string): void {
-    this.logger.error(`${this.formatRequestInformation(requestInfo)} ${this.traceCaller(raw, 0)},\n ${this.getFailTime()}, `.trim());
   }
 
   /**
@@ -30,6 +22,26 @@ export class LogService {
    */
   public errorMsg(message: string, stack: string): void {
     this.logger.error(`message: ${message},\n ${this.traceCaller(stack, 0)}`);
+  }
+
+  /**
+   *
+   * 전역으로 걸리틑 필터에서 사용하는 경고 로그
+   * @param requestInfo 요청 정보
+   * @param raw 에러가 나타난 파일 경로
+   */
+  public warn(requestInfo: RequestInfoInterface, raw: string): void {
+    this.logger.warn(`${this.formatRequestInformation(requestInfo)} ${this.traceCaller(raw, 0)},\n ${this.getFailTime()}, `.trim());
+  }
+
+  /**
+   *
+   * 전역으로 걸리틑 필터에서 사용하는 에러 로그
+   * @param requestInfo 요청 정보
+   * @param raw 에러가 나타난 파일 경로
+   */
+  public error(requestInfo: RequestInfoInterface, raw: string): void {
+    this.logger.error(`${this.formatRequestInformation(requestInfo)} ${this.traceCaller(raw, 0)},\n ${this.getFailTime()}, `.trim());
   }
 
   /**

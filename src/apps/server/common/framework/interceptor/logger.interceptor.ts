@@ -12,7 +12,7 @@ export class LogInterceptor implements NestInterceptor {
     const ctx = context.switchToHttp();
     const req = ctx.getRequest() as Request;
 
-    this.logService.info(LogInterceptor.name, 'Request', {
+    this.logService.info('Request', {
       headers: req.headers,
       query: req.query,
       params: req.params,
@@ -20,6 +20,6 @@ export class LogInterceptor implements NestInterceptor {
       body: req.body,
     });
 
-    return next.handle().pipe(tap((response) => this.logService.info(LogInterceptor.name, 'Response', response)));
+    return next.handle().pipe(tap((response) => this.logService.info('Response', response)));
   }
 }
