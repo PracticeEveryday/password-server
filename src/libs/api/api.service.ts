@@ -12,8 +12,8 @@ export class ApiService {
 
   public justPost(axiosReqDto: AxiosReqDto): void {
     const observable = this.httpService.post(axiosReqDto.url, axiosReqDto.data, axiosReqDto.headers);
-    firstValueFrom(observable).catch((error) => {
-      this.logService.errorMsg('Axios Post Error', `post 요청에 실패 했습니다. ${error.response}`, axiosReqDto.stack);
+    firstValueFrom(observable).catch((_error) => {
+      this.logService.errorMsg('Axios Post 요청에 실패 했습니다.', axiosReqDto.stack);
     });
   }
 
@@ -25,7 +25,7 @@ export class ApiService {
       return firstResultValue.data;
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        this.logService.errorMsg('Axios Post Error', `post 요청에 실패 했습니다. ${error.response}`, axiosReqDto.stack);
+        this.logService.errorMsg('Axios Post 요청에 실패 했습니다.', axiosReqDto.stack);
       } else {
         console.error(error);
       }

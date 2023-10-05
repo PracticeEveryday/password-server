@@ -5,8 +5,7 @@ import ErrorResponse from '@commons/exception/errorResponse';
 import { BaseException } from '@commons/exception/exception/base.exception';
 import { NotFoundException as CustomNotFoundException } from '@commons/exception/exception/notFound.exception';
 import { UnknownException } from '@commons/exception/exception/unknown.exception';
-import { ErrorLogDto } from '@commons/type/dto/basicApiDto/errorLog.dto';
-import { WarnLogDto } from '@commons/type/dto/basicApiDto/warnLog.dto';
+import { RequestInfoInterface } from '@commons/type/interface/requestInfo.interface';
 import { ErrorTypeEnum } from '@commons/variable/enum/errorType.enum';
 import { LogService } from '@libs/log/log.service';
 import { SlackService } from '@libs/slack/slack.service';
@@ -46,26 +45,19 @@ export class CustomExceptionFilter implements ExceptionFilter {
       throw new UnknownException(ErrorResponse.COMMON.INTERNAL_SERVER_ERROR, error.stack, error.message);
     })();
 
+    const requestInfo: RequestInfoInterface = {
+      method: request.method,
+      url: request.url,
+      body: request.body || null,
+      headers: request.headers,
+    };
+
     if (exception.errorType === ErrorTypeEnum.WARN) {
-      const failLogDto = new WarnLogDto(exception, {
-        method: request.method,
-        url: request.url,
-        body: request.body || null,
-        headers: request.headers,
-      });
-
-      this.logService.warn(failLogDto);
-      this.slackService.sendWarnToSlack(failLogDto);
+      this.logService.warn(requestInfo, exception.raw);
+      this.slackService.sendWarnToSlack(exception.errorResponse);
     } else {
-      const errorLogDto = new ErrorLogDto(exception, {
-        method: request.method,
-        url: request.url,
-        body: request.body || null,
-        headers: request.headers,
-      });
-
-      this.logService.error(errorLogDto);
-      this.slackService.sendErrorToSlack(errorLogDto);
+      this.logService.error(requestInfo, exception.raw);
+      this.slackService.sendErrorToSlack(exception.errorResponse);
     }
 
     /**
