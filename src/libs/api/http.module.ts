@@ -10,6 +10,7 @@ import { LogService } from '@libs/log/log.service';
 })
 export class HttpModule implements OnModuleInit {
   private MAX_RETRY_COUNT = 2;
+
   constructor(private readonly httpService: HttpService, public readonly logService: LogService) {}
 
   public onModuleInit() {

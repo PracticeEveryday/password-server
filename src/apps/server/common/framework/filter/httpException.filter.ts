@@ -53,7 +53,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
     };
 
     if (exception.errorType === ErrorTypeEnum.WARN) {
-      this.logService.warn(requestInfo, exception.raw);
+      this.logService.warn(requestInfo, exception.stack);
       this.slackService.sendWarnToSlack(exception.errorResponse);
     } else {
       this.logService.error(requestInfo, exception.raw);
